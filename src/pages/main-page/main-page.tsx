@@ -1,4 +1,3 @@
-import React from "react";
 import FormTemplateList from "../../widgets/form-template-list/form-template-list";
 
 const MainPage = () => {

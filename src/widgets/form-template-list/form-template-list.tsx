@@ -1,4 +1,3 @@
-import React from "react";
 import FormTemplateItem from "../form-template-item/form-template-item";
 
 const FormTemplateList = ({title}: {title: string}) => {
