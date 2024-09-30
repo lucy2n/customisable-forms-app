@@ -27,12 +27,15 @@ const Header = () => {
         </p>
       </div>
       <div className="flex gap-2">
-       <Button color="secondary" className="font-mono" size="md">
+        <Button color="secondary" variant="light" className="font-mono" size="md">
+          Login
+        </Button>  
+       <Button color="secondary" className="font-mono mr-10" size="md">
           Sign Up
         </Button>  
         <Switch
           checked={!isLightTheme}
-          size="lg"
+          size="md"
           color="success"
           onChange={(e) => setTheme(e.target.checked ? 'dark' : 'light')}
           startContent={<img src={sunIcon} alt="Light Mode" width="24" height="24" />}
