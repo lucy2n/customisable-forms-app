@@ -1,6 +1,6 @@
 import { Button, Switch } from "@nextui-org/react";
 import { useTheme } from "next-themes";
-import moonIcon from "../../assets/icons8-moon-50.png";
+import moonIcon from "../../assets/icons8-moon-30-2.png";
 import sunIcon from "../../assets/icons8-sun.svg";
 import { useEffect, useState } from "react";
 
@@ -17,7 +17,7 @@ const Header = () => {
   const isLightTheme = theme === 'light';
 
   return (
-    <header className="flex justify-between w-11/12 mr-auto ml-auto pt-10 items-center">
+    <header className="flex justify-between w-11/12 mr-auto ml-auto pt-10 items-center flex-wrap">
       <div className="flex">
         <p className="text-base font-medium text-xl uppercase text-purple-700 font-mono">
           Form

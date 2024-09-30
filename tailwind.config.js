@@ -17,7 +17,11 @@ export default {
         "2xl": "6rem",
       },
     },
-    extend: {},
+    extend: {
+      textShadow: {
+        'custom': '2px 2px 4px rgba(0, 0, 0, 0.5)',
+      },
+    },
   },
   darkMode: "class",
   plugins: [nextui()],
