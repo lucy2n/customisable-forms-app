@@ -3,10 +3,13 @@ import { useTheme } from "next-themes";
 import moonIcon from "../../assets/icons8-moon-30-2.png";
 import sunIcon from "../../assets/icons8-sun.svg";
 import { useEffect, useState } from "react";
+import { RoutePathname } from "../../app/routes/constants";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setMounted(true);
@@ -18,7 +21,7 @@ const Header = () => {
 
   return (
     <header className="flex justify-between w-11/12 mr-auto ml-auto pt-10 items-center flex-wrap">
-      <div className="flex">
+      <div className="flex cursor-pointer" onClick={() => navigate(RoutePathname.homePage)}>
         <p className="text-base font-medium text-xl uppercase text-purple-700 font-mono">
           Form
         </p>
@@ -27,10 +30,10 @@ const Header = () => {
         </p>
       </div>
       <div className="flex gap-2">
-        <Button color="secondary" variant="light" className="font-mono" size="md">
+        <Button color="secondary" variant="light" className="font-mono" size="md" onClick={() => navigate(RoutePathname.loginPage)}>
           Login
         </Button>  
-       <Button color="secondary" className="font-mono mr-10" size="md">
+       <Button color="secondary" className="font-mono mr-10" size="md" onClick={() => navigate(RoutePathname.registerPage)}>
           Sign Up
         </Button>  
         <Switch

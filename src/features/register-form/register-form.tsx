@@ -1,13 +1,20 @@
 import { useState } from "react";
 import { Input, Button } from "@nextui-org/react";
 import eye from '../../assets/icons8-eye-24.png'
+import { useNavigate } from "react-router-dom";
+import { RoutePathname } from "../../app/routes/constants";
 
 const RegisterForm = () => {
     const [isVisible, setIsVisible] = useState(false);
     const toggleVisibility = () => setIsVisible(!isVisible);
+    const navigate = useNavigate();
+
+    const handleSubmit = () => {
+        navigate(RoutePathname.loginPage)
+    }
 
     return (
-        <form className="flex flex-col items-center gap-5 w-full">
+        <form className="flex flex-col items-center gap-5 w-full" onSubmit={handleSubmit}>
             <Input
                 type="text"
                 label="Username"
