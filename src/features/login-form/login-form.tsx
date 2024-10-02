@@ -12,7 +12,7 @@ const LoginForm = () => {
                 type="email"
                 label="Email"
                 variant="bordered"
-                className="w-full"
+                className="w-2/3"
             />
             <Input
                 label="Password"
@@ -28,7 +28,7 @@ const LoginForm = () => {
                     </button>
                 }
                 type={isVisible ? "text" : "password"}
-                className="w-full"
+                className="w-2/3"
             />
             <Button size="lg" color="secondary" type="submit" className="w-1/4 font-mono">
                 Submit
