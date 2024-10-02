@@ -2,7 +2,7 @@ import {Card, CardHeader, CardFooter, Image, Button} from "@nextui-org/react";
 
 const FormTemplateItem = () => {
     return (
-        <Card isFooterBlurred className="w-1/4 h-[300px] col-span-12 sm:col-span-7">
+        <Card isFooterBlurred className="w-1/4 h-[400px] col-span-12 sm:col-span-7">
             <CardHeader className="absolute z-10 top-1 flex-col items-start">
                 <p className="text-tiny text-white/60 uppercase font-bold">Your day your way</p>
                 <h4 className="text-white/90 font-medium text-xl">Your checklist for better sleep</h4>
