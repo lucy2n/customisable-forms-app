@@ -1,4 +1,6 @@
 import MainPage from '../pages/main-page/main-page'
+import LoginPage from '../pages/login-page/login-page'
+import RegisterPage from '../pages/register-page/register-page'
 import Header from '../widgets/header/header'
 
 function App() {
@@ -6,6 +8,7 @@ function App() {
       <div className="flex flex-col w-screen">
         <Header />
         <MainPage />
+        <LoginPage />
       </div>
   )
 }
