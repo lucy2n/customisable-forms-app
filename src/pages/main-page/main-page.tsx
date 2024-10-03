@@ -1,3 +1,4 @@
+import FormBuilder from "../../features/form-builder/form-builder";
 import FormTemplateList from "../../widgets/form-template-list/form-template-list";
 
 const MainPage = () => {
@@ -13,6 +14,7 @@ const MainPage = () => {
             </section>
             <FormTemplateList title='New Templates'/>
             <FormTemplateList title='Most Popular Templates' />
+            <FormBuilder />
         </main>
     )
 }
