@@ -1,5 +1,4 @@
 import { Route, Routes } from 'react-router-dom';
-import MainPage from '../pages/main-page/main-page';
 import LoginPage from '../pages/login-page/login-page';
 import Header from '../widgets/header/header';
 import { RoutePathname } from './routes/constants';

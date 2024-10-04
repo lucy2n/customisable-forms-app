@@ -3,32 +3,33 @@ import { v4 as uuidv4 } from 'uuid';
 import QuestionEditor from './ui/question-editor/question-editor';
 import { Button, Card, CardBody, Input } from '@nextui-org/react';
 import add from '../../assets/plus-01.svg';
+import { IQuestion, QuestionType } from '../../entities/question/model/question';
 
 const FormBuilder = () => {
     const [formTitle, setFormTitle] = useState('New form');
     const [formDesc, setFormDesc] = useState('');
-    const [questions, setQuestions] = useState([
+    const [questions, setQuestions] = useState<IQuestion[]>([
       {
         id: uuidv4(),
-        type: 'text',
+        type: QuestionType.text,
         text: '',
         options: [],
       },
     ]);
-    const [activeIndex, setActiveIndex] = useState(null);
+    const [activeIndex, setActiveIndex] = useState<string | null>(null);
   
     const addQuestion = () => {
-      setQuestions([...questions, { id: uuidv4(), type: 'text', text: '', options: [] }]);
+      setQuestions([...questions, { id: uuidv4(), type: QuestionType.text, text: '', options: [] }]);
     };
   
-    const updateQuestion = (id, updatedQuestion) => {
-      const updatedQuestions = questions.map((question) =>
-        question.id === id ? { ...updatedQuestion } : question
-      );
-      setQuestions(updatedQuestions);
-    };
+    const updateQuestion = (id: string, updatedQuestion: IQuestion) => {
+        const updatedQuestions = questions.map((question) =>
+          question.id === id ? { ...updatedQuestion } : question
+        );
+        setQuestions(updatedQuestions);
+      };
   
-    const removeQuestion = (id) => {
+    const removeQuestion = (id: string) => {
       const updatedQuestions = questions.filter((question) => question.id !== id);
       setQuestions(updatedQuestions);
     };
@@ -43,18 +44,20 @@ const FormBuilder = () => {
     };
   
     useEffect(() => {
-      const handleClickOutside = (event) => {
-        if (!event.target.closest('.question-editor')) {
-          setActiveIndex(null);
-        }
-      };
-  
-      document.addEventListener('click', handleClickOutside);
-  
-      return () => {
-        document.removeEventListener('click', handleClickOutside);
-      };
-    }, []);
+        const handleClickOutside = (e: MouseEvent) => {
+          const target = e.target as Element | null;
+      
+          if (target && !target.closest('.question-editor')) {
+            setActiveIndex(null);
+          }
+        };
+      
+        document.addEventListener('click', handleClickOutside);
+      
+        return () => {
+          document.removeEventListener('click', handleClickOutside);
+        };
+      }, []);
   
     return (
       <div className="flex flex-col w-1/2 mr-auto ml-auto gap-10">

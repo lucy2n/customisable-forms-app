@@ -1,28 +1,37 @@
 import { Button, Card, CardBody, Input } from '@nextui-org/react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, FC, ChangeEvent } from 'react';
 import remove from '../../../../assets/trash-03-2.svg';
 import x from '../../../../assets/x-02.svg';
+import { IQuestion, QuestionType } from '../../../../entities/question/model/question';
 
-const QuestionEditor = ({ question, updateQuestion, removeQuestion, isActive, setActiveIndex }) => {
-  const [label, setLabel] = useState(question.label || '');
+interface IQuestionEditorProps {
+    question: IQuestion; // Тип для вопроса
+    updateQuestion: (id: string, updatedQuestion: IQuestion) => void; // Функция обновления вопроса
+    removeQuestion: (id: string) => void; // Функция удаления вопроса
+    isActive: boolean; // Булевое значение для активности вопроса
+    setActiveIndex: (id: string) => void;
+}
+
+const QuestionEditor: FC<IQuestionEditorProps> = ({ question, updateQuestion, removeQuestion, isActive, setActiveIndex })  => {
+  const [text, setText] = useState(question.text || '');
   const [type, setType] = useState(question.type || 'text');
   const [options, setOptions] = useState(question.options || []);
 
   useEffect(() => {
     // Обновляем локальные состояния при изменении вопроса
-    setLabel(question.label);
+    setText(question.text);
     setType(question.type);
     setOptions(question.options);
   }, [question]);
 
-  const handleTypeChange = (e) => {
-    const newType = e.target.value;
+  const handleTypeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const newType = e.target.value as QuestionType;
     setType(newType);
     updateQuestion(question.id, { ...question, type: newType, options: [] });
   };
 
-  const handleLabelChange = (e) => {
-    setLabel(e.target.value);
+  const handleTextChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setText(e.target.value);
     updateQuestion(question.id, { ...question, text: e.target.value });
   };
 
@@ -32,13 +41,13 @@ const QuestionEditor = ({ question, updateQuestion, removeQuestion, isActive, se
     updateQuestion(question.id, { ...question, options: newOptions });
   };
 
-  const updateOption = (optIndex, value) => {
+  const updateOption = (optIndex: number, value: string) => {
     const updatedOptions = options.map((opt, i) => (i === optIndex ? value : opt));
     setOptions(updatedOptions);
     updateQuestion(question.id, { ...question, options: updatedOptions });
   };
 
-  const removeOption = (optIndex) => {
+  const removeOption = (optIndex: number) => {
     const updatedOptions = options.filter((_, i) => i !== optIndex);
     setOptions(updatedOptions);
     updateQuestion(question.id, { ...question, options: updatedOptions });
@@ -59,8 +68,8 @@ const QuestionEditor = ({ question, updateQuestion, removeQuestion, isActive, se
             type="text"
             variant="underlined"
             placeholder="Вопрос"
-            value={label}
-            onChange={handleLabelChange}
+            value={text}
+            onChange={handleTextChange}
           />
           {isActive && (
             <select value={type} onChange={handleTypeChange} className="w-1/2">
