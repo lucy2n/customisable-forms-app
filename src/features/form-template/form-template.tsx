@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import { Button, Card, CardBody, Input, RadioGroup, Radio, CheckboxGroup, Checkbox, Textarea, Select, SelectItem } from '@nextui-org/react';
 import { IQuestion, QuestionType } from '../../entities/question/model/question';
 
@@ -131,7 +130,7 @@ const FormTemplate = () => {
             <CheckboxGroup 
                 key={question.id}
                 label={question.text}
-                color="success"
+                color="secondary"
             >
             {question.options.map((option) => (
               <div key={option}>

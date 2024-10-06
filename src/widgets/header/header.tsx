@@ -30,6 +30,9 @@ const Header = () => {
         </p>
       </div>
       <div className="flex gap-2">
+      <Button color="secondary" variant="light" className="font-mono" size="md" onClick={() => navigate(RoutePathname.createForm)}>
+          Create form
+        </Button> 
         <Button color="secondary" variant="light" className="font-mono" size="md" onClick={() => navigate(RoutePathname.loginPage)}>
           Login
         </Button>  

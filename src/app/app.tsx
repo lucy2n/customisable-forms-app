@@ -5,15 +5,17 @@ import { RoutePathname } from './routes/constants';
 import RegisterPage from '../pages/register-page/register-page';
 import CreateFormPage from '../pages/create-form-page/create-form-page';
 import FormTemplate from '../features/form-template/form-template';
+import MainPage from '../pages/main-page/main-page';
 
 function App() {
   return (
       <div className="flex flex-col w-screen">
         <Header />
          <Routes>
-          <Route path={RoutePathname.homePage} element={<FormTemplate />} />
+          <Route path={RoutePathname.homePage} element={<MainPage />} />
           <Route path={RoutePathname.loginPage} element={<LoginPage />} />
           <Route path={RoutePathname.registerPage} element={<RegisterPage />} />
+          <Route path={RoutePathname.createForm} element={<CreateFormPage />} />
          </Routes>
       </div>
   )
