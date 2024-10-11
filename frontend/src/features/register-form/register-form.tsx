@@ -1,17 +1,28 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import { Input, Button } from "@nextui-org/react";
 import eye from '../../assets/icons8-eye-24.png'
-import { useNavigate } from "react-router-dom";
-import { RoutePathname } from "../../app/routes/constants";
 
-const RegisterForm = () => {
+interface RegisterFormProps {
+    handleRegister : (name: string, email: string, password: string) => void
+}
+
+const RegisterForm: FC<RegisterFormProps> = ({handleRegister}) => {
     const [isVisible, setIsVisible] = useState(false);
     const toggleVisibility = () => setIsVisible(!isVisible);
-    const navigate = useNavigate();
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [name, setName] = useState<string>('');
 
-    const handleSubmit = () => {
-        navigate(RoutePathname.loginPage)
-    }
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault(); 
+    
+        try {
+          handleRegister(name, email, password);
+        } catch (err) {
+          console.error('Ошибка регистрации:', err.message);
+        }
+      };
 
     return (
         <form className="flex flex-col items-center gap-5 w-full" onSubmit={handleSubmit}>
@@ -21,6 +32,7 @@ const RegisterForm = () => {
                 placeholder="Enter your username"
                 variant="bordered"
                 className="w-2/3"
+                onChange={(e) => setName(e.target.value)}
             />
             <Input
                 type="email"
@@ -28,6 +40,7 @@ const RegisterForm = () => {
                 placeholder="Enter your email"
                 variant="bordered"
                 className="w-2/3"
+                onChange={(e) => setEmail(e.target.value)}
             />
             <Input
                 label="Password"
@@ -44,6 +57,7 @@ const RegisterForm = () => {
                 }
                 type={isVisible ? "text" : "password"}
                 className="w-2/3"
+                onChange={(e) => setPassword(e.target.value)}
             />
             <Button size="lg" color="secondary" type="submit" className="w-1/4 font-mono">
                 Submit

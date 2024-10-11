@@ -3,9 +3,9 @@ import { Sequelize } from 'sequelize';
 // Define database configuration options
 const dbConfig = {
   development: {
-    username: process.env.DB_USER || 'your_db_username',
-    password: process.env.DB_PASSWORD || 'your_db_password',
-    database: process.env.DB_NAME || 'your_database_name',
+    username: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || 'lysia2002',
+    database: process.env.DB_NAME || 'forms_app',
     host: process.env.DB_HOST || 'localhost',
     dialect: 'mysql',  // Can be 'postgres', 'sqlite', etc., depending on your database
     logging: console.log,  // Set to false if you don't want to log SQL queries

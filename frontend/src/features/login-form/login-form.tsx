@@ -1,17 +1,26 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import { Input, Button } from "@nextui-org/react";
 import eye from '../../assets/icons8-eye-24.png'
-import { useNavigate } from "react-router-dom";
-import { RoutePathname } from "../../app/routes/constants";
 
-const LoginForm = () => {
+interface LoginFormProps {
+    handleLogin : (email: string, password: string) => void
+}
+
+const LoginForm: FC<LoginFormProps> = ({handleLogin}) => {
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
     const [isVisible, setIsVisible] = useState(false);
     const toggleVisibility = () => setIsVisible(!isVisible);
-    const navigate = useNavigate();
 
-    const handleSubmit = () => {
-        navigate(RoutePathname.homePage)
-    }
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault(); 
+    
+        try {
+            handleLogin(email, password);
+        } catch (err) {
+          console.error('Ошибка регистрации:', err.message);
+        }
+      };
 
     return (
         <form className="flex flex-col items-center gap-5 w-full" onSubmit={handleSubmit}>
@@ -20,6 +29,7 @@ const LoginForm = () => {
                 label="Email"
                 variant="bordered"
                 className="w-2/3"
+                onChange={(e) => setEmail(e.target.value)}
             />
             <Input
                 label="Password"
@@ -36,6 +46,7 @@ const LoginForm = () => {
                 }
                 type={isVisible ? "text" : "password"}
                 className="w-2/3"
+                onChange={(e) => setPassword(e.target.value)}
             />
             <Button size="lg" color="secondary" type="submit" className="w-1/4 font-mono">
                 Submit

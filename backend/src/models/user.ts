@@ -1,16 +1,8 @@
 import { Model, DataTypes } from 'sequelize';
-import sequelize from '../config/database';  // Assuming you have configured sequelize instance in config
+import sequelize from '../config/database';
 
-export interface UserAttributes {
-  id: number;
-  name: string;
-  email: string;
-  password: string;
-  is_admin: boolean;
-}
-
-class User extends Model<UserAttributes> implements UserAttributes {
-  public id!: number;
+class User extends Model {
+  public id!: string;
   public name!: string;
   public email!: string;
   public password!: string;
@@ -18,12 +10,20 @@ class User extends Model<UserAttributes> implements UserAttributes {
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
+
+  static associate() {
+    const Template = require('./template').default;
+    const Form = require('./form').default;
+
+    User.hasMany(Template, { foreignKey: 'user_id', as: 'templates' });
+    User.hasMany(Form, { foreignKey: 'user_id', as: 'forms' });
+  }
 }
 
 User.init(
   {
     id: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      type: DataTypes.STRING,
       autoIncrement: true,
       primaryKey: true,
     },
@@ -35,6 +35,9 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
+      validate: {
+        isEmail: true,
+      },
     },
     password: {
       type: DataTypes.STRING,
@@ -48,6 +51,7 @@ User.init(
   {
     sequelize,
     tableName: 'users',
+    timestamps: true,
   }
 );
 

@@ -4,7 +4,7 @@ import { IQuestion, QuestionType } from '../../entities/question/model/question'
 
 const FormTemplate = () => {
   const form = {
-    id: '1',
+    id: 1,
     title: 'Some Form',
     description: 'Some description of the form',
     questions: [
@@ -15,10 +15,10 @@ const FormTemplate = () => {
         options: [],
       },
       {
-        id: '2', // Убедитесь, что ID уникален
+        id: '2',
         type: QuestionType.radio,
         text: 'Какой ваш любим фрукт?',
-        options: ['Яблоко', 'Банан', 'Апельсин'], // Примеры опций
+        options: ['Яблоко', 'Банан', 'Апельсин'],
       },
       {
         id: '3',
