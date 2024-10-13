@@ -11,24 +11,24 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: 'http://localhost:5173', // Укажите здесь ваш фронтенд URL
-  credentials: true, // если нужно передавать куки
+  origin: 'http://localhost:5173', // Your frontend URL
+  credentials: true, // If you need to pass cookies
 }));
 app.use(express.json());
 
-// Инициализация ассоциаций между моделями
+// Initialize associations
 User.associate && User.associate();
 Template.associate && Template.associate();
 Form.associate && Form.associate();
 Question.associate && Question.associate();
 
-// Синхронизация моделей с базой данных перед запуском сервера
-sequelize.sync({ force: false })  // `force: true` пересоздаст таблицы, если они уже существуют
+// Sync database and start server
+sequelize.sync({ force: false })  // `force: true` will recreate tables
   .then(() => {
     console.log('Database synced successfully');
-    // Запуск сервера только после успешной синхронизации с базой данных
-    app.listen(3001, () => {
-      console.log('Server is running on port 3000');
+    const PORT = process.env.PORT || 3001; // Use Heroku's PORT
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
     });
   })
   .catch((error) => {
