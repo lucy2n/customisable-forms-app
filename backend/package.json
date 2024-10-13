@@ -56,8 +56,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "start": "node dist/app.js",
-    "heroku-postbuild": "npm run build"
+    "start": "tsc && node dist/app.js"
   },
   "keywords": [],
   "author": "",
