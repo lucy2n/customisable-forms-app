@@ -35,4 +35,23 @@ export const loginUser = async (email: string, password: string): Promise<{ toke
 
     return data;
 };
+
+export const getUserInformation = async () => {
+  const res = await fetch(`${base_url}/users/me/`, {
+    method: 'Get',
+    headers: {
+      accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Token ${localStorage.getItem('token')}`
+    },
+  }
+  );
+  return checkResponse<IUser>(res);
+};
+
+export const logout = () => {
+  localStorage.removeItem('token');
+  console.log('Вы вышли из системы');
+};
+
   

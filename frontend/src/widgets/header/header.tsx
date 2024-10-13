@@ -5,11 +5,22 @@ import sunIcon from "../../assets/icons8-sun.svg";
 import { useEffect, useState } from "react";
 import { RoutePathname } from "../../app/routes/constants";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../app/routes/lib/hook";
+import { resetUser } from "../../entities/user/model/userSlice";
+import { logout } from "../../shared/api/api";
 
 const Header = () => {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const { isLoggedIn } = useAppSelector(state => state.user); // Получаем статус входа
+
+  const handleLogout = () => {
+    logout(); // Удаление токена на стороне сервера (или локально)
+    dispatch(resetUser()); // Сброс состояния пользователя
+    navigate(RoutePathname.loginPage); // Перенаправление на страницу входа
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -30,15 +41,48 @@ const Header = () => {
         </p>
       </div>
       <div className="flex gap-2">
-      <Button color="secondary" variant="light" className="font-mono" size="md" onClick={() => navigate(RoutePathname.createForm)}>
+        <Button
+          color="secondary"
+          variant="light"
+          className="font-mono"
+          size="md"
+          onClick={() => navigate(RoutePathname.createForm)}
+        >
           Create form
-        </Button> 
-        <Button color="secondary" variant="light" className="font-mono" size="md" onClick={() => navigate(RoutePathname.loginPage)}>
-          Login
-        </Button>  
-       <Button color="secondary" className="font-mono mr-10" size="md" onClick={() => navigate(RoutePathname.registerPage)}>
-          Sign Up
-        </Button>  
+        </Button>
+
+        {isLoggedIn ? (
+          <Button
+            color="secondary"
+            variant="light"
+            className="font-mono"
+            size="md"
+            onClick={handleLogout}
+          >
+            Logout
+          </Button>
+        ) : (
+          <>
+            <Button
+              color="secondary"
+              variant="light"
+              className="font-mono"
+              size="md"
+              onClick={() => navigate(RoutePathname.loginPage)}
+            >
+              Login
+            </Button>
+            <Button
+              color="secondary"
+              className="font-mono mr-10"
+              size="md"
+              onClick={() => navigate(RoutePathname.registerPage)}
+            >
+              Sign Up
+            </Button>
+          </>
+        )}
+
         <Switch
           checked={!isLightTheme}
           size="md"
