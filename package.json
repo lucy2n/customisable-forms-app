@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "heroku-postbuild": "cd backend && npm install"
+    "heroku-build": "cd backend && npm install",
+    "start": "cd backend && npm start"
   },
   "keywords": [],
   "author": "",
