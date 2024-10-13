@@ -1,1 +1,1 @@
-web: ts-node backend/src/app.ts
+web: cd backend && npm start

@@ -1,0 +1,12 @@
+{
+  "name": "customisable-forms-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "heroku-build": "cd backend && npm install"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
