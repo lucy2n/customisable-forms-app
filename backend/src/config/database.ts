@@ -3,27 +3,27 @@ import { Sequelize } from 'sequelize';
 // Define database configuration options
 const dbConfig = {
   development: {
-    username: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || 'lysia2002',
-    database: process.env.DB_NAME || 'forms_app',
-    host: process.env.DB_HOST || 'localhost',
+    username: process.env.MYSQLUSER || 'root',
+    password: process.env.MYSQL_ROOT_PASSWORD || 'lysia2002',
+    database: process.env.MYSQL_DATABASE || 'forms_app',
+    host: process.env.MYSQL_PUBLIC_URL || 'localhost',
     dialect: 'mysql',  // Can be 'postgres', 'sqlite', etc., depending on your database
     logging: console.log,  // Set to false if you don't want to log SQL queries
   },
   test: {
-    username: process.env.DB_USER || 'test_user',
-    password: process.env.DB_PASSWORD || 'test_password',
-    database: process.env.DB_NAME || 'test_database',
-    host: process.env.DB_HOST || 'localhost',
+    username: process.env.MYSQLUSER || 'test_user',
+    password: process.env.MYSQL_ROOT_PASSWORD || 'test_password',
+    database: process.env.MYSQL_DATABASE || 'test_database',
+    host: process.env.MYSQL_PUBLIC_URL || 'localhost',
     dialect: 'sqlite',
     storage: ':memory:',  // In-memory database for testing
     logging: false,
   },
   production: {
-    username: process.env.DB_USER || 'prod_user',
-    password: process.env.DB_PASSWORD || 'prod_password',
-    database: process.env.DB_NAME || 'prod_database',
-    host: process.env.DB_HOST || 'localhost',
+    username: process.env.MYSQLUSER || 'prod_user',
+    password: process.env.DB_PASMYSQL_ROOT_PASSWORDSWORD || 'prod_password',
+    database: process.env.MYSQL_DATABASE || 'prod_database',
+    host: process.env.MYSQL_PUBLIC_URL || 'localhost',
     dialect: 'mysql',
     logging: false,
   },
