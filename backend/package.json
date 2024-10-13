@@ -56,7 +56,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "start": "tsc && node dist/app.js"
+    "start": "npm run build && node dist/app.js"
   },
   "keywords": [],
   "author": "",
