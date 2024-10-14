@@ -6,7 +6,7 @@ import RegisterPage from '../pages/register-page/register-page';
 import CreateFormPage from '../pages/create-form-page/create-form-page';
 import MainPage from '../pages/main-page/main-page';
 import { useAppDispatch } from './routes/lib/hook';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { OnlyAuth } from './routes/protected-route';
 import { getUserInformation } from '../shared/api/api';
 import { loggedIn, loggedOut, setEmail, setName } from '../entities/user/model/userSlice';
@@ -14,34 +14,47 @@ import { IUser } from '../entities/user/model/user';
 
 function App() {
   const dispatch = useAppDispatch();
+  const [loading, setLoading] = useState(true);
 
-  useEffect(()=> {
-		if (localStorage.getItem('token')) {
-			getUserInformation()
-            .then(({email, name}: IUser)=>{
-                dispatch(loggedIn());
-                dispatch(setEmail(email));
-                dispatch(setName(name ?? ''));
-            })
-            .catch((err) => {
-                dispatch(loggedOut());
-                localStorage.removeItem('token');
-                console.error(err);
-            });
-        }
-    }, []);
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      getUserInformation()
+        .then(({ email, name }: IUser) => {
+          dispatch(loggedIn());
+          dispatch(setEmail(email));
+          dispatch(setName(name ?? ''));
+        })
+        .catch((err) => {
+          console.error('Ошибка при загрузке данных пользователя:', err);
+          dispatch(loggedOut());
+          localStorage.removeItem('token');
+        })
+        .finally(() => {
+          setLoading(false); // Завершить загрузку
+        });
+    } else {
+      setLoading(false); // Завершить загрузку, если токена нет
+    }
+  }, [dispatch]);
+
+  // Если данные пользователя еще загружаются, можно показывать индикатор загрузки
+  if (loading) {
+    return <div>Загрузка...</div>;
+  }
 
   return (
-      <div className="flex flex-col w-screen">
-        <Header />
-         <Routes>
-          <Route path={RoutePathname.homePage} element={<MainPage />} />
-          <Route path={RoutePathname.loginPage} element={<LoginPage />} />
-          <Route path={RoutePathname.registerPage} element={<RegisterPage />} />
-          <Route path={RoutePathname.createForm} element={<OnlyAuth component={<CreateFormPage />} />} />
-         </Routes>
-      </div>
-  )
+    <div className="flex flex-col w-screen">
+      <Header />
+      <Routes>
+        <Route path={RoutePathname.homePage} element={<MainPage />} />
+        <Route path={RoutePathname.loginPage} element={<LoginPage />} />
+        <Route path={RoutePathname.registerPage} element={<RegisterPage />} />
+        <Route path={RoutePathname.createForm} element={<OnlyAuth component={<CreateFormPage />} />} />
+      </Routes>
+    </div>
+  );
 }
 
-export default App
+export default App;
