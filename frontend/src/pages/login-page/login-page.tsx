@@ -14,22 +14,19 @@ const LoginPage = () => {
 
     const handleLogin = async (email: string, password: string) => {
         try {
-          await loginUser(email, password)
-          .then((res) => {
-            localStorage.setItem('token', res?.token);
-            dispatch(loggedIn());
-            dispatch(setEmail(email));
-            navigate(RoutePathname.homePage)
-          })
-          .catch((err) => {
+            const response = await loginUser(email, password);
+            if (response.token) {
+                localStorage.setItem('token', response.token);
+                dispatch(loggedIn());
+                dispatch(setEmail(email));
+                navigate(RoutePathname.homePage);
+            }
+        } catch (err) {
             localStorage.removeItem('token');
             dispatch(resetUser());
-            console.error(err);
-            });
-        } catch (err) {
-          console.error('Ошибка регистрации:', err.message);
+            console.error('Ошибка входа:', err);
         }
-      };
+    };
       
     return (
         <main className="flex flex-col items-center w-11/12 mr-auto ml-auto pt-24">

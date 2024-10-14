@@ -14,7 +14,7 @@ import { IUser } from '../entities/user/model/user';
 
 function App() {
   const dispatch = useAppDispatch();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // Флаг загрузки данных пользователя
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -22,9 +22,8 @@ function App() {
     if (token) {
       getUserInformation()
         .then(({id, email, name }: IUser) => {
-          console.log(id, name);
           dispatch(loggedIn());
-          dispatch(setId(id + ''));
+          dispatch(setId(id + ''))
           dispatch(setEmail(email));
           dispatch(setName(name ?? ''));
         })
