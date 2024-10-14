@@ -3,23 +3,24 @@ import { Request, Response, NextFunction } from 'express';
 import { IUserRequest } from '../types';
 
 interface JwtPayload {
-  id: number
+  id: number;
 }
 
-const auth = (req: IUserRequest, res: Response, next: NextFunction) => {
+const auth = (req: IUserRequest, res: Response, next: NextFunction): void => {
   try {
     let token = req.cookies.jwt || req.headers.authorization;
+    
     if (!token) {
-      throw new Error('Токен не передан');
+      res.status(401).json({ message: 'Токен не передан' });
     }
-    token = token.replace('Bearer ', '');
-    let payload: JwtPayload | null = null;
 
-    payload = jwt.verify(token, 'JWT_SECRET') as JwtPayload;
+    token = token.replace('Bearer ', '');
+    const payload = jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret') as JwtPayload;
+    
     req.user = payload;
-    next();
-  } catch (e) {
-    next(new Error('Необходима авторизация'));
+    next(); // Передаем управление следующему middleware
+  } catch (e: any) {
+    res.status(401).json({ message: 'Необходима авторизация' });
   }
 };
 

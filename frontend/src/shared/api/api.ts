@@ -50,7 +50,7 @@ export const getUserInformation = async () => {
     console.log(res)
 
     if (!res.ok) {
-      throw new Error(`Ошибка: ${res.status}`);
+      throw new Error(`Ошибка: ${res.statusText}`);
     }
 
     return checkResponse<IUser>(res);

@@ -39,7 +39,6 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       message: 'Успешный вход',
       token,
       user: {
-        id: user.id,
         name: user.name,
         email: user.email,
       },
@@ -56,6 +55,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 export const getMe = async (req: IUserRequest, res: Response): Promise<void> => {
   try {
     const userId = req.user?.id;
+    console.log(userId)
 
     if (!userId) {
       res.status(400).json({ message: 'ID пользователя не найден' });
