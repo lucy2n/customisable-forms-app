@@ -1,11 +1,11 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import sequelize from '../config/database';
 import User from './user';
-import Form from './form';
+import Template from './template';
 
 interface CommentAttributes {
   id: number;
-  form_id: number;
+  template_id: string;
   user_id: number;
   text: string;
 }
@@ -14,7 +14,7 @@ interface CommentCreationAttributes extends Optional<CommentAttributes, 'id'> {}
 
 class Comment extends Model<CommentAttributes, CommentCreationAttributes> implements CommentAttributes {
   public id!: number;
-  public form_id!: number;
+  public template_id!: string;
   public user_id!: number;
   public text!: string;
   public readonly createdAt!: Date;
@@ -28,11 +28,11 @@ Comment.init(
       autoIncrement: true,
       primaryKey: true,
     },
-    form_id: {
-      type: DataTypes.INTEGER.UNSIGNED,
+    template_id: {
+      type: DataTypes.STRING,
       allowNull: false,
       references: {
-        model: Form,
+        model: Template,
         key: 'id',
       },
     },
@@ -55,10 +55,10 @@ Comment.init(
   }
 );
 
-Comment.belongsTo(Form, { foreignKey: 'form_id' });
+Comment.belongsTo(Template, { foreignKey: 'template_id' });
 Comment.belongsTo(User, { foreignKey: 'user_id' });
 
-Form.hasMany(Comment, { foreignKey: 'form_id' });
+Template.hasMany(Comment, { foreignKey: 'template_id' });
 User.hasMany(Comment, { foreignKey: 'user_id' });
 
 export default Comment;

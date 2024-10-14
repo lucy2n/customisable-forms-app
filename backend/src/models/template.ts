@@ -1,14 +1,17 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/database';
+import Question from './question';
 
 interface ModelWithAssociations extends Model {
   associate?: () => void;
 }
 
 class Template extends Model implements ModelWithAssociations {
-  public id!: number;
+  public id!: string;
   public title!: string;
+  public description!: string;
   public user_id!: number;
+  public questions?: Question[];
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -27,11 +30,15 @@ class Template extends Model implements ModelWithAssociations {
 Template.init(
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       autoIncrement: true,
       primaryKey: true,
     },
     title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    description: {
       type: DataTypes.STRING,
       allowNull: false,
     },

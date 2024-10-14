@@ -7,6 +7,7 @@ class User extends Model {
   public email!: string;
   public password!: string;
   public is_admin!: boolean;
+  public status!: string;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -46,6 +47,10 @@ User.init(
     is_admin: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
+    },
+    status: {
+      type: DataTypes.STRING,
+      defaultValue: 'active',
     },
   },
   {

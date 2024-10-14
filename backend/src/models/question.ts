@@ -1,22 +1,22 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import sequelize from '../config/database';
-import Form from './form';  // Импорт модели Form
+import Template from './template';
 
 interface QuestionAttributes {
-  id: number;
+  id: string;
   text: string;
   type: string;
-  form_id: number;
+  template_id: string;
   options?: string[];
 }
 
 interface QuestionCreationAttributes extends Optional<QuestionAttributes, 'id'> {}
 
 class Question extends Model<QuestionAttributes, QuestionCreationAttributes> implements QuestionAttributes {
-  public id!: number;
+  public id!: string;
   public text!: string;
   public type!: string;
-  public form_id!: number;
+  public template_id!: string;
   public options?: string[];
 
   public readonly createdAt!: Date;
@@ -24,14 +24,14 @@ class Question extends Model<QuestionAttributes, QuestionCreationAttributes> imp
 
   // Ассоциации
   static associate() {
-    Question.belongsTo(Form, { foreignKey: 'form_id', as: 'form' });
+    Question.belongsTo(Template, { foreignKey: 'template_id', as: 'template' });
   }
 }
 
 Question.init(
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       autoIncrement: true,
       primaryKey: true,
     },
@@ -43,11 +43,11 @@ Question.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    form_id: {
-      type: DataTypes.INTEGER,
+    template_id: {
+      type: DataTypes.STRING,
       allowNull: false,
       references: {
-        model: Form,  // Связываемся с моделью Form
+        model: Template,  // Связываемся с моделью Form
         key: 'id',
       },
       onDelete: 'CASCADE',

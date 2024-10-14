@@ -1,46 +1,43 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import sequelize from '../config/database';
-import Template from './template';  // Импорт модели Template
-import User from './user';  // Импорт модели User
-import Question from './question';  // Импорт модели Question
+import Template from './template';
+import User from './user';
+import Answer from './answer';
 
 interface FormAttributes {
-  id: number;
-  template_id: number;
+  id: string;
+  template_id: string;
   user_id: number;
-  questions?: Question[];
+  answers?: Answer[];
 }
 
 interface FormCreationAttributes extends Optional<FormAttributes, 'id'> {}
 
 class Form extends Model<FormAttributes, FormCreationAttributes> implements FormAttributes {
-  public id!: number;
-  public template_id!: number;
+  public id!: string;
+  public template_id!: string;
   public user_id!: number;
-  public questions?: Question[];
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
-  // Ассоциации с другими моделями
   static associate() {
     Form.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
     Form.belongsTo(Template, { foreignKey: 'template_id', as: 'template' });
-    Form.hasMany(Question, { foreignKey: 'form_id', as: 'questions', onDelete: 'CASCADE', onUpdate: 'CASCADE' });
   }
 }
 
 Form.init(
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       autoIncrement: true,
       primaryKey: true,
     },
     template_id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
       references: {
-        model: Template,  // Используем модель Template
+        model: Template,
         key: 'id',
       },
       onDelete: 'CASCADE',
@@ -50,7 +47,7 @@ Form.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: User,  // Используем модель User
+        model: User,
         key: 'id',
       },
       onDelete: 'CASCADE',
@@ -66,5 +63,4 @@ Form.init(
   }
 );
 
-// Экспорт модели
 export default Form;
