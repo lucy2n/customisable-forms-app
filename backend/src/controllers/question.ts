@@ -8,17 +8,17 @@ export const getQuestions = async (req: Request, res: Response): Promise<void> =
     const templateId = req.params.templateId;
 
     // Найдем форму по template_id
-    const form = await Form.findOne({
-      where: { template_id: templateId },
+    const template = await Template.findOne({
+      where: { id: templateId },
       include: [{ model: Question, as: 'questions' }]  // Включим вопросы
     });
 
-    if (!form) {
-      res.status(404).json({ message: 'Form not found' });
+    if (!template) {
+      res.status(404).json({ message: 'Template not found' });
     }
 
     // Вернем вопросы, связанные с формой
-    res.json(form?.questions);
+    res.json(template?.questions);
   } catch (error) {
     console.error('Error fetching questions:', error);
     res.status(500).json({ message: 'Internal server error' });
