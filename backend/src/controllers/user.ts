@@ -55,7 +55,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 
 export const getMe = async (req: IUserRequest, res: Response): Promise<void> => {
   try {
-    const id = req.user?.id; // Убедитесь, что req.user существует и содержит id
+    const { id } = req.user; // Убедитесь, что req.user существует и содержит id
     if (!id) {
       res.status(400).json({ message: 'ID пользователя не найден' });
     }
