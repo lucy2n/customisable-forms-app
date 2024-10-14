@@ -33,27 +33,28 @@ export const loginUser = async (email: string, password: string): Promise<{ toke
 };
 
 export const getUserInformation = async () => {
-  const token = localStorage.getItem('token');
-  
-  if (!token) {
-      throw new Error('Токен не найден');
-  }
-
-  const res = await fetch(`${base_url}/users/me/`, {
-      method: 'GET',
-      headers: {
+    try {
+      const res = await fetch(`${base_url}/users/me/`, {
+        method: 'GET',
+        headers: {
           accept: 'application/json',
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-      },
-  });
-
-  if (!res.ok) {
-      throw new Error(`Ошибка: ${res.status}`);
-  }
-
-  return res.json();
-};
+          Authorization: `Token ${localStorage.getItem('token')}`
+        },
+      });
+  
+      console.log(res)
+  
+      if (!res.ok) {
+        throw new Error(`Ошибка: ${res.statusText}`);
+      }
+  
+      return checkResponse<IUser>(res);
+    } catch (err) {
+      console.error('Ошибка получения данных пользователя:', err.message);
+      throw err;
+    }
+  };
 
 export const logout = () => {
   localStorage.removeItem('token');

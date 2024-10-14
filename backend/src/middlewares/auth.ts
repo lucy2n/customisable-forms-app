@@ -1,27 +1,32 @@
-import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
-import { IUserRequest } from '../types';
+import jwt, { JwtPayload } from 'jsonwebtoken';
+import UnauthorizedError from '../errors/unauthorized-err';
 
-interface JwtPayload {
-  id: number;
+interface SessionRequest extends Request {
+    user?: string | JwtPayload;
 }
 
-const auth = (req: IUserRequest, res: Response, next: NextFunction): void => {
-  try {
-    let token = req.cookies.jwt || req.headers.authorization;
-    
-    if (!token) {
-      res.status(401).json({ message: 'Токен не передан' });
-    }
+const extractBearerToken = (header: string): string => header.replace('Bearer ', '');
 
-    token = token.replace('Bearer ', '');
-    const payload = jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret') as JwtPayload;
-    
-    req.user = payload;
-    next(); // Передаем управление следующему middleware
-  } catch (e: any) {
-    res.status(401).json({ message: 'Необходима авторизация' });
+export default (req: SessionRequest, res: Response, next: NextFunction) => {
+  const { authorization } = req.headers;
+
+  if (!authorization || !authorization.startsWith('Bearer ')) {
+    next(new UnauthorizedError('Необходима авторизация'));
+    return;
   }
-};
 
-export default auth;
+  const token = extractBearerToken(authorization);
+  let payload;
+
+  try {
+    payload = jwt.verify(token, 'super-strong-secret');
+  } catch (err) {
+    next(new UnauthorizedError('Необходима авторизация'));
+    return;
+  }
+
+  req.user = payload;
+
+  next();
+};
