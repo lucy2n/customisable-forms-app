@@ -1,1 +1,1 @@
-export const base_url = 'http://localhost:3001';
+export const base_url = 'https://customisable-forms-app-production.up.railway.app';

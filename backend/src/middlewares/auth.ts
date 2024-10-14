@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import { IUserRequest } from '../types';
 
 interface JwtPayload {
-  id: string
+  id: number
 }
 
 const auth = (req: IUserRequest, res: Response, next: NextFunction) => {

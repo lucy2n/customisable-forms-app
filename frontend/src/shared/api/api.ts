@@ -37,16 +37,27 @@ export const loginUser = async (email: string, password: string): Promise<{ toke
 };
 
 export const getUserInformation = async () => {
-  const res = await fetch(`${base_url}/users/me/`, {
-    method: 'Get',
-    headers: {
-      accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Token ${localStorage.getItem('token')}`
-    },
+  try {
+    const res = await fetch(`${base_url}/users/me/`, {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Token ${localStorage.getItem('token')}`
+      },
+    });
+
+    console.log(res)
+
+    if (!res.ok) {
+      throw new Error(`Ошибка: ${res.status}`);
+    }
+
+    return checkResponse<IUser>(res);
+  } catch (err) {
+    console.error('Ошибка получения данных пользователя:', err.message);
+    throw err;
   }
-  );
-  return checkResponse<IUser>(res);
 };
 
 export const logout = () => {

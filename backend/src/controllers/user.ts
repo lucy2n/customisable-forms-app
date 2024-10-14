@@ -55,26 +55,27 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 
 export const getMe = async (req: IUserRequest, res: Response): Promise<void> => {
   try {
-    const id  = req.user?.id;
-    const user = await User.findByPk(id);
+    const id = req.user?.id; // Убедитесь, что req.user существует и содержит id
+    if (!id) {
+      res.status(400).json({ message: 'ID пользователя не найден' });
+    }
 
+    const user = await User.findByPk(id); // Проверка поиска пользователя
     if (!user) {
       res.status(404).json({ message: 'Пользователь не найден' });
-      return;
     }
 
     res.json({
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      is_admin: user.is_admin,
+      id: user?.id,
+      name: user?.name,
+      email: user?.email,
+      is_admin: user?.is_admin,
     });
-  } catch (err: any) {
-    console.error(err);
+  } catch (err) {
+    console.error('Ошибка сервера при получении данных пользователя:', err);
     res.status(500).json({ message: 'Ошибка сервера при получении данных пользователя' });
   }
 };
-
 
 export const createUser = async (req: Request, res: Response): Promise<void> => {
   try {
