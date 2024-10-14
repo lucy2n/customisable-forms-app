@@ -8,8 +8,8 @@ import MainPage from '../pages/main-page/main-page';
 import { useAppDispatch } from './routes/lib/hook';
 import { useEffect, useState } from 'react';
 import { OnlyAuth } from './routes/protected-route';
-import { getUserInformation } from '../shared/api/api';
-import { loggedIn, loggedOut, setEmail, setName } from '../entities/user/model/userSlice';
+import { getUserInformation } from '../shared/api/user';
+import { loggedIn, loggedOut, setEmail, setId, setName } from '../entities/user/model/userSlice';
 import { IUser } from '../entities/user/model/user';
 
 function App() {
@@ -21,8 +21,10 @@ function App() {
 
     if (token) {
       getUserInformation()
-        .then(({ email, name }: IUser) => {
+        .then(({id, email, name }: IUser) => {
+          console.log(id, name);
           dispatch(loggedIn());
+          dispatch(setId(id + ''));
           dispatch(setEmail(email));
           dispatch(setName(name ?? ''));
         })

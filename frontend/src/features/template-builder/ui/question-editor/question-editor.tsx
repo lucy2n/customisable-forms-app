@@ -64,18 +64,20 @@ const QuestionEditor: FC<IQuestionEditorProps> = ({ question, updateQuestion, re
       <CardBody className="w-full flex flex-wrap relative" onClick={handleInputClick}>
         <div className="flex pb-4">
           <Input
-            className="w-1/2"
+            className={`${isActive ? 'w-1/2' : 'w-full' }`}
             type="text"
             variant="underlined"
-            placeholder="Вопрос"
+            placeholder="Question"
             value={text}
             onChange={handleTextChange}
           />
           {isActive && (
             <select value={type} onChange={handleTypeChange} className="w-1/2">
               <option value="text">Text</option>
-              <option value="radio">Radio Button</option>
+              <option value="longText">Textarea</option>
               <option value="checkbox">Checkbox</option>
+              <option value="radio">Radio Button</option>
+              <option value="select">Select</option>
             </select>
           )}
         </div>
@@ -91,7 +93,7 @@ const QuestionEditor: FC<IQuestionEditorProps> = ({ question, updateQuestion, re
           </Button>
         )}
 
-        {(type === 'radio' || type === 'checkbox') && (
+        {(type === 'radio' || type === 'checkbox' || type === 'select') && (
           <div className="flex flex-col gap-2">
             {options.map((opt, optIndex) => (
               <div key={optIndex} className="flex">

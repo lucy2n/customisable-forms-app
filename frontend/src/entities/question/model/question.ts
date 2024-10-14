@@ -8,7 +8,8 @@ export enum QuestionType  {
 
 export interface IQuestion {
     id: string;
-    type: QuestionType,
-    text: string,
+    type: QuestionType;
+    text: string;
     options: string[];
+    template_id: string;
 }

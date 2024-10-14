@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button, Card, CardBody, Input, RadioGroup, Radio, CheckboxGroup, Checkbox, Textarea, Select, SelectItem } from '@nextui-org/react';
 import { IQuestion, QuestionType } from '../../entities/question/model/question';
 
-const FormTemplate = () => {
+const Form = () => {
   const form = {
     id: 1,
     title: 'Some Form',
@@ -174,4 +174,4 @@ const FormTemplate = () => {
   );
 };
 
-export default FormTemplate;
+export default Form;

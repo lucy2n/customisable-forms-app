@@ -1,6 +1,6 @@
 import { Card, CardBody } from "@nextui-org/react";
 import RegisterForm from "../../features/register-form/register-form";
-import { createUser } from "../../shared/api/api";
+import { createUser } from "../../shared/api/user";
 import { IUser } from "../../entities/user/model/user";
 import { useNavigate } from "react-router-dom";
 import { RoutePathname } from "../../app/routes/constants";

@@ -1,9 +1,9 @@
-import FormBuilder from "../../features/form-builder/form-builder";
+import TemplateBuilder from "../../features/template-builder/template-builder";
 
 const CreateFormPage = () => {
     return (
         <main className="flex flex-col justify-between w-11/12 mr-auto ml-auto pt-24">
-            <FormBuilder />
+            <TemplateBuilder />
         </main>
     )
 }

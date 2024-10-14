@@ -7,7 +7,7 @@ import { RoutePathname } from "../../app/routes/constants";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/routes/lib/hook";
 import { resetUser } from "../../entities/user/model/userSlice";
-import { logout } from "../../shared/api/api";
+import { logout } from "../../shared/api/user";
 
 const Header = () => {
   const [mounted, setMounted] = useState(false);
