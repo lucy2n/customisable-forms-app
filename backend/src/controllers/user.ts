@@ -47,7 +47,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     if (err instanceof UnauthorizedError) {
       res.status(401).json({ message: err.message });
     } else {
-      res.status(500).json({ message: 'Ошибка сервера при входе' });
+      res.status(500).json({ message: `Ошибка сервера при входе ${err}` });
     }
   }
 };
