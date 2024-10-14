@@ -55,12 +55,13 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 
 export const getMe = async (req: IUserRequest, res: Response): Promise<void> => {
   try {
-    const { id } = req.user; // Убедитесь, что req.user существует и содержит id
-    if (!id) {
+    const userId = req.user?.id;
+
+    if (!userId) {
       res.status(400).json({ message: 'ID пользователя не найден' });
     }
 
-    const user = await User.findByPk(id); // Проверка поиска пользователя
+    const user = await User.findByPk(userId);
     if (!user) {
       res.status(404).json({ message: 'Пользователь не найден' });
     }
