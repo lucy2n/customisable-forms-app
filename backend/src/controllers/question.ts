@@ -27,15 +27,16 @@ export const getQuestions = async (req: Request, res: Response): Promise<void> =
 
 export const createQuestion = async (req: Request, res: Response): Promise<void> => {
     try {
-      const template = await Template.findByPk(req.params.template_id);
+      const templateId = req.params.template_id;
+      const template = await Template.findByPk(templateId);
       if (!template) {
-        res.status(404).json({ message: `Template not found ${req.body} ${req.params}` });
+        res.status(404).json({ message: `Template not found ${req.body.template_id} ${req.params.template_id}` });
         return
-    };
+      };
   
       const question = await Question.create({
         ...req.body,
-        template_id: req.params.templateId,
+        template_id: templateId,
       });
         res.status(201).json(question);
     } catch (err: any) {
