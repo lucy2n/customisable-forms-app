@@ -5,7 +5,7 @@ import { IUserRequest } from '../types';
 
 export const getTemplates = async (req: Request, res: Response): Promise<void> => {
   try {
-    const templates = await Template.findAll({ include: User });
+    const templates = await Template.findAll();
     res.json(templates);
   } catch (err: any) {
     res.status(500).json({ message: err.message });

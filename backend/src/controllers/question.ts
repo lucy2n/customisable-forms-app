@@ -5,7 +5,7 @@ import Form from '../models/form';
 
 export const getQuestions = async (req: Request, res: Response): Promise<void> => {
   try {
-    const templateId = req.params.templateId;
+    const templateId = req.body.templateId;
 
     // Найдем форму по template_id
     const template = await Template.findOne({
