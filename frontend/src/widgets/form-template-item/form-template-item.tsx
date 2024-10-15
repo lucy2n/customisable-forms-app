@@ -1,12 +1,9 @@
 import {Card, CardHeader, CardFooter, Image, Button} from "@nextui-org/react";
+import { ITemplate } from "../../entities/template/model/template";
 
-const FormTemplateItem = () => {
+const FormTemplateItem = ({template} : {template: ITemplate}) => {
     return (
         <Card isFooterBlurred className="w-1/4 h-[400px] col-span-12 sm:col-span-7">
-            <CardHeader className="absolute z-10 top-1 flex-col items-start">
-                <p className="text-tiny text-white/60 uppercase font-bold">Your day your way</p>
-                <h4 className="text-white/90 font-medium text-xl">Your checklist for better sleep</h4>
-            </CardHeader>
             <Image
                 removeWrapper
                 alt="Relaxing app background"
@@ -21,8 +18,8 @@ const FormTemplateItem = () => {
                     src="https://myart-therapy.ru/wp-content/uploads/2018/12/mabel_pines_2_by_philiptomkins-d8gj265-1.png"
                 />
                 <div className="flex flex-col">
-                    <p className="text-tiny text-white/60">Breathing App</p>
-                    <p className="text-tiny text-white/60">Get a good night's sleep.</p>
+                    <h3 className="text-xl font-semibold">{template.title}</h3>
+                    <p className="text-base text-white/60">{template.description}</p>
                 </div>
                 </div>
                 <Button radius="full" size="sm">Use Template</Button>

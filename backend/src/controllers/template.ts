@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import Template from '../models/template';
-import User from '../models/user';
 import { IUserRequest } from '../types';
 
 export const getTemplates = async (req: Request, res: Response): Promise<void> => {

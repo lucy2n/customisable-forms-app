@@ -7,6 +7,7 @@ import { IQuestion, QuestionType } from '../../entities/question/model/question'
 import { useAppSelector } from '../../app/routes/lib/hook';
 import { createTemplate } from '../../shared/api/template';
 import { ITemplate } from '../../entities/template/model/template';
+import { createQuestion } from '../../shared/api/question';
 
 const TemplateBuilder = () => {
     const [templateTitle, setTemplateTitle] = useState('New form');
@@ -42,21 +43,34 @@ const TemplateBuilder = () => {
     };
   
     const handleCreateTemplate = async () => {
-      console.log(user);
       const templateData: ITemplate = {
-        id: template_id,
-        title: templateTitle,
-        description: templateDesc,
-        user_id: user.id,
-        questions,
+          id: template_id,
+          title: templateTitle,
+          description: templateDesc,
+          user_id: Number(user.id),
+          questions: questions.map(question => question.id),
       };
+      console.log(questions);
+      try {
+          const res = await createTemplate(templateData);
+          console.log("Template created:", res);
 
-      createTemplate(templateData)
-      .then(res => console.log(res))
-      .catch(err => console.log(err))
+          const questionPromises = questions.map(question => createQuestion({
+              id: question.id,
+              template_id: template_id,
+              text: question.text,
+              type: question.type,
+              options: question.options
+          }));
 
-      console.log('Template created:', templateData);
-    };
+          await Promise.all(questionPromises);
+
+          console.log("Questions created:", questions);
+
+      } catch (err) {
+          console.error("Error creating template and questions:", err);
+      }
+  };
   
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {

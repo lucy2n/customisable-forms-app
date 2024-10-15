@@ -3,7 +3,6 @@ import { createTemplate, deleteTemplate, getTemplates, updateTemplate } from "..
 
 const router = Router();
 
-router.get('/templates', getTemplates);
 router.post('/templates', createTemplate);
 router.put('/templates/:id', updateTemplate);
 router.delete('/templates/:id', deleteTemplate);
