@@ -12,6 +12,7 @@ import { loggedIn, loggedOut, setEmail, setId, setName } from '../entities/user/
 import { IUser } from '../entities/user/model/user';
 import CreateTemplatePage from '../pages/create-template-page/create-template-page';
 import CreateFormPage from '../pages/create-form-page/create-form-page';
+import AdminPage from '../pages/admin-page/admin-page';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -47,7 +48,7 @@ function App() {
   }
 
   return (
-    <div className="flex flex-col w-screen">
+    <div className="flex justify-center flex-col w-screen">
       <Header />
       <Routes>
         <Route path={RoutePathname.homePage} element={<MainPage />} />
@@ -55,6 +56,8 @@ function App() {
         <Route path={RoutePathname.registerPage} element={<RegisterPage />} />
         <Route path={RoutePathname.createTemplate} element={<OnlyAuth component={<CreateTemplatePage />} />} />
         <Route path={RoutePathname.createForm} element={<OnlyAuth component={<CreateFormPage />} />} />
+        <Route path={RoutePathname.adminPage} element={<AdminPage />} />
+        {/* <Route path={RoutePathname.adminPage} element={<OnlyAuth component={<AdminPage />} />} /> */}
       </Routes>
     </div>
   );

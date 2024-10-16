@@ -40,7 +40,7 @@ const Header = () => {
           Lab
         </p>
       </div>
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
         <Button
           color="secondary"
           variant="light"
@@ -52,15 +52,18 @@ const Header = () => {
         </Button>
 
         {isLoggedIn ? (
-          <Button
-            color="secondary"
-            variant="light"
-            className="font-mono"
-            size="md"
-            onClick={handleLogout}
-          >
-            Logout
-          </Button>
+          <div>
+            <Button
+              color="secondary"
+              variant="light"
+              className="font-mono"
+              size="md"
+              onClick={handleLogout}
+            >
+              Logout
+            </Button>
+          </div>
+          
         ) : (
           <>
             <Button
@@ -79,6 +82,15 @@ const Header = () => {
               onClick={() => navigate(RoutePathname.registerPage)}
             >
               Sign Up
+            </Button>
+            <Button
+              color="secondary"
+              variant="light"
+              className="font-mono"
+              size="md"
+              onClick={() => navigate(RoutePathname.adminPage)}
+            >
+              Admin
             </Button>
           </>
         )}

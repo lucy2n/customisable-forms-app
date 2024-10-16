@@ -11,7 +11,7 @@ const MainPage = () => {
         getTemplates()
         .then(res => setTemplates(res))
         .catch(err => console.log(err))
-    })
+    }, [])
 
     return (
         <main className="flex flex-col justify-between w-11/12 mr-auto ml-auto pt-24 bg-gradient">
