@@ -7,7 +7,7 @@ import { getTemplate } from "../../shared/api/template";
 import { getQuestions } from "../../shared/api/question";
 
 const CreateFormPage = () => {
-    const { id } = useParams<{ id: string }>();  // Определяем тип для id
+    const { id } = useParams();
     const [template, setTemplate] = useState<ITemplate>();
     const [questions, setQuestions] = useState<IQuestion[]>();
 
@@ -19,6 +19,7 @@ const CreateFormPage = () => {
                     setTemplate(res);
                     getQuestions(id)
                     .then(res => {
+                        console.log(res)
                         setQuestions(res);
                     })
                     .catch(err => console.log(err));
