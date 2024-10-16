@@ -5,20 +5,19 @@ import Form from '../models/form';
 
 export const getQuestions = async (req: Request, res: Response): Promise<void> => {
   try {
-    const templateId = req.body.templateId;
+    const templateId = req.params.id;
 
-    // Найдем форму по template_id
     const template = await Template.findOne({
       where: { id: templateId },
-      include: [{ model: Question, as: 'questions' }]  // Включим вопросы
+      include: [{ model: Question, as: 'questions' }]
     });
 
     if (!template) {
       res.status(404).json({ message: 'Template not found' });
+      return;
     }
 
-    // Вернем вопросы, связанные с формой
-    res.json(template?.questions);
+    res.json(template.questions);
   } catch (error) {
     console.error('Error fetching questions:', error);
     res.status(500).json({ message: 'Internal server error' });

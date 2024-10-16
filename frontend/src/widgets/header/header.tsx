@@ -46,9 +46,9 @@ const Header = () => {
           variant="light"
           className="font-mono"
           size="md"
-          onClick={() => navigate(RoutePathname.createForm)}
+          onClick={() => navigate(RoutePathname.createTemplate)}
         >
-          Create form
+          Create template
         </Button>
 
         {isLoggedIn ? (

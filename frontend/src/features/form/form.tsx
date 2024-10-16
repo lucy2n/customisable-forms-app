@@ -1,46 +1,14 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { Button, Card, CardBody, Input, RadioGroup, Radio, CheckboxGroup, Checkbox, Textarea, Select, SelectItem } from '@nextui-org/react';
 import { IQuestion, QuestionType } from '../../entities/question/model/question';
+import { ITemplate } from '../../entities/template/model/template';
 
-const Form = () => {
-  const form = {
-    id: 1,
-    title: 'Some Form',
-    description: 'Some description of the form',
-    questions: [
-      {
-        id: '1',
-        type: QuestionType.text,
-        text: 'Какой ваш любимый цвет?',
-        options: [],
-      },
-      {
-        id: '2',
-        type: QuestionType.radio,
-        text: 'Какой ваш любим фрукт?',
-        options: ['Яблоко', 'Банан', 'Апельсин'],
-      },
-      {
-        id: '3',
-        type: QuestionType.checkbox,
-        text: 'Выберите ваши любимые ягоды:',
-        options: ['Клубника', 'Малина', 'Черника'],
-      },
-      {
-        id: '4',
-        type: QuestionType.longText,
-        text: 'Расскажите подробнее про опыт работы',
-        options: [],
-      },
-      {
-        id: '5',
-        type: QuestionType.select,
-        text: 'Расскажите подробнее про опыт работы',
-        options: ['Клубника', 'Малина', 'Черника'],
-      },
-    ],
-  };
+interface IForm {
+  template: ITemplate,
+  questions: IQuestion[]
+}
 
+const Form:FC<IForm> = ({template, questions}) => {
   // Состояние для хранения ответов
   const [answers, setAnswers] = useState<{ [key: string]: string | string[] }>({});
 
@@ -160,13 +128,13 @@ const Form = () => {
     <div className="flex flex-col w-1/2 mr-auto ml-auto gap-10">
       <Card className="border-t-8 border-purple-700">
         <CardBody className="flex flex-col w-full gap-2">
-          <h2 style={{ fontSize: '38px' }}>{form.title}</h2>
-          <p>{form.description}</p>
+          <h2 style={{ fontSize: '38px' }}>{template.title}</h2>
+          <p>{template.description}</p>
         </CardBody>
       </Card>
       <Card>
         <CardBody className='flex flex-col gap-10'>
-            {form.questions.map(renderQuestion)}
+            {questions.map(renderQuestion)}
         </CardBody>
       </Card>
       <Button color="secondary" onClick={handleSubmitForm}>Submit Form</Button>

@@ -3,7 +3,7 @@ import { createQuestion, deleteQuestion, getQuestions, updateQuestion } from "..
 
 const router = Router();
 
-router.get('/questions', getQuestions);
+router.get('/questions/:id', getQuestions);
 router.post('/questions', createQuestion);
 router.put('/questions/:id', updateQuestion);
 router.delete('/questions/:id', deleteQuestion);

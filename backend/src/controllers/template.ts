@@ -11,6 +11,15 @@ export const getTemplates = async (req: Request, res: Response): Promise<void> =
   }
 };
 
+export const getTemplate = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const template = await Template.findByPk(req.params.id);
+    res.json(template);
+  } catch (err: any) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 export const createTemplate = async (req: IUserRequest, res: Response): Promise<void> => {
   try {
     if (!req.user) {

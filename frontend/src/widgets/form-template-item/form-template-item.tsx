@@ -1,7 +1,10 @@
-import {Card, CardHeader, CardFooter, Image, Button} from "@nextui-org/react";
+import {Card, CardFooter, Image, Button} from "@nextui-org/react";
 import { ITemplate } from "../../entities/template/model/template";
+import { useNavigate } from "react-router-dom";
 
 const FormTemplateItem = ({template} : {template: ITemplate}) => {
+    const navigate = useNavigate();
+
     return (
         <Card isFooterBlurred className="w-1/4 h-[400px] col-span-12 sm:col-span-7">
             <Image
@@ -22,7 +25,7 @@ const FormTemplateItem = ({template} : {template: ITemplate}) => {
                     <p className="text-base text-white/60">{template.description}</p>
                 </div>
                 </div>
-                <Button radius="full" size="sm">Use Template</Button>
+                <Button radius="full" size="sm" onClick={() => navigate(`/form/${template.id}`)}>Use Template</Button>
             </CardFooter>
         </Card>
       );

@@ -3,7 +3,6 @@ import LoginPage from '../pages/login-page/login-page';
 import Header from '../widgets/header/header';
 import { RoutePathname } from './routes/constants';
 import RegisterPage from '../pages/register-page/register-page';
-import CreateFormPage from '../pages/create-form-page/create-form-page';
 import MainPage from '../pages/main-page/main-page';
 import { useAppDispatch } from './routes/lib/hook';
 import { useEffect, useState } from 'react';
@@ -11,6 +10,8 @@ import { OnlyAuth } from './routes/protected-route';
 import { getUserInformation } from '../shared/api/user';
 import { loggedIn, loggedOut, setEmail, setId, setName } from '../entities/user/model/userSlice';
 import { IUser } from '../entities/user/model/user';
+import CreateTemplatePage from '../pages/create-template-page/create-template-page';
+import CreateFormPage from '../pages/create-form-page/create-form-page';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -52,6 +53,7 @@ function App() {
         <Route path={RoutePathname.homePage} element={<MainPage />} />
         <Route path={RoutePathname.loginPage} element={<LoginPage />} />
         <Route path={RoutePathname.registerPage} element={<RegisterPage />} />
+        <Route path={RoutePathname.createTemplate} element={<OnlyAuth component={<CreateTemplatePage />} />} />
         <Route path={RoutePathname.createForm} element={<OnlyAuth component={<CreateFormPage />} />} />
       </Routes>
     </div>
