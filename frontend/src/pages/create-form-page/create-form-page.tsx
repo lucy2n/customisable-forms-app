@@ -7,25 +7,31 @@ import { getTemplate } from "../../shared/api/template";
 import { getQuestions } from "../../shared/api/question";
 
 const CreateFormPage = () => {
-    const { id } = useParams<{ id: string }>();
-    const [template, setTemplate] = useState<ITemplate | undefined>();
-    const [questions, setQuestions] = useState<IQuestion[] | undefined>();
+    const { id } = useParams<{ id: string }>();  // Определяем тип для id
+    const [template, setTemplate] = useState<ITemplate>();
+    const [questions, setQuestions] = useState<IQuestion[]>();
 
     useEffect(() => {
         if (id) {
             getTemplate(id)
-                .then(res => setTemplate(res))
-                .catch(err => console.log(err));
-
-            getQuestions(id)
-                .then(res => setQuestions(res))
+                .then(res => {
+                    console.log(res);
+                    setTemplate(res);
+                    getQuestions(id)
+                    .then(res => {
+                        setQuestions(res);
+                    })
+                    .catch(err => console.log(err));
+                })
                 .catch(err => console.log(err));
         }
     }, [id]);
 
     return (
         <main className="flex flex-col justify-between w-11/12 mr-auto ml-auto pt-24">
-            <Form template={template} questions={questions} />
+            {template && questions &&
+                <Form template={template} questions={questions} />
+            }
         </main>
     );
 };

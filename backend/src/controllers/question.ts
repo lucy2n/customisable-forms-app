@@ -7,11 +7,8 @@ export const getQuestions = async (req: Request, res: Response): Promise<void> =
   try {
     const templateId = req.params.id;
 
-    const template = await Template.findOne({
-      where: { id: templateId },
-      include: [{ model: Question, as: 'questions' }]
-    });
-
+    const template = await Template.findByPk(templateId)
+    
     if (!template) {
       res.status(404).json({ message: 'Template not found' });
       return;

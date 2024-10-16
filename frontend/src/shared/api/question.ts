@@ -29,11 +29,11 @@ export const getQuestions = async (id: string) => {
         throw new Error('Токен не найден');
     }
 
-    const res = await fetch(`${base_url}/questions?id=${id}`, {
+    const res = await fetch(`${base_url}/questions/questions/${id}`, {
       method: 'GET',
       headers: {
         accept: 'application/json',
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
       credentials: 'include',
     });
