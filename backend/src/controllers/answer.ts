@@ -3,15 +3,11 @@ import Answer from '../models/answer';
 
 export const createAnswers = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const { answers, form_id } = req.body;
+    const { answers } = req.body;
 
-    if (!Array.isArray(answers)) {
-      res.status(400).json({ message: 'Invalid data format. Expected an array of answers.' });
-    }
-
-    if (!form_id) {
-      res.status(400).json({ message: 'form_id is required.' });
-    }
+    // if (!Array.isArray(answers)) {
+    //   res.status(400).json({ message: 'Invalid data format. Expected an array of answers.' });
+    // }
 
     const validAnswers = answers.map((answer: any) => {
       if (!answer.question_id || !answer.user_id || !answer.answer) {
@@ -20,7 +16,7 @@ export const createAnswers = async (req: Request, res: Response, next: NextFunct
 
       return {
         id: answer.id,
-        form_id,
+        form_id: answer.form_id,
         question_id: answer.question_id,
         user_id: answer.user_id,
         answer: answer.answer,

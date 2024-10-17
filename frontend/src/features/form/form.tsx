@@ -18,23 +18,32 @@ const Form: FC<IFormProps> = ({ template, questions, userId }) => {
   // Состояние для хранения ответов в виде массива объектов IAnswer
   const [answers, setAnswers] = useState<IAnswer[]>([]);
 
-  // Обработчик сабмита формы
   const handleSubmitForm = async () => {
     const formData: IForm = {
       id: uuidv4(),
       template_id: template.id,
-      user_id: userId, 
+      user_id: userId,
     };
+  
     try {
-      const res = await createForm(formData);
-      console.log("Form created:", res);
+      // Сначала создаем форму
+      const formRes = await createForm(formData);
+      console.log("Form created:", formRes);
+  
+      // Затем создаем ответы, передавая form_id вместе с ними
+      const answersWithFormId = answers.map(answer => ({
+        ...answer,
+        form_id: formRes.id, // Добавляем form_id к каждому ответу
+      }));
 
-      createAnswers(answers)
-      console.log("Questions created:", questions);
-
-  } catch (err) {
-      console.error("Error creating template and questions:", err);
-  }
+      console.log("Answers before sending:", answersWithFormId);
+  
+      const answersRes = await createAnswers(answersWithFormId);
+      console.log("Answers created:", answersRes);
+  
+    } catch (err) {
+      console.error("Error creating form or answers:", err.message || err);
+    }
   };
 
   // Обработчик изменения ответа на вопрос
