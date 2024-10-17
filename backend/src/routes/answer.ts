@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { createAnswers } from '../controllers/answer';
+import { createAnswer } from '../controllers/answer';
 
 const router = Router();
 
-router.post('/answers', createAnswers);
+router.post('/answers', createAnswer);
 
 export default router;

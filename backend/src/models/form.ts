@@ -8,7 +8,7 @@ interface FormAttributes {
   id: string;
   template_id: string;
   user_id: number;
-  answers?: Answer[];
+  answers?: string[];
 }
 
 interface FormCreationAttributes extends Optional<FormAttributes, 'id'> {}
@@ -17,7 +17,7 @@ class Form extends Model<FormAttributes, FormCreationAttributes> implements Form
   public id!: string;
   public template_id!: string;
   public user_id!: number;
-  public answers?: Answer[];
+  public answers?: string[];
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 

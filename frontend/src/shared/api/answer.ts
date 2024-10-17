@@ -2,7 +2,7 @@ import { IAnswer } from "../../entities/answer/model/answer";
 import { checkResponse } from "./api";
 import { base_url } from "./constants";
 
-export const createAnswers = async (answers: IAnswer[]) => {
+export const createAnswer = async (answer: IAnswer) => {
     const token = localStorage.getItem('token');
     
     if (!token) {
@@ -16,8 +16,8 @@ export const createAnswers = async (answers: IAnswer[]) => {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify(answers),
+      body: JSON.stringify(answer),
       credentials: 'include',
     });
-    return checkResponse<IAnswer[]>(res);
+    return checkResponse<IAnswer>(res);
 };

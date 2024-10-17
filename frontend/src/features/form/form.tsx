@@ -6,7 +6,7 @@ import { IAnswer } from '../../entities/answer/model/answer';
 import { v4 as uuidv4 } from 'uuid';
 import { createForm } from '../../shared/api/form';
 import { IForm } from '../../entities/form/form';
-import { createAnswers } from '../../shared/api/answer';
+import { createAnswer } from '../../shared/api/answer';
 
 interface IFormProps {
   template: ITemplate;
@@ -17,34 +17,7 @@ interface IFormProps {
 const Form: FC<IFormProps> = ({ template, questions, userId }) => {
   // Состояние для хранения ответов в виде массива объектов IAnswer
   const [answers, setAnswers] = useState<IAnswer[]>([]);
-
-  const handleSubmitForm = async () => {
-    const formData: IForm = {
-      id: uuidv4(),
-      template_id: template.id,
-      user_id: userId,
-    };
-  
-    try {
-      // Сначала создаем форму
-      const formRes = await createForm(formData);
-      console.log("Form created:", formRes);
-  
-      // Затем создаем ответы, передавая form_id вместе с ними
-      const answersWithFormId = answers.map(answer => ({
-        ...answer,
-        form_id: formRes.id, // Добавляем form_id к каждому ответу
-      }));
-
-      console.log("Answers before sending:", answersWithFormId);
-  
-      const answersRes = await createAnswers(answersWithFormId);
-      console.log("Answers created:", answersRes);
-  
-    } catch (err) {
-      console.error("Error creating form or answers:", err.message || err);
-    }
-  };
+  const form_id = uuidv4();
 
   // Обработчик изменения ответа на вопрос
   const handleAnswerChange = (questionId: string, answer: string | string[]) => {
@@ -55,6 +28,7 @@ const Form: FC<IFormProps> = ({ template, questions, userId }) => {
   
       // Новый объект ответа без id
       const newAnswer: IAnswer = {
+        id: uuidv4(), 
         question_id: questionId,
         user_id: userId,
         answer, // Ответ (строка или массив строк)
@@ -71,6 +45,36 @@ const Form: FC<IFormProps> = ({ template, questions, userId }) => {
         return [...prevAnswers, newAnswer];
       }
     });
+  };
+  
+
+  const handleSubmitForm = async () => {
+    const formData: IForm = {
+        id: form_id,
+        user_id: userId,
+        template_id: template.id,
+        answers: answers.map(answers => answers.id),
+    };
+    console.log(answers);
+    try {
+        const res = await createForm(formData);
+        console.log("Form created:", res);
+
+        const answerPromises = answers.map(answer => createAnswer({
+            id: answer.id,
+            question_id: answer.question_id,
+            form_id: form_id,
+            user_id: userId,
+            answer: answer.answer
+        }));
+
+        await Promise.all(answerPromises);
+
+        console.log("Answers created:", answers);
+
+    } catch (err) {
+        console.error("Error creating template and questions:", err);
+    }
   };
 
   // Функция для рендеринга вопросов в зависимости от их типа
