@@ -70,6 +70,8 @@ Answer.init(
     sequelize,
     tableName: 'answers',
     timestamps: true,
+    underscored: true,
+    freezeTableName: true,
   }
 );
 
