@@ -5,8 +5,14 @@ export const createAnswers = async (req: Request, res: Response, next: NextFunct
   try {
     const { answers } = req.body;
 
-    // if (!Array.isArray(answers)) {
-    //   res.status(400).json({ message: 'Invalid data format. Expected an array of answers.' });
+    if (!Array.isArray(answers)) {
+      res.status(400).json({ message: 'Invalid data format. Expected an array of answers.' });
+      return;
+    }
+
+    // if (!form_id) {
+    //   res.status(400).json({ message: 'form_id is required.' });
+    //   return;
     // }
 
     const validAnswers = answers.map((answer: any) => {
@@ -15,7 +21,6 @@ export const createAnswers = async (req: Request, res: Response, next: NextFunct
       }
 
       return {
-        id: answer.id,
         form_id: answer.form_id,
         question_id: answer.question_id,
         user_id: answer.user_id,
@@ -23,9 +28,10 @@ export const createAnswers = async (req: Request, res: Response, next: NextFunct
       };
     });
 
+    // bulkCreate автоматически сгенерирует id для каждого ответа
     const createdAnswers = await Answer.bulkCreate(validAnswers);
     res.status(201).json(createdAnswers);
   } catch (err) {
-    next(err); // Passes error to the error handling middleware
+    next(err);
   }
 };

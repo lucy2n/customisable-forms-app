@@ -49,20 +49,18 @@ const Form: FC<IFormProps> = ({ template, questions, userId }) => {
   // Обработчик изменения ответа на вопрос
   const handleAnswerChange = (questionId: string, answer: string | string[]) => {
     setAnswers((prevAnswers) => {
-      // Ищем, есть ли уже ответ на данный вопрос
       const existingAnswerIndex = prevAnswers.findIndex(
         (a) => a.question_id === questionId
       );
-
-      // Создаем новый объект ответа
+  
+      // Новый объект ответа без id
       const newAnswer: IAnswer = {
-        id: existingAnswerIndex !== -1 ? prevAnswers[existingAnswerIndex].id : Date.now(), // Если есть ответ, сохраняем id, иначе генерируем новый
         question_id: questionId,
         user_id: userId,
-        answer, // Записываем ответ (строка или массив строк)
+        answer, // Ответ (строка или массив строк)
       };
-
-      // Обновляем ответ, если он уже существует, или добавляем новый
+  
+      // Если ответ уже существует, обновляем его, иначе добавляем новый
       if (existingAnswerIndex !== -1) {
         return [
           ...prevAnswers.slice(0, existingAnswerIndex),
