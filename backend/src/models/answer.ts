@@ -24,6 +24,10 @@ class Answer extends Model<AnswerAttributes, AnswerCreationAttributes> implement
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
+
+  static associate() {
+    Answer.belongsTo(Form, { foreignKey: 'form_id', as: 'form' });
+  }
 }
 
 Answer.init(
@@ -67,9 +71,5 @@ Answer.init(
     tableName: 'answers',
   }
 );
-
-Answer.belongsTo(Question, { foreignKey: 'question_id' });
-Answer.belongsTo(User, { foreignKey: 'user_id' });
-Answer.belongsTo(Form, { foreignKey: 'form_id' });
 
 export default Answer;
