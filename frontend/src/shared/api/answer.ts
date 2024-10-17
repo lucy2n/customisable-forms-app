@@ -1,8 +1,8 @@
-import { IForm } from "../../entities/form/form";
+import { IAnswer } from "../../entities/answer/model/answer";
 import { checkResponse } from "./api";
 import { base_url } from "./constants";
 
-export const createForm = async (form: IForm) => {
+export const createAnswers = async (answers: IAnswer[]) => {
     const token = localStorage.getItem('token');
     
     if (!token) {
@@ -16,8 +16,8 @@ export const createForm = async (form: IForm) => {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify(form),
+      body: JSON.stringify(answers),
       credentials: 'include',
     });
-    return checkResponse<IForm>(res);
+    return checkResponse<IAnswer[]>(res);
 };

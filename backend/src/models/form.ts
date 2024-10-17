@@ -17,6 +17,7 @@ class Form extends Model<FormAttributes, FormCreationAttributes> implements Form
   public id!: string;
   public template_id!: string;
   public user_id!: number;
+  public answers?: Answer[];
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
