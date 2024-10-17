@@ -1,5 +1,6 @@
 import { Router } from "express";
 import userRouter from './user';
+import answerRouter from './answer';
 import questionRouter from './question';
 import templateRouter from './template';
 import formRouter from './form';
@@ -26,5 +27,6 @@ router.use('/users', userRouter);
 router.use('/template', templateRouter);
 router.use('/forms', formRouter);
 router.use('/questions', questionRouter);
+router.use('/answers', answerRouter);
 
 export default router;

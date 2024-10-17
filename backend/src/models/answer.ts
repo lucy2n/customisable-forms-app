@@ -2,21 +2,24 @@ import { Model, DataTypes, Optional } from 'sequelize';
 import sequelize from '../config/database';
 import Question from './question';
 import User from './user';
+import Form from './form';
 
 
 interface AnswerAttributes {
-  id: number;
-  question_id: number;
+  id: string;
+  question_id: string;
   user_id: number;
+  form_id: string,
   answer: string | string[];
 }
 
 interface AnswerCreationAttributes extends Optional<AnswerAttributes, 'id'> {}
 
 class Answer extends Model<AnswerAttributes, AnswerCreationAttributes> implements AnswerAttributes {
-  public id!: number;
-  public question_id!: number;
+  public id!: string;
+  public question_id!: string;
   public user_id!: number;
+  public form_id!: string;
   public answer!: string | string[];
 
   public readonly createdAt!: Date;
@@ -26,12 +29,12 @@ class Answer extends Model<AnswerAttributes, AnswerCreationAttributes> implement
 Answer.init(
   {
     id: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      type: DataTypes.STRING,
       autoIncrement: true,
       primaryKey: true,
     },
     question_id: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      type: DataTypes.STRING,
       allowNull: false,
       references: {
         model: Question,
@@ -43,6 +46,14 @@ Answer.init(
       allowNull: false,
       references: {
         model: User,
+        key: 'id',
+      },
+    },
+    form_id: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      references: {
+        model: Form,
         key: 'id',
       },
     },
@@ -59,5 +70,6 @@ Answer.init(
 
 Answer.belongsTo(Question, { foreignKey: 'question_id' });
 Answer.belongsTo(User, { foreignKey: 'user_id' });
+Answer.belongsTo(Form, { foreignKey: 'form_id' });
 
 export default Answer;

@@ -5,11 +5,13 @@ import { ITemplate } from "../../entities/template/model/template";
 import { IQuestion } from "../../entities/question/model/question";
 import { getTemplate } from "../../shared/api/template";
 import { getQuestions } from "../../shared/api/question";
+import { useAppSelector } from "../../app/routes/lib/hook";
 
 const CreateFormPage = () => {
     const { id } = useParams();
     const [template, setTemplate] = useState<ITemplate>();
     const [questions, setQuestions] = useState<IQuestion[]>();
+    const user = useAppSelector((store) => store.user);
 
     useEffect(() => {
         if (id) {
@@ -31,7 +33,7 @@ const CreateFormPage = () => {
     return (
         <main className="flex flex-col justify-between w-11/12 mr-auto ml-auto pt-24">
             {template && questions &&
-                <Form template={template} questions={questions} />
+                <Form template={template} questions={questions} userId={+user.id}/>
             }
         </main>
     );

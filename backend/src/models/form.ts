@@ -23,6 +23,7 @@ class Form extends Model<FormAttributes, FormCreationAttributes> implements Form
   static associate() {
     Form.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
     Form.belongsTo(Template, { foreignKey: 'template_id', as: 'template' });
+    Form.hasMany(Answer, { foreignKey: 'form_id', as: 'answers' });
   }
 }
 
