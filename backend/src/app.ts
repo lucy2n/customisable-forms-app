@@ -6,6 +6,7 @@ import Template from './models/template';
 import Form from './models/form';
 import Question from './models/question';
 import cors from 'cors';
+import Answer from './models/answer';
 
 const app = express();
 
@@ -21,6 +22,7 @@ User.associate && User.associate();
 Template.associate && Template.associate();
 Form.associate && Form.associate();
 Question.associate && Question.associate();
+Answer.associate && Answer.associate();
 
 // Sync database and start server
 sequelize.sync({ force: false })  // `force: true` will recreate tables
