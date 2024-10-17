@@ -24,7 +24,7 @@ export const getForms = async (req: Request, res: Response): Promise<void> => {
 
 export const createForm = async (req: IUserRequest, res: Response): Promise<void> => {
   try {
-    const template = await Template.findByPk(req.params.templateId);
+    const template = await Template.findByPk(req.body.template_id);
 
     if (!template) {
       res.status(404).json({ message: 'Template not found' });
@@ -37,9 +37,7 @@ export const createForm = async (req: IUserRequest, res: Response): Promise<void
     }
 
     const form = await Form.create({
-      ...req.body,
-      template_id: req.params.templateId,
-      user_id: req.user.id,
+      ...req.body
     });
 
     res.status(201).json(form);

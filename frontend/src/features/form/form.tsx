@@ -3,23 +3,38 @@ import { Button, Card, CardBody, Input, RadioGroup, Radio, CheckboxGroup, Checkb
 import { IQuestion, QuestionType } from '../../entities/question/model/question';
 import { ITemplate } from '../../entities/template/model/template';
 import { IAnswer } from '../../entities/answer/model/answer';
+import { v4 as uuidv4 } from 'uuid';
+import { createForm } from '../../shared/api/form';
+import { IForm } from '../../entities/form/form';
+import { createAnswers } from '../../shared/api/answer';
 
-interface IForm {
+interface IFormProps {
   template: ITemplate;
   questions: IQuestion[];
   userId: number;
 }
 
-const Form: FC<IForm> = ({ template, questions, userId }) => {
+const Form: FC<IFormProps> = ({ template, questions, userId }) => {
   // Состояние для хранения ответов в виде массива объектов IAnswer
   const [answers, setAnswers] = useState<IAnswer[]>([]);
 
   // Обработчик сабмита формы
   const handleSubmitForm = async () => {
-    const formData = {
-      answers, // Сохраняем ответы в формате массива объектов IAnswer
+    const formData: IForm = {
+      id: uuidv4(),
+      template_id: template.id,
+      user_id: userId, 
     };
-    console.log('Form submitted with answers:', formData);
+    try {
+      const res = await createForm(formData);
+      console.log("Form created:", res);
+
+      createAnswers(answers)
+      console.log("Questions created:", questions);
+
+  } catch (err) {
+      console.error("Error creating template and questions:", err);
+  }
   };
 
   // Обработчик изменения ответа на вопрос
