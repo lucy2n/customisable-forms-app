@@ -69,6 +69,7 @@ Answer.init(
   {
     sequelize,
     tableName: 'answers',
+    timestamps: true,
   }
 );
 

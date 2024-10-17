@@ -12,8 +12,8 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: 'http://localhost:5173', // Your frontend URL
-  credentials: true, // If you need to pass cookies
+  origin: 'http://localhost:5173',
+  credentials: true,
 }));
 app.use(express.json());
 
@@ -24,11 +24,10 @@ Form.associate && Form.associate();
 Question.associate && Question.associate();
 Answer.associate && Answer.associate();
 
-// Sync database and start server
-sequelize.sync({ force: false })  // `force: true` will recreate tables
+sequelize.sync({ force: false })
   .then(() => {
     console.log('Database synced successfully');
-    const PORT = process.env.PORT || 3001; // Use Heroku's PORT
+    const PORT = process.env.PORT || 3001;
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
