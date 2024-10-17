@@ -61,7 +61,7 @@ Question.init(
   {
     sequelize,
     tableName: 'questions',
-    timestamps: true,
+    timestamps: false,
     underscored: true,
     freezeTableName: true,
   }

@@ -9,7 +9,6 @@ import { useEffect, useState } from 'react';
 import { OnlyAuth } from './routes/protected-route';
 import { getUserInformation } from '../shared/api/user';
 import { loggedIn, loggedOut, setEmail, setId, setName } from '../entities/user/model/userSlice';
-import { IUser } from '../entities/user/model/user';
 import CreateTemplatePage from '../pages/create-template-page/create-template-page';
 import CreateFormPage from '../pages/create-form-page/create-form-page';
 import AdminPage from '../pages/admin-page/admin-page';
@@ -23,7 +22,7 @@ function App() {
 
     if (token) {
       getUserInformation()
-        .then(({id, email, name }: IUser) => {
+        .then(({id, email, name }) => {
           dispatch(loggedIn());
           dispatch(setId(id + ''))
           dispatch(setEmail(email));

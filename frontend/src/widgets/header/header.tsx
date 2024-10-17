@@ -5,22 +5,22 @@ import sunIcon from "../../assets/icons8-sun.svg";
 import { useEffect, useState } from "react";
 import { RoutePathname } from "../../app/routes/constants";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../app/routes/lib/hook";
-import { resetUser } from "../../entities/user/model/userSlice";
-import { logout } from "../../shared/api/user";
+import { useAppSelector } from "../../app/routes/lib/hook";
+import {  } from "../../entities/user/model/userSlice";
+// import { logout } from "../../shared/api/user";
 
 const Header = () => {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const { isLoggedIn } = useAppSelector(state => state.user); // Получаем статус входа
+  // const dispatch = useAppDispatch();
+  const user = useAppSelector(state => state.user); // Получаем статус входа
 
-  const handleLogout = () => {
-    logout(); // Удаление токена на стороне сервера (или локально)
-    dispatch(resetUser()); // Сброс состояния пользователя
-    navigate(RoutePathname.loginPage); // Перенаправление на страницу входа
-  };
+  // const handleLogout = () => {
+  //   logout(); // Удаление токена на стороне сервера (или локально)
+  //   dispatch(resetUser()); // Сброс состояния пользователя
+  //   navigate(RoutePathname.loginPage); // Перенаправление на страницу входа
+  // };
 
   useEffect(() => {
     setMounted(true);
@@ -40,7 +40,7 @@ const Header = () => {
           Lab
         </p>
       </div>
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         <Button
           color="secondary"
           variant="light"
@@ -51,9 +51,9 @@ const Header = () => {
           Create template
         </Button>
 
-        {isLoggedIn ? (
-          <div>
-            <Button
+        {user.isLoggedIn ? (
+          <>
+            {/* <Button
               color="secondary"
               variant="light"
               className="font-mono"
@@ -61,8 +61,17 @@ const Header = () => {
               onClick={handleLogout}
             >
               Logout
+            </Button> */}
+            <Button
+             radius="full"
+             color="secondary"
+             variant="shadow"
+             size="sm"
+             className="text-base"
+            >
+              {user.name[0]}
             </Button>
-          </div>
+          </>
           
         ) : (
           <>
