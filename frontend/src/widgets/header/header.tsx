@@ -71,6 +71,15 @@ const Header = () => {
             >
               {user.name[0]}
             </Button>
+            <Button
+              color="secondary"
+              variant="light"
+              className="font-mono"
+              size="md"
+              onClick={() => navigate(RoutePathname.adminPage)}
+            >
+              Admin
+            </Button>
           </>
           
         ) : (
@@ -91,15 +100,6 @@ const Header = () => {
               onClick={() => navigate(RoutePathname.registerPage)}
             >
               Sign Up
-            </Button>
-            <Button
-              color="secondary"
-              variant="light"
-              className="font-mono"
-              size="md"
-              onClick={() => navigate(RoutePathname.adminPage)}
-            >
-              Admin
             </Button>
           </>
         )}

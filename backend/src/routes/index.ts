@@ -6,7 +6,7 @@ import templateRouter from './template';
 import formRouter from './form';
 import { createUser, login } from "../controllers/user";
 import auth from "../middlewares/auth";
-import { getTemplates } from "../controllers/template";
+import { getTemplates, getTemplatesByUser } from "../controllers/template";
 
 const router = Router();
 
@@ -23,6 +23,7 @@ router.get('/templates', getTemplates);
 
 router.use(auth);
 
+router.get('/users/:user_id/templates', getTemplatesByUser);
 router.use('/users', userRouter);
 router.use('/template', templateRouter);
 router.use('/forms', formRouter);

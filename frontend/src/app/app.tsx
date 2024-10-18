@@ -12,6 +12,7 @@ import { loggedIn, loggedOut, setEmail, setId, setName } from '../entities/user/
 import CreateTemplatePage from '../pages/create-template-page/create-template-page';
 import CreateFormPage from '../pages/create-form-page/create-form-page';
 import AdminPage from '../pages/admin-page/admin-page';
+import ProfilePage from '../pages/profile-page/profile-page';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -55,6 +56,7 @@ function App() {
         <Route path={RoutePathname.registerPage} element={<RegisterPage />} />
         <Route path={RoutePathname.createTemplate} element={<OnlyAuth component={<CreateTemplatePage />} />} />
         <Route path={RoutePathname.createForm} element={<OnlyAuth component={<CreateFormPage />} />} />
+        <Route path={RoutePathname.profilePage} element={<OnlyAuth component={<ProfilePage />} />} />
         <Route path={RoutePathname.adminPage} element={<AdminPage />} />
         {/* <Route path={RoutePathname.adminPage} element={<OnlyAuth component={<AdminPage />} />} /> */}
       </Routes>

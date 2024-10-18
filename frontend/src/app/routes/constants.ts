@@ -4,6 +4,7 @@ const registerPage = '/register';
 const createTemplate = '/create';
 const createForm = '/form/:id';
 const adminPage = '/admin';
+const profilePage = '/profile';
 
 export const RoutePathname = {
     homePage,
@@ -11,5 +12,6 @@ export const RoutePathname = {
     registerPage,
     createTemplate,
     createForm,
-    adminPage
+    adminPage,
+    profilePage
 };

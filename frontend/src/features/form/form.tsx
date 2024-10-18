@@ -30,6 +30,7 @@ const Form: FC<IFormProps> = ({ template, questions, userId }) => {
       const newAnswer: IAnswer = {
         id: uuidv4(), 
         question_id: questionId,
+        form_id: form_id,
         user_id: userId,
         answer, // Ответ (строка или массив строк)
       };

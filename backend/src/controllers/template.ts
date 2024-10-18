@@ -11,6 +11,22 @@ export const getTemplates = async (req: Request, res: Response): Promise<void> =
   }
 };
 
+export const getTemplatesByUser = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { user_id } = req.params;
+
+    const templates = await Template.findAll({
+      where: {
+        user_id,
+      },
+    });
+
+    res.json(templates);
+  } catch (err: any) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 export const getTemplate = async (req: Request, res: Response): Promise<void> => {
   try {
     const template = await Template.findByPk(req.params.id);
