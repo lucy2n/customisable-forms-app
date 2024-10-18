@@ -49,6 +49,7 @@ const TemplateEditor: FC<ITemplateEditorProps> = ({ template, questions }) => {
                         type="text"
                         size="lg"
                         placeholder="Form Title"
+                        style={{ fontSize: '38px' }}
                         value={templateTitle}
                         onChange={(e) => setTemplateTitle(e.target.value)}
                     />

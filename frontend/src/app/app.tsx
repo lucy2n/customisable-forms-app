@@ -8,11 +8,12 @@ import { useAppDispatch } from './routes/lib/hook';
 import { useEffect, useState } from 'react';
 import { OnlyAuth } from './routes/protected-route';
 import { getUserInformation } from '../shared/api/user';
-import { loggedIn, loggedOut, setEmail, setId, setName } from '../entities/user/model/userSlice';
+import { loggedIn, loggedOut, setEmail, setId, setIsAdmin, setName } from '../entities/user/model/userSlice';
 import CreateTemplatePage from '../pages/create-template-page/create-template-page';
 import CreateFormPage from '../pages/create-form-page/create-form-page';
 import AdminPage from '../pages/admin-page/admin-page';
 import ProfilePage from '../pages/profile-page/profile-page';
+import EditTemplatePage from '../pages/edit-template-page/edit-template-page';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -23,10 +24,11 @@ function App() {
 
     if (token) {
       getUserInformation()
-        .then(({id, email, name }) => {
+        .then(({id, email, name, is_admin }) => {
           dispatch(loggedIn());
           dispatch(setId(id + ''))
           dispatch(setEmail(email));
+          dispatch(setIsAdmin(is_admin))
           dispatch(setName(name ?? ''));
         })
         .catch((err) => {
@@ -57,6 +59,7 @@ function App() {
         <Route path={RoutePathname.createTemplate} element={<OnlyAuth component={<CreateTemplatePage />} />} />
         <Route path={RoutePathname.createForm} element={<OnlyAuth component={<CreateFormPage />} />} />
         <Route path={RoutePathname.profilePage} element={<OnlyAuth component={<ProfilePage />} />} />
+        <Route path={RoutePathname.editTemplate} element={<OnlyAuth component={<EditTemplatePage />} />} />
         <Route path={RoutePathname.adminPage} element={<AdminPage />} />
         {/* <Route path={RoutePathname.adminPage} element={<OnlyAuth component={<AdminPage />} />} /> */}
       </Routes>

@@ -4,6 +4,7 @@ export type UserState = {
   user: {
     isLoggedIn: boolean,
     id: number,
+    is_admin: boolean,
     name: string,
     email: string,
   };
@@ -12,6 +13,7 @@ export type UserState = {
 const initialState = {
   isLoggedIn: false,
   id: '',
+  is_admin: false,
   name: '',
   email: '',
 };
@@ -28,6 +30,9 @@ const userSlice = createSlice({
     },
     setEmail: (state, action: PayloadAction<string>) => {
       state.email = action.payload;
+    },
+    setIsAdmin: (state, action: PayloadAction<boolean>) => {
+      state.is_admin = action.payload;
     },
     loggedIn: (state) => {
       state.isLoggedIn = true;
@@ -48,5 +53,6 @@ export const {
   loggedIn,
   loggedOut,
   resetUser,
+  setIsAdmin
 } = userSlice.actions;
 export default userSlice.reducer;

@@ -1,17 +1,15 @@
 import { useParams } from "react-router-dom";
-import Form from "../../features/form/form";
 import { useEffect, useState } from "react";
 import { ITemplate } from "../../entities/template/model/template";
 import { IQuestion } from "../../entities/question/model/question";
 import { getTemplate } from "../../shared/api/template";
 import { getQuestions } from "../../shared/api/question";
-import { useAppSelector } from "../../app/routes/lib/hook";
+import TemplateEditor from "../../features/template-editor/template-editor";
 
-const CreateFormPage = () => {
+const EditTemplatePage = () => {
     const { id } = useParams();
     const [template, setTemplate] = useState<ITemplate>();
     const [questions, setQuestions] = useState<IQuestion[]>();
-    const user = useAppSelector((store) => store.user);
 
     useEffect(() => {
         if (id) {
@@ -36,9 +34,9 @@ const CreateFormPage = () => {
 
     return (
         <main className="flex flex-col justify-between w-11/12 mr-auto ml-auto pt-24">
-            <Form template={template} questions={questions} userId={+user.id} />
+            <TemplateEditor template={template} questions={questions} />
         </main>
     );
 };
 
-export default CreateFormPage;
+export default EditTemplatePage;

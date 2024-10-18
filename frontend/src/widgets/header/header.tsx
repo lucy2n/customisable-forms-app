@@ -6,21 +6,12 @@ import { useEffect, useState } from "react";
 import { RoutePathname } from "../../app/routes/constants";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../app/routes/lib/hook";
-import {  } from "../../entities/user/model/userSlice";
-// import { logout } from "../../shared/api/user";
 
 const Header = () => {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
   const navigate = useNavigate();
-  // const dispatch = useAppDispatch();
-  const user = useAppSelector(state => state.user); // Получаем статус входа
-
-  // const handleLogout = () => {
-  //   logout(); // Удаление токена на стороне сервера (или локально)
-  //   dispatch(resetUser()); // Сброс состояния пользователя
-  //   navigate(RoutePathname.loginPage); // Перенаправление на страницу входа
-  // };
+  const user = useAppSelector((state) => state.user);
 
   useEffect(() => {
     setMounted(true);
@@ -52,24 +43,16 @@ const Header = () => {
             >
               Create template
             </Button>
-            {/* <Button
-              color="secondary"
-              variant="light"
-              className="font-mono"
-              size="md"
-              onClick={handleLogout}
-            >
-              Logout
-            </Button> */}
+            {/* Проверка наличия имени пользователя */}
             <Button
-             radius="full"
-             color="secondary"
-             variant="shadow"
-             size="sm"
-             className="text-base"
-             onClick={() => navigate(RoutePathname.profilePage)}
+              radius="full"
+              color="secondary"
+              variant="shadow"
+              size="sm"
+              className="text-base"
+              onClick={() => navigate(RoutePathname.profilePage)}
             >
-              {user.name[0]}
+              {user.name ? user.name[0] : 'U'} {/* Показать первую букву или заглушку */}
             </Button>
             <Button
               color="secondary"
@@ -81,7 +64,6 @@ const Header = () => {
               Admin
             </Button>
           </>
-          
         ) : (
           <>
             <Tooltip color="secondary" content="If you want to create a template you should be authorized">
