@@ -48,7 +48,7 @@ function App() {
   }
 
   return (
-    <div className="flex justify-center flex-col w-screen">
+    <div className="flex justify-center flex-col w-screen mb-10">
       <Header />
       <Routes>
         <Route path={RoutePathname.homePage} element={<MainPage />} />

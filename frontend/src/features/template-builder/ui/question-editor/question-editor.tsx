@@ -7,7 +7,7 @@ import { IQuestion, QuestionType } from '../../../../entities/question/model/que
 interface IQuestionEditorProps {
     question: IQuestion; // Тип для вопроса
     updateQuestion: (id: string, updatedQuestion: IQuestion) => void; // Функция обновления вопроса
-    removeQuestion: (id: string) => void; // Функция удаления вопроса
+    removeQuestion?: (id: string) => void; // Функция удаления вопроса
     isActive: boolean; // Булевое значение для активности вопроса
     setActiveIndex: (id: string) => void;
 }
@@ -82,7 +82,7 @@ const QuestionEditor: FC<IQuestionEditorProps> = ({ question, updateQuestion, re
           )}
         </div>
 
-        {isActive && (
+        {isActive && removeQuestion &&(
           <Button
             isIconOnly
             className="w-8 h-8 ml-auto"

@@ -1,4 +1,4 @@
-import {Card, CardFooter, Image, Button, CardBody} from "@nextui-org/react";
+import {Card, CardFooter, Image, Button, CardBody, Tooltip} from "@nextui-org/react";
 import { ITemplate } from "../../entities/template/model/template";
 import { useNavigate } from "react-router-dom";
 
@@ -22,7 +22,9 @@ const FormTemplateItem = ({template} : {template: ITemplate}) => {
                     <b className="text-base">{template.title}</b>
                     <p className="text-default-500">{template.description}</p>
                 </div>
-                <Button radius="full" size="sm" onClick={() => navigate(`/form/${template.id}`)}>Use Template</Button>
+                <Tooltip color="secondary" content="If you want to use this template you should be authorized">
+                    <Button color="secondary" variant="flat" radius="full" size="sm" onClick={() => navigate(`/form/${template.id}`)}>Use Template</Button>
+                </Tooltip>
           </CardFooter>
         </Card>
       );

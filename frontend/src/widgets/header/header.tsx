@@ -1,4 +1,4 @@
-import { Button, Switch } from "@nextui-org/react";
+import { Button, Switch, Tooltip } from "@nextui-org/react";
 import { useTheme } from "next-themes";
 import moonIcon from "../../assets/icons8-moon-30-2.png";
 import sunIcon from "../../assets/icons8-sun.svg";
@@ -41,18 +41,17 @@ const Header = () => {
         </p>
       </div>
       <div className="flex flex-wrap items-center gap-2">
-        <Button
-          color="secondary"
-          variant="light"
-          className="font-mono"
-          size="md"
-          onClick={() => navigate(RoutePathname.createTemplate)}
-        >
-          Create template
-        </Button>
-
         {user.isLoggedIn ? (
           <>
+            <Button
+              color="secondary"
+              variant="light"
+              className="font-mono"
+              size="md"
+              onClick={() => navigate(RoutePathname.createTemplate)}
+            >
+              Create template
+            </Button>
             {/* <Button
               color="secondary"
               variant="light"
@@ -68,6 +67,7 @@ const Header = () => {
              variant="shadow"
              size="sm"
              className="text-base"
+             onClick={() => navigate(RoutePathname.profilePage)}
             >
               {user.name[0]}
             </Button>
@@ -84,6 +84,17 @@ const Header = () => {
           
         ) : (
           <>
+            <Tooltip color="secondary" content="If you want to create a template you should be authorized">
+              <Button
+                color="secondary"
+                variant="light"
+                className="font-mono"
+                size="md"
+                onClick={() => navigate(RoutePathname.createTemplate)}
+              >
+                Create template
+              </Button>
+            </Tooltip>
             <Button
               color="secondary"
               variant="light"

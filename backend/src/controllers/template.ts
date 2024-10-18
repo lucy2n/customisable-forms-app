@@ -54,7 +54,7 @@ export const createTemplate = async (req: IUserRequest, res: Response): Promise<
 };
 
 // Update a template
-export const updateTemplate = async (req: Request, res: Response): Promise<void> => {
+export const updateTemplate = async (req: IUserRequest, res: Response): Promise<void> => {
   try {
     const template = await Template.findByPk(req.params.id);
     if (!template) {
@@ -62,16 +62,16 @@ export const updateTemplate = async (req: Request, res: Response): Promise<void>
       return;
     }
 
-    // if (!req.user) {
-    //   res.status(401).json({ message: 'Unauthorized' });
-    //   return;
-    // }
+    if (!req.user) {
+      res.status(401).json({ message: 'Unauthorized' });
+      return;
+    }
 
-    // // Authorization check
-    // if (template.user_id !== req.user.id && !req.user.is_admin) {
-    //   res.status(403).json({ message: 'Not authorized' });
-    //   return;
-    // }
+    // Authorization check
+    if (template.user_id !== req.user.id) {
+      res.status(403).json({ message: 'Not authorized' });
+      return;
+    }
 
     await template.update(req.body);
     res.json(template);

@@ -40,3 +40,24 @@ export const getQuestions = async (id: string) => {
     
     return checkResponse<IQuestion[]>(res);
 };
+
+export const updateQuestion = async (questionId: string, updatedFields: Partial<IQuestion>) => {
+  const token = localStorage.getItem('token');
+  
+  if (!token) {
+      throw new Error('Токен не найден');
+  }
+
+  const res = await fetch(`${base_url}/questions/questions/${questionId}`, {
+    method: 'PUT',
+    headers: {
+      accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify(updatedFields),
+    credentials: 'include',
+  });
+
+  return checkResponse<IQuestion>(res);
+};
