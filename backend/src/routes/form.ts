@@ -3,8 +3,8 @@ import { createForm, deleteForm, getForms } from "../controllers/form";
 
 const router = Router();
 
-router.get('/forms', getForms);
-router.post('/forms', createForm);
-router.delete('/forms/:id', deleteForm);
+router.get('/', getForms);
+router.post('/create', createForm);
+router.delete('/delete/:id', deleteForm);
 
 export default router;

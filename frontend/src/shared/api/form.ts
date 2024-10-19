@@ -9,7 +9,7 @@ export const createForm = async (form: IForm) => {
         throw new Error('Токен не найден');
     }
 
-    const res = await fetch(`${base_url}/forms/forms/`, {
+    const res = await fetch(`${base_url}/forms/create/`, {
       method: 'POST',
       headers: {
         accept: 'application/json',

@@ -1,12 +1,11 @@
 import { Tabs, Tab } from "@nextui-org/react";
 import { FC } from "react";
 
-interface ProfileTabsProps {
+interface FormTabsProps {
     updateTab: (tab: string) => void;
-    isAdmin: boolean
 }
 
-const ProfileTabs: FC<ProfileTabsProps> = ({ updateTab, isAdmin }) => {
+const FormTabs: FC<FormTabsProps> = ({ updateTab, isAdmin }) => {
     return (
         <div className="flex w-full justify-center items-center flex-col">
             <Tabs
@@ -22,19 +21,20 @@ const ProfileTabs: FC<ProfileTabsProps> = ({ updateTab, isAdmin }) => {
                 onSelectionChange={key => updateTab(key as string)}
             >
                 <Tab
-                    key="My templates"
-                    title={<div className="flex items-center space-x-2"><span>My templates</span></div>}
+                    key="Form"
+                    title={<div className="flex items-center space-x-2"><span>Form</span></div>}
                 />
-                {
-                    isAdmin &&
-                    <Tab
-                        key="Admin"
-                        title={<div className="flex items-center space-x-2"><span>Admin</span></div>}
-                    />
-                }
+                <Tab
+                    key="Comments"
+                    title={<div className="flex items-center space-x-2"><span>Comments</span></div>}
+                />
+                <Tab
+                    key="Answers"
+                    title={<div className="flex items-center space-x-2"><span>Answers</span></div>}
+                />
             </Tabs>
         </div>
     );
 };
 
-export default ProfileTabs;
+export default FormTabs;

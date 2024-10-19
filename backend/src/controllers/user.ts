@@ -5,6 +5,41 @@ import User from '../models/user';
 import UnauthorizedError from '../errors/unauthorized-err';
 import { IUserRequest } from '../types';
 
+export const createUser = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { name, email, password } = req.body;
+
+    // Валидация входных данных
+    if (!name || !email || !password) {
+      res.status(400).json({ message: 'Все поля обязательны для заполнения' });
+      return;
+    }
+
+    // Проверка, существует ли пользователь с таким email
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingUser) {
+      res.status(400).json({ message: 'Пользователь с таким email уже существует' });
+      return;
+    }
+
+    // Хэширование пароля
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Создание пользователя
+    const newUser = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+      is_admin: false, // Необязательно, если в модели defaultValue: false
+    });
+
+    res.status(201).json(newUser);
+  } catch (err: any) {
+    console.error(err);
+    res.status(500).json({ message: 'Ошибка сервера при создании пользователя' });
+  }
+};
+
 export const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password } = req.body;
@@ -78,38 +113,12 @@ export const getMe = async (req: IUserRequest, res: Response): Promise<void> => 
   }
 };
 
-export const createUser = async (req: Request, res: Response): Promise<void> => {
+export const getUsers = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { name, email, password } = req.body;
-
-    // Валидация входных данных
-    if (!name || !email || !password) {
-      res.status(400).json({ message: 'Все поля обязательны для заполнения' });
-      return;
-    }
-
-    // Проверка, существует ли пользователь с таким email
-    const existingUser = await User.findOne({ where: { email } });
-    if (existingUser) {
-      res.status(400).json({ message: 'Пользователь с таким email уже существует' });
-      return;
-    }
-
-    // Хэширование пароля
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Создание пользователя
-    const newUser = await User.create({
-      name,
-      email,
-      password: hashedPassword,
-      is_admin: false, // Необязательно, если в модели defaultValue: false
-    });
-
-    res.status(201).json(newUser);
+    const users = await User.findAll();
+    res.json(users);
   } catch (err: any) {
-    console.error(err);
-    res.status(500).json({ message: 'Ошибка сервера при создании пользователя' });
+    res.status(500).json({ message: err.message });
   }
 };
 

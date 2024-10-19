@@ -9,7 +9,7 @@ export const createAnswer = async (answer: IAnswer) => {
         throw new Error('Токен не найден');
     }
 
-    const res = await fetch(`${base_url}/answers/answers/`, {
+    const res = await fetch(`${base_url}/answers/create/`, {
       method: 'POST',
       headers: {
         accept: 'application/json',

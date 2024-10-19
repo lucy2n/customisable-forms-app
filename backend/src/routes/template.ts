@@ -3,9 +3,9 @@ import { createTemplate, deleteTemplate, getTemplate, getTemplates, updateTempla
 
 const router = Router();
 
-router.post('/templates', createTemplate);
-router.get('/templates/:id', getTemplate);
-router.put('/templates/:id', updateTemplate);
-router.delete('/templates/:id', deleteTemplate);
+router.post('/create', createTemplate);
+router.get('/:id', getTemplate);
+router.put('/update/:id', updateTemplate);
+router.delete('/delete/:id', deleteTemplate);
 
 export default router;

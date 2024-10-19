@@ -9,7 +9,7 @@ export const createQuestion = async (question: IQuestion) => {
         throw new Error('Токен не найден');
     }
 
-    const res = await fetch(`${base_url}/questions/questions/`, {
+    const res = await fetch(`${base_url}/questions/create/`, {
       method: 'POST',
       headers: {
         accept: 'application/json',
@@ -29,7 +29,7 @@ export const getQuestions = async (id: string) => {
         throw new Error('Токен не найден');
     }
 
-    const res = await fetch(`${base_url}/questions/questions/${id}`, {
+    const res = await fetch(`${base_url}/questions/${id}`, {
       method: 'GET',
       headers: {
         accept: 'application/json',
@@ -48,7 +48,7 @@ export const updateQuestion = async (questionId: string, updatedFields: Partial<
       throw new Error('Токен не найден');
   }
 
-  const res = await fetch(`${base_url}/questions/questions/${questionId}`, {
+  const res = await fetch(`${base_url}/questions/update/${questionId}`, {
     method: 'PUT',
     headers: {
       accept: 'application/json',

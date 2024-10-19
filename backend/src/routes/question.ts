@@ -3,9 +3,9 @@ import { createQuestion, deleteQuestion, getQuestions, updateQuestion } from "..
 
 const router = Router();
 
-router.get('/questions/:id', getQuestions);
-router.post('/questions', createQuestion);
-router.put('/questions/:id', updateQuestion);
-router.delete('/questions/:id', deleteQuestion);
+router.get('/:id', getQuestions);
+router.post('/create', createQuestion);
+router.put('/update/:id', updateQuestion);
+router.delete('/delete/:id', deleteQuestion);
 
 export default router;

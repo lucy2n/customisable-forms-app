@@ -6,12 +6,20 @@ import { IQuestion } from "../../entities/question/model/question";
 import { getTemplate } from "../../shared/api/template";
 import { getQuestions } from "../../shared/api/question";
 import { useAppSelector } from "../../app/routes/lib/hook";
+import FormTabs from "./form-tabs/form-tabs";
+import Comments from "./comments/comments";
+import Answers from "./answers/answers";
 
 const CreateFormPage = () => {
     const { id } = useParams();
     const [template, setTemplate] = useState<ITemplate>();
     const [questions, setQuestions] = useState<IQuestion[]>();
     const user = useAppSelector((store) => store.user);
+    const [selectedTab, setSelectedTab] = useState<string>('Form');
+
+    const updateTab = (tab: string) => {
+        setSelectedTab(tab);
+    };
 
     useEffect(() => {
         if (id) {
@@ -34,9 +42,20 @@ const CreateFormPage = () => {
         return <div>Loading...</div>;
     }
 
+    const isCreator = template.user_id + '' === user.id;
+
     return (
-        <main className="flex flex-col justify-between w-11/12 mr-auto ml-auto pt-24">
-            <Form template={template} questions={questions} userId={+user.id} />
+        <main className="flex flex-col justify-between w-11/12 mr-auto ml-auto pt-10 gap-10">
+            <FormTabs updateTab={updateTab}/>
+            {selectedTab === 'Form' && (
+               <Form template={template} questions={questions} userId={+user.id} />
+            )}
+            {selectedTab === 'Comments' && (
+               <Comments />
+            )}
+            {selectedTab === 'Answers' && isCreator && (
+               <Answers />
+            )}
         </main>
     );
 };

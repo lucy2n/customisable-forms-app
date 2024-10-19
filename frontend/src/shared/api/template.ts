@@ -43,7 +43,7 @@ export const getTemplate = async (id: string) => {
         throw new Error('Токен не найден');
     }
 
-    const res = await fetch(`${base_url}/template/templates/${id}`, {
+    const res = await fetch(`${base_url}/template/${id}`, {
         method: 'GET',
         headers: {
             accept: 'application/json',
@@ -64,7 +64,7 @@ export const createTemplate = async (template: ITemplate) => {
         throw new Error('Токен не найден');
     }
 
-    const res = await fetch(`${base_url}/template/templates/`, {
+    const res = await fetch(`${base_url}/template/create/`, {
       method: 'POST',
       headers: {
         accept: 'application/json',
@@ -84,7 +84,7 @@ export const updateTemplate = async (templateId: string, updatedFields: Partial<
         throw new Error('Токен не найден');
     }
 
-    const res = await fetch(`${base_url}/template/templates/${templateId}`, {
+    const res = await fetch(`${base_url}/template/update/${templateId}`, {
       method: 'PUT',
       headers: {
         accept: 'application/json',

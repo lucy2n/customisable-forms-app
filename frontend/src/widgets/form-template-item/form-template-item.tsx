@@ -27,7 +27,7 @@ const FormTemplateItem = ({template} : {template: ITemplate}) => {
                 </div>
                 <div>
                 <Tooltip color="secondary" content="If you want to use this template you should be authorized">
-                    <Button color="secondary" variant="flat" radius="full" size="sm" onClick={() => navigate(`/form/${template.id}`)}>Use Template</Button>
+                    <Button color="secondary" variant="flat" radius="full" size="sm" onClick={() => navigate(`/form/${template.id}`)}>Fill form</Button>
                 </Tooltip>
                 {
                     isCreator && 

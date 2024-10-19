@@ -5,13 +5,23 @@ import sunIcon from "../../assets/icons8-sun.svg";
 import { useEffect, useState } from "react";
 import { RoutePathname } from "../../app/routes/constants";
 import { useNavigate } from "react-router-dom";
-import { useAppSelector } from "../../app/routes/lib/hook";
+import { useAppDispatch, useAppSelector } from "../../app/routes/lib/hook";
+import { logout } from "../../shared/api/user";
+import { resetUser } from "../../entities/user/model/userSlice";
 
 const Header = () => {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user);
+
+  const handleLogout = () => {
+      logout(); // Удаление токена на стороне сервера (или локально)
+      dispatch(resetUser()); // Сброс состояния пользователя
+      navigate(RoutePathname.loginPage); // Перенаправление на страницу входа
+    };
+  
 
   useEffect(() => {
     setMounted(true);
@@ -58,11 +68,10 @@ const Header = () => {
               color="secondary"
               variant="light"
               className="font-mono"
-              size="md"
-              onClick={() => navigate(RoutePathname.adminPage)}
+              onClick={handleLogout}
             >
-              Admin
-            </Button>
+              Logout
+            </Button> 
           </>
         ) : (
           <>
