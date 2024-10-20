@@ -4,7 +4,7 @@ import User from './user';
 import Template from './template';
 
 interface CommentAttributes {
-  id: number;
+  id: string;
   template_id: string;
   user_id: number;
   text: string;
@@ -13,7 +13,7 @@ interface CommentAttributes {
 interface CommentCreationAttributes extends Optional<CommentAttributes, 'id'> {}
 
 class Comment extends Model<CommentAttributes, CommentCreationAttributes> implements CommentAttributes {
-  public id!: number;
+  public id!: string;
   public template_id!: string;
   public user_id!: number;
   public text!: string;
@@ -24,7 +24,7 @@ class Comment extends Model<CommentAttributes, CommentCreationAttributes> implem
 Comment.init(
   {
     id: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      type: DataTypes.STRING,
       autoIncrement: true,
       primaryKey: true,
     },

@@ -1,36 +1,36 @@
-import { IAnswer } from "../../entities/answer/model/answer";
+import { IComment } from "../../entities/comment/model/comment";
 import { checkResponse } from "./api";
 import { base_url } from "./constants";
 
-export const createAnswer = async (answer: IAnswer) => {
+export const createComment = async (comment: IComment) => {
     const token = localStorage.getItem('token');
     
     if (!token) {
         throw new Error('Токен не найден');
     }
 
-    const res = await fetch(`${base_url}/answers/create/`, {
+    const res = await fetch(`${base_url}/comments/create/`, {
       method: 'POST',
       headers: {
         accept: 'application/json',
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify(answer),
+      body: JSON.stringify(comment),
       credentials: 'include',
     });
-    return checkResponse<IAnswer>(res);
+    return checkResponse<IComment>(res);
 };
 
 
-export const getAnswers = async (id: string) => {
+export const getComments = async (id: string) => {
   const token = localStorage.getItem('token');
   
   if (!token) {
       throw new Error('Токен не найден');
   }
 
-  const res = await fetch(`${base_url}/answers/${id}`, {
+  const res = await fetch(`${base_url}/comments/${id}`, {
     method: 'GET',
     headers: {
       accept: 'application/json',
@@ -39,5 +39,6 @@ export const getAnswers = async (id: string) => {
     credentials: 'include',
   });
   
-  return checkResponse<IAnswer[]>(res);
+  return checkResponse<IComment[]>(res);
 };
+
