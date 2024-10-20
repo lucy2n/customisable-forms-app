@@ -39,6 +39,7 @@ export const getComments = async (id: string) => {
     credentials: 'include',
   });
   
-  return checkResponse<IComment[]>(res);
+  console.log(res)
+  return res.json();
 };
 

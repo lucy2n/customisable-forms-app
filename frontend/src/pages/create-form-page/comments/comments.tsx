@@ -1,11 +1,36 @@
 import { Button, Card, CardBody, Input, User } from "@nextui-org/react"
-import { useEffect, useState } from "react"
-import { getComments } from "../../../shared/api/comments";
+import { FC, useEffect, useState } from "react"
+import { createComment, getComments } from "../../../shared/api/comments";
 import { IComment } from "../../../entities/comment/model/comment";
+import { v4 as uuidv4 } from 'uuid';
 
-const Comments = ({templateId}: {templateId: string}) => {
+interface CommentsProps {
+    templateId: string,
+    userId: number
+}
+
+const Comments:FC<CommentsProps> = ({templateId, userId}) => {
     const [comment, setComment] = useState<string>('');
     const [comments, setComments] = useState<IComment[]>([])
+    
+
+    const handleSubmitComment = async () => {
+        const commentData: IComment = {
+            id: uuidv4(),
+            user_id: +userId,
+            template_id: templateId,
+            text: comment,
+        };
+        console.log(commentData);
+        try {
+            const res = await createComment(commentData);
+            console.log("Form created:", res);
+    
+    
+        } catch (err) {
+            console.error("Error creating comment:", err);
+        }
+      };
 
     useEffect(() => {
         if (templateId) {
@@ -16,7 +41,7 @@ const Comments = ({templateId}: {templateId: string}) => {
                 })
                 .catch(err => console.log(err));
         }
-    }, [templateId]);
+    }, [templateId, comments]);
 
     return (
         <div className="flex flex-col w-1/2 mr-auto ml-auto gap-10">
@@ -32,7 +57,7 @@ const Comments = ({templateId}: {templateId: string}) => {
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}
                     />
-                    <Button color="secondary" isDisabled={comment.length === 0}>
+                    <Button color="secondary" isDisabled={comment.length === 0} onClick={handleSubmitComment}>
                         Send comment
                     </Button>
                 </CardBody>

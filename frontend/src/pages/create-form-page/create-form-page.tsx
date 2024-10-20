@@ -51,7 +51,7 @@ const CreateFormPage = () => {
                <Form template={template} questions={questions} userId={+user.id} />
             )}
             {selectedTab === 'Comments' && (
-               <Comments templateId={id} />
+               <Comments templateId={id} userId={user.id}/>
             )}
             {selectedTab === 'Answers' && isCreator && (
                <Answers />

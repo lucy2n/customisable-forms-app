@@ -19,6 +19,11 @@ class Comment extends Model<CommentAttributes, CommentCreationAttributes> implem
   public text!: string;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
+
+  static associate() {
+    Comment.belongsTo(Template, { foreignKey: 'template_id', as: 'template' });
+    Comment.belongsTo(User, { foreignKey: 'user_id' });
+  }
 }
 
 Comment.init(
@@ -54,11 +59,5 @@ Comment.init(
     tableName: 'comments',
   }
 );
-
-Comment.belongsTo(Template, { foreignKey: 'template_id' });
-Comment.belongsTo(User, { foreignKey: 'user_id' });
-
-Template.hasMany(Comment, { foreignKey: 'template_id' });
-User.hasMany(Comment, { foreignKey: 'user_id' });
 
 export default Comment;
