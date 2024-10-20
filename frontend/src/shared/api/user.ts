@@ -55,6 +55,29 @@ export const getUserInformation = async () => {
     return res.json();
 };
 
+export const getUsers = async () => {
+  const token = localStorage.getItem('token');
+  
+  if (!token) {
+      throw new Error('Токен не найден');
+  }
+
+  const res = await fetch(`${base_url}/users/`, {
+      method: 'GET',
+      headers: {
+          accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+      },
+  });
+
+  if (!res.ok) {
+      throw new Error(`Ошибка: ${res.status}`);
+  }
+
+  return res.json();
+};
+
 export const logout = () => {
   localStorage.removeItem('token');
   console.log('Вы вышли из системы');

@@ -31,6 +31,7 @@ const Form: FC<IFormProps> = ({ template, questions, userId }) => {
         id: uuidv4(), 
         question_id: questionId,
         form_id: form_id,
+        template_id: template.id,
         user_id: userId,
         answer, // Ответ (строка или массив строк)
       };
@@ -50,11 +51,18 @@ const Form: FC<IFormProps> = ({ template, questions, userId }) => {
   
 
   const handleSubmitForm = async () => {
+    const cleanedAnswers = answers.map((answer) => ({
+      ...answer,
+      answer: Array.isArray(answer.answer)
+        ? answer.answer.map((a) => a.trim()) // удаляем пробелы у каждого элемента в массиве
+        : answer.answer.trim(), // удаляем пробелы у строки
+    }));
+
     const formData: IForm = {
         id: form_id,
         user_id: userId,
         template_id: template.id,
-        answers: answers.map(answers => answers.id),
+        answers: cleanedAnswers.map((answer) => answer.id),
     };
     console.log(answers);
     try {
@@ -64,6 +72,7 @@ const Form: FC<IFormProps> = ({ template, questions, userId }) => {
         const answerPromises = answers.map(answer => createAnswer({
             id: answer.id,
             question_id: answer.question_id,
+            template_id: template.id,
             form_id: form_id,
             user_id: userId,
             answer: answer.answer

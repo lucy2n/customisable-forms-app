@@ -1,5 +1,6 @@
 import React from "react";
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Chip, Tooltip} from "@nextui-org/react";
+import { IUser } from "../../entities/user/model/user";
 
 const columns = [
     {name: "NAME", uid: "name"},
@@ -8,54 +9,13 @@ const columns = [
     {name: "ACTIONS", uid: "actions"},
   ];
 
-  const users = [
-    {
-      id: 1,
-      name: "Tony Reichert",
-      role: "CEO",
-      team: "Management",
-      status: "active",
-      age: "29",
-      avatar: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
-      email: "tony.reichert@example.com",
-    },
-    {
-      id: 2,
-      name: "Zoey Lang",
-      role: "user",
-      status: "paused",
-      email: "zoey.lang@example.com",
-    },
-    {
-      id: 3,
-      name: "Jane Fisher",
-      role: "admin",
-      status: "active",
-      email: "jane.fisher@example.com",
-    },
-    {
-      id: 4,
-      name: "William Howard",
-      role: "user",
-      status: "vacation",
-      email: "william.howard@example.com",
-    },
-    {
-      id: 5,
-      name: "Kristen Copper",
-      role: "user",
-      status: "active",
-      email: "kristen.cooper@example.com",
-    },
-  ];
-
 const statusColorMap = {
   active: "success",
   paused: "danger",
   vacation: "warning",
 };
 
-const AdminPanel = () => {
+const AdminPanel = ({ users } : { users: IUser[] }) => {
   const renderCell = React.useCallback((user, columnKey) => {
     const cellValue = user[columnKey];
 
@@ -117,9 +77,9 @@ const AdminPanel = () => {
         )}
       </TableHeader>
       <TableBody items={users}>
-        {(item) => (
-          <TableRow key={item.id}>
-            {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
+        {(user) => (
+          <TableRow key={user.email}>
+            {(columnKey) => <TableCell>{renderCell(user, columnKey)}</TableCell>}
           </TableRow>
         )}
       </TableBody>

@@ -36,7 +36,7 @@ const CreateFormPage = () => {
         }
     }, [id]);
 
-    if (!template || !questions || !id || !user) {
+    if (!template || !questions || !id || !user || !answers) {
         return <div>Loading...</div>;
     }
 
@@ -52,7 +52,7 @@ const CreateFormPage = () => {
                <Comments templateId={id} userId={+user.id}/>
             )}
             {selectedTab === 'Answers' && isCreator && (
-               <Answers answers={answers ?? []}/>
+               <Answers answers={answers ?? []} questions={questions}/>
             )}
         </main>
     );
