@@ -9,11 +9,14 @@ import { useAppSelector } from "../../app/routes/lib/hook";
 import FormTabs from "./form-tabs/form-tabs";
 import Comments from "./comments/comments";
 import Answers from "./answers/answers";
+import { IAnswer } from "../../entities/answer/model/answer";
+import { getAnswers } from "../../shared/api/answer";
 
 const CreateFormPage = () => {
     const { id } = useParams();
     const [template, setTemplate] = useState<ITemplate>();
     const [questions, setQuestions] = useState<IQuestion[]>();
+    const [answers, setAnswers] = useState<IAnswer[]>();
     const user = useAppSelector((store) => store.user);
     const [selectedTab, setSelectedTab] = useState<string>('Form');
 
@@ -23,22 +26,17 @@ const CreateFormPage = () => {
 
     useEffect(() => {
         if (id) {
-            getTemplate(id)
-                .then(res => {
-                    console.log(res);
-                    setTemplate(res);
-                    getQuestions(id)
-                    .then(res => {
-                        console.log(res)
-                        setQuestions(res);
-                    })
-                    .catch(err => console.log(err));
+            Promise.all([getTemplate(id), getQuestions(id), getAnswers(id)])
+                .then(([templateRes, questionsRes, answersRes]) => {
+                    setTemplate(templateRes);
+                    setQuestions(questionsRes);
+                    setAnswers(answersRes);
                 })
                 .catch(err => console.log(err));
         }
     }, [id]);
 
-    if (!template || !questions) {
+    if (!template || !questions || !id || !user) {
         return <div>Loading...</div>;
     }
 
@@ -51,10 +49,10 @@ const CreateFormPage = () => {
                <Form template={template} questions={questions} userId={+user.id} />
             )}
             {selectedTab === 'Comments' && (
-               <Comments templateId={id} userId={user.id}/>
+               <Comments templateId={id} userId={+user.id}/>
             )}
             {selectedTab === 'Answers' && isCreator && (
-               <Answers />
+               <Answers answers={answers ?? []}/>
             )}
         </main>
     );

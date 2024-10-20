@@ -5,7 +5,7 @@ interface FormTabsProps {
     updateTab: (tab: string) => void;
 }
 
-const FormTabs: FC<FormTabsProps> = ({ updateTab, isAdmin }) => {
+const FormTabs: FC<FormTabsProps> = ({ updateTab }) => {
     return (
         <div className="flex w-full justify-center items-center flex-col">
             <Tabs

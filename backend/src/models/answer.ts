@@ -3,13 +3,15 @@ import sequelize from '../config/database';
 import Question from './question';
 import User from './user';
 import Form from './form';
+import Template from './template';
 
 
 interface AnswerAttributes {
   id: string;
   question_id: string;
   user_id: number;
-  form_id: string,
+  form_id: string;
+  template_id: string;
   answer: string | string[];
 }
 
@@ -20,6 +22,7 @@ class Answer extends Model<AnswerAttributes, AnswerCreationAttributes> implement
   public question_id!: string;
   public user_id!: number;
   public form_id!: string;
+  public template_id!: string;
   public answer!: string | string[];
 
   public readonly createdAt!: Date;
@@ -27,6 +30,7 @@ class Answer extends Model<AnswerAttributes, AnswerCreationAttributes> implement
 
   static associate() {
     Answer.belongsTo(Form, { foreignKey: 'form_id', as: 'form' });
+    Answer.belongsTo(Template, { foreignKey: 'template_id', as: 'template' })
   }
 }
 
@@ -58,6 +62,14 @@ Answer.init(
       allowNull: false,
       references: {
         model: Form,
+        key: 'id',
+      },
+    },
+    template_id: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      references: {
+        model: Template,
         key: 'id',
       },
     },

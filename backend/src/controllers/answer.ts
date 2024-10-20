@@ -7,13 +7,12 @@ export const createAnswer = async (req: Request, res: Response): Promise<void> =
     const formId = req.body.form_id;
     const form = await Form.findByPk(formId);
     if (!form) {
-      res.status(404).json({ message: `Form not found ${req.body.form_id}` });
+      res.status(404).json({ message: `Form not found ${formId}` });
       return
     };
 
     const answer = await Answer.create({
-      ...req.body,
-      form_id: formId,
+      ...req.body
     });
       res.status(201).json(answer);
   } catch (err: any) {
@@ -23,9 +22,9 @@ export const createAnswer = async (req: Request, res: Response): Promise<void> =
 
 export const getAnswers = async (req: Request, res: Response): Promise<void> => {
   try {
-    const formId = req.params.id;
+    const templateId = req.params.id;
     const answers = await Answer.findAll({
-      where: { form_id: formId },
+      where: { template_id: templateId },
     });
     
     if (!answers) {
