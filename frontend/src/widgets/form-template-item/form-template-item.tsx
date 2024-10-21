@@ -41,6 +41,7 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ template, refresh }) => {
                 template_id: template.id,
                 user_id: +user.id,
             }
+            console.log(like)
             addLike(like)
                 .then(() => {
                     setIsLikedByUser(true);

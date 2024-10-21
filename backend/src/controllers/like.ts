@@ -15,13 +15,9 @@ export const getLikes = async (req: IUserRequest, res: Response): Promise<void> 
       
       if (!likes) {
         throw new NotFoundError('Template not found')
+
+        res.json(likes);
       }
-  
-      const like = await Like.create({
-        ...req.body,
-        user_id: req.user?.id,
-      });
-        res.status(CREATED).json(like);
 
     } catch (err: any) {
       console.error('Error fetching questions:', err);
@@ -46,7 +42,7 @@ export const likeTemplate = async (req: IUserRequest, res: Response): Promise<vo
   
       const like = await Like.create({
         id: req.body.id,
-        user_id: req.user!.id,
+        user_id: req.body.user_id,
         template_id: id
       });
   
