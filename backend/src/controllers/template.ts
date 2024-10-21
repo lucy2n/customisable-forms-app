@@ -82,7 +82,7 @@ export const updateTemplate = async (req: IUserRequest, res: Response): Promise<
 
 export const deleteTemplate = async (req: IUserRequest, res: Response): Promise<void> => {
   try {
-    const template = await Template.findByPk(req.body.id);
+    const template = await Template.findByPk(req.params.id);
     if (!template) {
       throw new NotFoundError(NOT_FOUND_ERROR_TEMPLATE_MESSAGE);
     }

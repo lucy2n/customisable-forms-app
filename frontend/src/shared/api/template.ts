@@ -62,19 +62,19 @@ export const deleteTemplate = async (id: string) => {
     if (!token) {
         throw new Error('Токен не найден');
     }
-
-    const res = await fetch(`${base_url}/template/${id}`, {
-        method: 'DELETE',
-        headers: {
-            accept: 'application/json',
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
-        },
+  
+    const res = await fetch(`${base_url}/template/delete/${id}/`, {
+      method: 'DELETE',
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      credentials: 'include',
     });
-
-
-    return res.json();
-};
+  
+    return checkResponse<ITemplate>(res);
+  };
 
 
 export const createTemplate = async (template: ITemplate) => {
