@@ -15,9 +15,9 @@ export const getLikes = async (req: IUserRequest, res: Response): Promise<void> 
       
       if (!likes) {
         throw new NotFoundError('Template not found')
-
-        res.json(likes);
       }
+      
+      res.json(likes);
 
     } catch (err: any) {
       console.error('Error fetching questions:', err);
