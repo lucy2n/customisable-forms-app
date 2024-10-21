@@ -93,8 +93,6 @@ export const deleteTemplate = async (req: IUserRequest, res: Response): Promise<
       throw new UnauthorizedError(UNAUTHORIZED_ERROR_USER_MESSAGE);
     }
 
-    console.log(`Attempting to delete template ID: ${template.id}, by user ID: ${req.user.id}, is admin: ${req.user.is_admin}`);
-
 
     if (template.user_id !== req.user.id || !req.user.is_admin) {
       console.log('Forbidden deletion attempt by user:', req.user.id);

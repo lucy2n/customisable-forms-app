@@ -26,7 +26,7 @@ router.use(auth);
 
 router.get('/users/:user_id/templates', getTemplatesByUser);
 router.use('/users', userRouter);
-router.use('/template', templateRouter);
+router.use('/templates', templateRouter);
 router.use('/forms', formRouter);
 router.use('/questions', questionRouter);
 router.use('/answers', answerRouter);

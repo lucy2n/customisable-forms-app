@@ -43,7 +43,7 @@ export const getTemplate = async (id: string) => {
         throw new Error('Токен не найден');
     }
 
-    const res = await fetch(`${base_url}/template/${id}`, {
+    const res = await fetch(`${base_url}/templates/${id}`, {
         method: 'GET',
         headers: {
             accept: 'application/json',
@@ -55,28 +55,6 @@ export const getTemplate = async (id: string) => {
 
     return res.json();
 };
-
-export const deleteTemplate = async (templateId: string) => {
-    console.log(templateId)
-    const token = localStorage.getItem('token');
-    
-    if (!token) {
-        throw new Error('Токен не найден');
-    }
-  
-    const res = await fetch(`${base_url}/template/delete/${templateId}`, {
-      method: 'DELETE',
-      headers: {
-        accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
-      },
-      credentials: 'include',
-    });
-  
-    return checkResponse<ITemplate>(res);
-};
-
 
 export const createTemplate = async (template: ITemplate) => {
     const token = localStorage.getItem('token');
@@ -118,3 +96,26 @@ export const updateTemplate = async (templateId: string, updatedFields: Partial<
 
     return checkResponse<ITemplate>(res);
 };
+
+
+export const deleteTemplate = async (templateId: string) => {
+    console.log(templateId)
+    const token = localStorage.getItem('token');
+    
+    if (!token) {
+        throw new Error('Токен не найден');
+    }
+  
+    const res = await fetch(`${base_url}/templates/delete/${templateId}`, {
+      method: 'DELETE',
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      credentials: 'include',
+    });
+  
+    return checkResponse<ITemplate>(res);
+};
+
