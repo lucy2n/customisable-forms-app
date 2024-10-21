@@ -56,6 +56,26 @@ export const getTemplate = async (id: string) => {
     return res.json();
 };
 
+export const deleteTemplate = async (id: string) => {
+    const token = localStorage.getItem('token');
+    
+    if (!token) {
+        throw new Error('Токен не найден');
+    }
+
+    const res = await fetch(`${base_url}/template/${id}`, {
+        method: 'DELETE',
+        headers: {
+            accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+    });
+
+
+    return res.json();
+};
+
 
 export const createTemplate = async (template: ITemplate) => {
     const token = localStorage.getItem('token');

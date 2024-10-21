@@ -78,6 +78,47 @@ export const getUsers = async () => {
   return res.json();
 };
 
+export const updateUser = async (userId: number, updatedFields: Partial<IUser>) => {
+  const token = localStorage.getItem('token');
+  
+  if (!token) {
+      throw new Error('Токен не найден');
+  }
+
+  const res = await fetch(`${base_url}/users/${userId}/`, {
+    method: 'PUT',
+    headers: {
+      accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify(updatedFields),
+    credentials: 'include',
+  });
+
+  return checkResponse<IUser>(res);
+};
+
+export const deleteUser = async (userId: number) => {
+  const token = localStorage.getItem('token');
+  
+  if (!token) {
+      throw new Error('Токен не найден');
+  }
+
+  const res = await fetch(`${base_url}/users/${userId}/`, {
+    method: 'DELETE',
+    headers: {
+      accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    },
+    credentials: 'include',
+  });
+
+  return checkResponse<IUser>(res);
+};
+
 export const logout = () => {
   localStorage.removeItem('token');
   console.log('Вы вышли из системы');

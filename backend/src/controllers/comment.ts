@@ -1,23 +1,26 @@
 import { Request, Response } from 'express';
 import Template from '../models/template';
 import Comment from '../models/comment';
+import NotFoundError from '../errors/not-found-error';
+import InternalServerError from '../errors/internal-server-error';
+import BadRequestError from '../errors/bad-request-error';
+import { CREATED, NOT_FOUND_ERROR_COMMENTS_MESSAGE, NOT_FOUND_ERROR_TEMPLATE_MESSAGE } from '../utils/constants';
 
 export const createComment = async (req: Request, res: Response): Promise<void> => {
   try {
     const templateId = req.body.template_id;
     const template = await Template.findByPk(templateId);
     if (!template) {
-      res.status(404).json({ message: `Template not found ${req.body.template_id}` });
-      return
+        throw new NotFoundError(NOT_FOUND_ERROR_TEMPLATE_MESSAGE)
     };
 
     const comment = await Comment.create({
       ...req.body,
       template_id: templateId,
     });
-      res.status(201).json(comment);
+      res.status(CREATED).json(comment);
   } catch (err: any) {
-      res.status(400).json({ message: err.message });
+      throw new BadRequestError(err.message)
   }
 };
 
@@ -29,13 +32,11 @@ export const getComments = async (req: Request, res: Response): Promise<void> =>
     });
     
     if (!comments) {
-      res.status(404).json({ message: 'Template not found' });
-      return;
+        throw new NotFoundError(NOT_FOUND_ERROR_COMMENTS_MESSAGE)
     }
 
     res.json(comments);
-  } catch (error) {
-    console.error('Error fetching questions:', error);
-    res.status(500).json({ message: 'Internal server error' });
+  } catch (err: any) {
+    throw new InternalServerError(err.message)
   }
 };

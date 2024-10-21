@@ -2,6 +2,9 @@ import { Request, Response } from 'express';
 import Question from '../models/question';
 import Template from '../models/template';
 import Form from '../models/form';
+import NotFoundError from '../errors/not-found-error';
+import InternalServerError from '../errors/internal-server-error';
+import BadRequestError from '../errors/bad-request-error';
 
 export const getQuestions = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -11,14 +14,13 @@ export const getQuestions = async (req: Request, res: Response): Promise<void> =
     });
     
     if (!questions) {
-      res.status(404).json({ message: 'Template not found' });
-      return;
+      throw new NotFoundError('Template not found')
     }
 
     res.json(questions);
-  } catch (error) {
-    console.error('Error fetching questions:', error);
-    res.status(500).json({ message: 'Internal server error' });
+  } catch (err: any) {
+    console.error('Error fetching questions:', err);
+    throw new InternalServerError(err.message)
   }
 };
 
@@ -27,8 +29,7 @@ export const createQuestion = async (req: Request, res: Response): Promise<void>
       const templateId = req.body.template_id;
       const template = await Template.findByPk(templateId);
       if (!template) {
-        res.status(404).json({ message: `Template not found ${req.body.template_id}` });
-        return
+        throw new NotFoundError(`Template not found ${req.body.template_id}`)
       };
   
       const question = await Question.create({
@@ -37,7 +38,7 @@ export const createQuestion = async (req: Request, res: Response): Promise<void>
       });
         res.status(201).json(question);
     } catch (err: any) {
-        res.status(400).json({ message: err.message });
+      throw new BadRequestError(err.message)
     }
 };
 
@@ -45,14 +46,13 @@ export const updateQuestion = async (req: Request, res: Response): Promise<void>
     try {
       const question = await Question.findByPk(req.params.id);
       if (!question)  {
-        res.status(404).json({ message: 'Question not found' });
-        return
+        throw new NotFoundError('Question not found')
       };
   
       await question.update(req.body);
         res.json(question);
     } catch (err: any) {
-       res.status(400).json({ message: err.message });
+        throw new BadRequestError(err.message)
     }
 };
 
@@ -60,13 +60,12 @@ export const deleteQuestion = async (req: Request, res: Response): Promise<void>
     try {
       const question = await Question.findByPk(req.params.id);
       if (!question)  {
-        res.status(404).json({ message: 'Question not found' });
-        return
+        throw new NotFoundError('Question not found')
     };
   
       await question.destroy();
         res.json({ message: 'Question deleted' });
     } catch (err: any) {
-        res.status(500).json({ message: err.message });
+        throw new InternalServerError(err.message)
     }
 };

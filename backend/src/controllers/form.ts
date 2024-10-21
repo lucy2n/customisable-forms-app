@@ -3,6 +3,11 @@ import Form from '../models/form';
 import Template from '../models/template';
 import User from '../models/user';
 import { IUserRequest } from '../types';
+import UnauthorizedError from '../errors/unauthorized-err';
+import NotFoundError from '../errors/not-found-error';
+import InternalServerError from '../errors/internal-server-error';
+import BadRequestError from '../errors/bad-request-error';
+import { CREATED, NOT_FOUND_ERROR_FORM_MESSAGE, NOT_FOUND_ERROR_TEMPLATE_MESSAGE, REQUEST_OK, UNAUTHORIZED_ERROR_USER_MESSAGE } from '../utils/constants';
 
 export const getForms = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -12,13 +17,12 @@ export const getForms = async (req: Request, res: Response): Promise<void> => {
     });
 
     if (!forms || forms.length === 0) {
-      res.status(404).json({ message: 'Forms not found for this template' });
-      return;
+      throw new NotFoundError(NOT_FOUND_ERROR_FORM_MESSAGE)
     }
 
-    res.status(200).json(forms);
+    res.status(REQUEST_OK).json(forms);
   } catch (err: any) {
-    res.status(500).json({ message: err.message });
+    throw new InternalServerError(err.message)
   }
 };
 
@@ -27,22 +31,20 @@ export const createForm = async (req: IUserRequest, res: Response): Promise<void
     const template = await Template.findByPk(req.body.template_id);
 
     if (!template) {
-      res.status(404).json({ message: 'Template not found' });
-      return;
+      throw new NotFoundError(NOT_FOUND_ERROR_TEMPLATE_MESSAGE)
     }
 
     if (!req.user) {
-      res.status(401).json({ message: 'User not authenticated' });
-      return;
+      throw new UnauthorizedError(UNAUTHORIZED_ERROR_USER_MESSAGE);
     }
 
     const form = await Form.create({
       ...req.body
     });
 
-    res.status(201).json(form);
+    res.status(CREATED).json(form);
   } catch (err: any) {
-    res.status(400).json({ message: err.message });
+    throw new BadRequestError(err.message)
   }
 };
 
@@ -51,13 +53,12 @@ export const deleteForm = async (req: Request, res: Response): Promise<void> => 
     const form = await Form.findByPk(req.params.id);
 
     if (!form) {
-      res.status(404).json({ message: 'Form not found' });
-      return;
+      throw new NotFoundError(NOT_FOUND_ERROR_FORM_MESSAGE)
     }
 
     await form.destroy();
-    res.status(200).json({ message: 'Form deleted successfully' });
+    res.status(REQUEST_OK).json({ message: 'Form deleted successfully' });
   } catch (err: any) {
-    res.status(500).json({ message: err.message });
+      throw new InternalServerError(err.message)
   }
 };

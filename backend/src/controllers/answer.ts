@@ -1,22 +1,25 @@
 import { Request, Response, NextFunction } from 'express';
 import Form from '../models/form';
 import Answer from '../models/answer';
+import BadRequestError from '../errors/bad-request-error';
+import NotFoundError from '../errors/not-found-error';
+import InternalServerError from '../errors/internal-server-error';
+import { CREATED, NOT_FOUND_ERROR_FORM_MESSAGE, NOT_FOUND_ERROR_TEMPLATE_MESSAGE } from '../utils/constants';
 
 export const createAnswer = async (req: Request, res: Response): Promise<void> => {
   try {
     const formId = req.body.form_id;
     const form = await Form.findByPk(formId);
     if (!form) {
-      res.status(404).json({ message: `Form not found ${formId}` });
-      return
+      throw new NotFoundError(NOT_FOUND_ERROR_FORM_MESSAGE)
     };
 
     const answer = await Answer.create({
       ...req.body
     });
-      res.status(201).json(answer);
+      res.status(CREATED).json(answer);
   } catch (err: any) {
-      res.status(400).json({ message: err.message });
+     throw new BadRequestError(err.message)
   }
 };
 
@@ -28,13 +31,11 @@ export const getAnswers = async (req: Request, res: Response): Promise<void> => 
     });
     
     if (!answers) {
-      res.status(404).json({ message: 'Template not found' });
-      return;
+      throw new NotFoundError(NOT_FOUND_ERROR_TEMPLATE_MESSAGE)
     }
 
     res.json(answers);
-  } catch (error) {
-    console.error('Error fetching questions:', error);
-    res.status(500).json({ message: 'Internal server error' });
+  } catch (err: any) {
+    throw new InternalServerError(err.message)
   }
 };

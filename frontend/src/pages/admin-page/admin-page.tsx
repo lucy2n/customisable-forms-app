@@ -4,22 +4,26 @@ import { IUser } from "../../entities/user/model/user";
 import { getUsers } from "../../shared/api/user";
 
 const AdminPage = () => {
-    const [users, setUsers] = useState<IUser>();
+    const [users, setUsers] = useState<IUser[]>();
 
     useEffect(() => {
+        refresh();
+    }, []);
+
+    const refresh = () => {
         getUsers()
-        .then(res => setUsers(res))
-        .catch(err => console.log(err))
-    })
+            .then(res => setUsers(res))
+            .catch(err => console.log(err))
+    };
 
     if (!users) {
-        <p>Loading...</p>
+        return <p>Loading...</p>
     }
 
 
     return (
         <main className="flex flex-col justify-between w-11/12 mr-auto ml-auto pt-24">
-            <AdminPanel users={users}/>
+            <AdminPanel users={users} refresh={refresh}/>
         </main>
     );
 };

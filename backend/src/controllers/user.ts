@@ -4,39 +4,38 @@ import jwt from 'jsonwebtoken';
 import User from '../models/user';
 import UnauthorizedError from '../errors/unauthorized-err';
 import { IUserRequest } from '../types';
+import ForbiddenError from '../errors/forbidden-error';
+import BadRequestError from '../errors/bad-request-error';
+import NotFoundError from '../errors/not-found-error';
+import InternalServerError from '../errors/internal-server-error';
+import { BAD_REQUEST_ERROR_ALL_FIELDS_REQUIRED, BAD_REQUEST_ERROR_USER_DATA_MESSAGE, BAD_REQUEST_ERROR_USER_EMAIL_MESSAGE, CREATED, FORBIDDEN_ERROR_USER, FORBIDDEN_ERROR_USER_BLOCKED, NOT_FOUND_ERROR_USER_MESSAGE, UNAUTHORIZED_ERROR_USER_MESSAGE } from '../utils/constants';
 
 export const createUser = async (req: Request, res: Response): Promise<void> => {
   try {
     const { name, email, password } = req.body;
 
-    // Валидация входных данных
     if (!name || !email || !password) {
-      res.status(400).json({ message: 'Все поля обязательны для заполнения' });
-      return;
+      throw new BadRequestError(BAD_REQUEST_ERROR_ALL_FIELDS_REQUIRED);
     }
 
-    // Проверка, существует ли пользователь с таким email
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
-      res.status(400).json({ message: 'Пользователь с таким email уже существует' });
-      return;
+      throw new BadRequestError(BAD_REQUEST_ERROR_USER_EMAIL_MESSAGE)
     }
 
-    // Хэширование пароля
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Создание пользователя
     const newUser = await User.create({
       name,
       email,
       password: hashedPassword,
-      is_admin: false, // Необязательно, если в модели defaultValue: false
+      is_admin: false,
     });
 
-    res.status(201).json(newUser);
+    res.status(CREATED).json(newUser);
   } catch (err: any) {
     console.error(err);
-    res.status(500).json({ message: 'Ошибка сервера при создании пользователя' });
+    throw new InternalServerError(err.message)
   }
 };
 
@@ -44,34 +43,31 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password } = req.body;
 
-    // Валидация входных данных
     if (!email || !password) {
-      res.status(400).json({ message: 'Необходимо указать email и пароль' });
-      return;
+      throw new BadRequestError(BAD_REQUEST_ERROR_USER_DATA_MESSAGE);
     }
 
-    // Поиск пользователя по email
     const user = await User.findOne({ where: { email } });
     if (!user) {
-      throw new UnauthorizedError('Неверные учетные данные');
+      throw new UnauthorizedError(UNAUTHORIZED_ERROR_USER_MESSAGE);
     }
 
-    // Проверка пароля
+    if (user.status === 'blocked') {
+      throw new ForbiddenError(FORBIDDEN_ERROR_USER_BLOCKED);
+    }
+
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      throw new UnauthorizedError('Неверные учетные данные');
+      throw new UnauthorizedError(BAD_REQUEST_ERROR_USER_DATA_MESSAGE);
     }
 
-    // Генерация JWT
     const token = jwt.sign(
-      { id: user.id, email: user.email }, // Полезные данные, которые будут в токене
-      'super-strong-secret', // Секретный ключ для шифрования
-      { expiresIn: '1h' } // Время жизни токена
+      { id: user.id, email: user.email },
+      'super-strong-secret',
+      { expiresIn: '1h' }
     );
 
-    // Возврат токена и информации о пользователе
     res.json({
-      message: 'Успешный вход',
       token,
       user: {
         name: user.name,
@@ -80,9 +76,9 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     });
   } catch (err: any) {
     if (err instanceof UnauthorizedError) {
-      res.status(401).json({ message: err.message });
+      throw new UnauthorizedError(BAD_REQUEST_ERROR_USER_DATA_MESSAGE);
     } else {
-      res.status(500).json({ message: `Ошибка сервера при входе ${err}` });
+      throw new InternalServerError(`Server error on login ${err}`)
     }
   }
 };
@@ -93,12 +89,12 @@ export const getMe = async (req: IUserRequest, res: Response): Promise<void> => 
     console.log(userId)
 
     if (!userId) {
-      res.status(400).json({ message: 'ID пользователя не найден' });
+      throw new BadRequestError(NOT_FOUND_ERROR_USER_MESSAGE)
     }
 
     const user = await User.findByPk(userId);
     if (!user) {
-      res.status(404).json({ message: 'Пользователь не найден' });
+      throw new NotFoundError(NOT_FOUND_ERROR_USER_MESSAGE);
     }
 
     res.json({
@@ -107,9 +103,8 @@ export const getMe = async (req: IUserRequest, res: Response): Promise<void> => 
       email: user?.email,
       is_admin: user?.is_admin,
     });
-  } catch (err) {
-    console.error('Ошибка сервера при получении данных пользователя:', err);
-    res.status(500).json({ message: 'Ошибка сервера при получении данных пользователя' });
+  } catch (err: any) {
+    throw new InternalServerError(err.message)
   }
 };
 
@@ -118,44 +113,48 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
     const users = await User.findAll();
     res.json(users);
   } catch (err: any) {
-    res.status(500).json({ message: err.message });
+    throw new InternalServerError(err.message)
   }
 };
 
-// Обновить пользователя
-export const updateUser = async (req: Request, res: Response): Promise<void> => {
+export const updateUser = async (req: IUserRequest, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
     const user = await User.findByPk(id);
 
-    // Проверка на существование пользователя
     if (!user) {
-      res.status(404).json({ message: 'Пользователь не найден' });
+      throw new NotFoundError(NOT_FOUND_ERROR_USER_MESSAGE);
     }
 
-    await user?.update(req.body);
+    if (req.user?.id !== user.id && !req.user?.is_admin) {
+      throw new ForbiddenError(FORBIDDEN_ERROR_USER);
+    }
+
+    await user.update(req.body);
     res.json(user);
   } catch (err: any) {
     console.error(err);
-    res.status(400).json({ message: 'Ошибка при обновлении пользователя' });
+    throw new BadRequestError(err.message);
   }
 };
 
-// Удалить пользователя
-export const deleteUser = async (req: Request, res: Response): Promise<void> => {
+export const deleteUser = async (req: IUserRequest, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
     const user = await User.findByPk(id);
 
     if (!user) {
-      res.status(404).json({ message: 'Пользователь не найден' });
+      throw new NotFoundError(NOT_FOUND_ERROR_USER_MESSAGE)
     }
 
-    // Удаление пользователя
+    if (req.user?.id !== user.id && !req.user?.is_admin) {
+      throw new ForbiddenError(FORBIDDEN_ERROR_USER);
+    }
+
     await user?.destroy();
-    res.json({ message: `Пользователь с id ${id} удалён` });
+    res.json({ message: `User with id ${id} deleted` });
   } catch (err: any) {
     console.error(err);
-    res.status(500).json({ message: 'Ошибка сервера при удалении пользователя' });
+    throw new InternalServerError(err.message)
   }
 };
