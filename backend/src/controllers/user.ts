@@ -127,7 +127,7 @@ export const updateUser = async (req: IUserRequest, res: Response): Promise<void
     }
 
     if (req.user?.id !== user.id && !req.user?.is_admin) {
-      throw new ForbiddenError(FORBIDDEN_ERROR_USER);
+      throw new ForbiddenError(FORBIDDEN_ERROR_USER_BLOCKED);
     }
 
     await user.update(req.body);

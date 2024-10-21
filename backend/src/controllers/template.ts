@@ -94,7 +94,7 @@ export const deleteTemplate = async (req: IUserRequest, res: Response): Promise<
     }
 
 
-    if (template.user_id !== req.user.id || !req.user.is_admin) {
+    if (template.user_id !== req.user.id) {
       console.log('Forbidden deletion attempt by user:', req.user.id);
       throw new ForbiddenError(FORBIDDEN_ERROR_USER);
     }
