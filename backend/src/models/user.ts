@@ -15,9 +15,11 @@ class User extends Model {
   static associate() {
     const Template = require('./template').default;
     const Form = require('./form').default;
+    const Like = require('./like').default;
 
     User.hasMany(Template, { foreignKey: 'user_id', as: 'templates' });
     User.hasMany(Form, { foreignKey: 'user_id', as: 'forms' });
+    User.hasMany(Like, { foreignKey: 'user_id', as: 'likes' });
   }
 }
 

@@ -7,6 +7,7 @@ import Form from './models/form';
 import Question from './models/question';
 import cors from 'cors';
 import Answer from './models/answer';
+import Like from './models/like';
 
 const app = express();
 
@@ -23,6 +24,7 @@ Template.associate && Template.associate();
 Form.associate && Form.associate();
 Question.associate && Question.associate();
 Answer.associate && Answer.associate();
+Like.associate && Like.associate();
 
 sequelize.sync({ force: false })
   .then(() => {

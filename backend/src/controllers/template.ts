@@ -7,6 +7,8 @@ import NotFoundError from '../errors/not-found-error';
 import BadRequestError from '../errors/bad-request-error';
 import InternalServerError from '../errors/internal-server-error';
 import { CREATED, FORBIDDEN_ERROR_USER, NOT_FOUND_ERROR_TEMPLATE_MESSAGE, UNAUTHORIZED_ERROR_USER_MESSAGE } from '../utils/constants';
+import Like from '../models/like';
+import sequelize from 'sequelize';
 
 export const getTemplates = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -30,6 +32,43 @@ export const getTemplatesByUser = async (req: Request, res: Response): Promise<v
     res.json(templates);
   } catch (err: any) {
     throw new InternalServerError(err.message)
+  }
+};
+
+export const getLatestTemplates = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const templates = await Template.findAll({
+      order: [['createdAt', 'DESC']],
+      limit: 5
+    });
+
+    res.json(templates);
+  } catch (err: any) {
+    throw new InternalServerError(err.message);
+  }
+};
+
+export const getMostLikedTemplates = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const templates = await Template.findAll({
+      include: [
+        {
+          model: Like,
+          as: 'likes',
+          attributes: [],
+        }
+      ],
+      attributes: {
+        include: [[sequelize.fn('COUNT', sequelize.col('likes.id')), 'likeCount']]
+      },
+      group: ['Template.id'],
+      order: [[sequelize.literal('likeCount'), 'DESC']],
+      limit: 5
+    });
+
+    res.json(templates);
+  } catch (err: any) {
+    throw new InternalServerError(err.message);
   }
 };
 
