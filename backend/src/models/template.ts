@@ -1,6 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/database';
-import Question from './question';
+import Like from './like';
 
 interface ModelWithAssociations extends Model {
   associate?: () => void;
@@ -12,6 +12,7 @@ class Template extends Model implements ModelWithAssociations {
   public description!: string;
   public user_id!: number;
   public questions?: string[];
+  public likes?: Like[];
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;

@@ -6,6 +6,24 @@ import { BAD_REQUEST_ERROR_LIKE_MESSAGE, CREATED, NOT_FOUND_ERROR_LIKE_MESSAGE }
 import BadRequestError from '../errors/bad-request-error';
 import NotFoundError from '../errors/not-found-error';
 
+export const getLikes = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { id } = req.params;
+        const likes = await Like.findAll({
+            where: { template_id: id },
+        });
+      
+      if (!likes) {
+        throw new NotFoundError('Template not found')
+      }
+  
+      res.json(likes);
+    } catch (err: any) {
+      console.error('Error fetching questions:', err);
+      throw new InternalServerError(err.message)
+    }
+  };
+
 export const likeTemplate = async (req: IUserRequest, res: Response): Promise<void> => {
     try {
       const { id } = req.params;

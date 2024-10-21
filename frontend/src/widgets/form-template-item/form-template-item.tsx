@@ -1,11 +1,12 @@
+import { FC, useState } from "react";
 import {Card, CardFooter, Image, Button, CardHeader, Tooltip} from "@nextui-org/react";
 import { ITemplate } from "../../entities/template/model/template";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../app/routes/lib/hook";
+import { deleteTemplate } from "../../shared/api/template";
 import trash from '../../assets/trash-03-2.svg';
 import edit from '../../assets/icons8-edit.svg';
-import { deleteTemplate } from "../../shared/api/template";
-import { FC } from "react";
+import like from '../../assets/icons8-heart-24.png';
 
 interface FormTemplateItemProps {
     template: ITemplate,
@@ -16,10 +17,16 @@ const FormTemplateItem:FC<FormTemplateItemProps> = ({template, refresh}) => {
     const user = useAppSelector((store) => store.user);
     const navigate = useNavigate();
     const hasRights = template.user_id + '' === user.id || user.is_admin;
+    const [isLiked, setIsLiked] = useState(false);
+    const [likesCount, setLikesCount] = useState(template.likes_count); 
 
     const handleDeleteTemplate = (id: string) => {
         deleteTemplate(id)
         .then(() => refresh());
+    }
+
+    const toggleLike = () => {
+
     }
 
     return (
@@ -30,7 +37,7 @@ const FormTemplateItem:FC<FormTemplateItemProps> = ({template, refresh}) => {
                             <Button isIconOnly color="secondary" variant="light" size="sm" onClick={() => handleDeleteTemplate(template.id)}>
                                     <img src={trash} alt="delete form" />
                             </Button>
-                            <Button color="secondary" variant="light" radius="full" size="sm" onClick={() => navigate(`/template/${template.id}/edit`)}>
+                            <Button color="secondary" variant="light" size="sm" onClick={() => navigate(`/template/${template.id}/edit`)}>
                                 <img src={edit} alt="edit form" />
                             </Button>
                     </CardHeader>
@@ -47,10 +54,16 @@ const FormTemplateItem:FC<FormTemplateItemProps> = ({template, refresh}) => {
                     <b className="text-base">{template.title}</b>
                 </div>
                 </div>
-                <Tooltip color="secondary" content="If you want to use this template you should be authorized">
-                     <Button color="secondary" radius="full" size="sm" onClick={() => navigate(`/form/${template.id}`)}>Fill form</Button>
-                 </Tooltip>
+                <div className="flex justify-end !items-end">
+                    <Tooltip color="secondary" content="If you want to use this template you should be authorized">
+                        <Button color="secondary" radius="full" size="sm" onClick={() => navigate(`/form/${template.id}`)}>Fill form</Button>
+                    </Tooltip>
+                    <Button color="secondary" variant="light" size="sm" >
+                        <img src={like} alt="like form" />
+                    </Button>
+                </div>
             </CardFooter>
+            
             </Card>
           );
 }
