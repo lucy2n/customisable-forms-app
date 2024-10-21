@@ -84,20 +84,27 @@ export const deleteTemplate = async (req: IUserRequest, res: Response): Promise<
   try {
     const template = await Template.findByPk(req.params.id);
     if (!template) {
+      console.log('Template not found:', req.params.id);
       throw new NotFoundError(NOT_FOUND_ERROR_TEMPLATE_MESSAGE);
     }
 
     if (!req.user) {
+      console.log('Unauthorized request:', req.params.id);
       throw new UnauthorizedError(UNAUTHORIZED_ERROR_USER_MESSAGE);
     }
 
+    console.log(`Attempting to delete template ID: ${template.id}, by user ID: ${req.user.id}, is admin: ${req.user.is_admin}`);
+
+
     if (template.user_id !== req.user.id || !req.user.is_admin) {
+      console.log('Forbidden deletion attempt by user:', req.user.id);
       throw new ForbiddenError(FORBIDDEN_ERROR_USER);
     }
 
     await template.destroy();
-    res.json({ message: 'Template deleted' });
+    res.json({ message: 'Template deleted successfully' });
   } catch (err: any) {
-    throw new InternalServerError(err.message)
+    console.error('Delete template error:', err.message);
+    throw new InternalServerError(err.message);
   }
 };

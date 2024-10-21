@@ -11,7 +11,7 @@ const FormTemplateItem = ({template} : {template: ITemplate}) => {
     const navigate = useNavigate();
     const hasRights = template.user_id + '' === user.id || user.is_admin;
 
-    const handleDeleteTemplate = (id: number) => {
+    const handleDeleteTemplate = (id: string) => {
         deleteTemplate(id)
     }
 
@@ -46,39 +46,6 @@ const FormTemplateItem = ({template} : {template: ITemplate}) => {
             </CardFooter>
             </Card>
           );
-    //     <Card isFooterBlurred className="relative w-1/4 h-[300px] col-span-12 sm:col-span-7">
-    //         <CardHeader className="absolute top-1 left-1">
-    //             <Button className="w-2 h-2" color="secondary" variant="flat" radius="full" size="sm">
-    //                 <img src={trash} alt="delete form" />
-    //             </Button>
-    //         </CardHeader>
-    //         <CardBody className="overflow-visible p-0">
-    //         <Image
-    //             shadow="sm"
-    //             radius="lg"
-    //             width="100%"
-    //             alt={template.title}
-    //             className="w-full object-cover h-[240px]"
-    //             src="https://img08.rl0.ru/afisha/e1200x800i/daily.afisha.ru/uploads/images/2/b2/2b2e08b175e4cb5f143daf2bda7658a0.png"
-    //             />
-    //         </CardBody>
-    //          <CardFooter className="text-small justify-between">
-    //             <div>
-    //                 <b className="text-base">{template.title}</b>
-    //                 <p className="text-default-500">{template.description}</p>
-    //             </div>
-    //             <div>
-    //             <Tooltip color="secondary" content="If you want to use this template you should be authorized">
-    //                 <Button color="secondary" variant="flat" radius="full" size="sm" onClick={() => navigate(`/form/${template.id}`)}>Fill form</Button>
-    //             </Tooltip>
-    //             {
-    //                 isCreator && 
-    //                 <Button color="secondary" variant="flat" radius="full" size="sm" onClick={() => navigate(`/template/${template.id}/edit`)}>Edit</Button>
-    //             }
-    //             </div>
-    //       </CardFooter>
-    //     </Card>
-    //   );
 }
 
 export default FormTemplateItem;
