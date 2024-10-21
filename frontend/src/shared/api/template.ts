@@ -104,7 +104,7 @@ export const deleteTemplate = async (templateId: string) => {
     if (!token) {
         throw new Error('Token not found');
     }
-        const res = await fetch(`${base_url}/template/delete/${templateId}/`, {
+        const res = await fetch(`${base_url}/templates/${templateId}`, {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',

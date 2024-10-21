@@ -8,10 +8,14 @@ const MainPage = () => {
     const [templates, setTemplates] = useState<ITemplate[]>([]);
 
     useEffect(() => {
+        refresh();
+    }, []);
+
+    const refresh = () => {
         getTemplates()
         .then(res => setTemplates(res))
         .catch(err => console.log(err))
-    }, [])
+    };
 
     return (
         <main className="flex flex-col justify-between w-11/12 mr-auto ml-auto pt-24 bg-gradient">
@@ -32,7 +36,7 @@ const MainPage = () => {
                     Create quizzes, surveys, polls, and more with ease! Whether you’re collecting feedback, conducting tests, or gathering data through questionnaires, FormLab empowers you to build fully customizable forms tailored to your needs.
                 </motion.p>
             </section>
-            <FormTemplateList title='New Templates' templates={templates}/>
+            <FormTemplateList title='New Templates' templates={templates} refresh={refresh}/>
         </main>
     );
 }

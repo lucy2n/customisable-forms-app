@@ -5,14 +5,21 @@ import { useAppSelector } from "../../app/routes/lib/hook";
 import trash from '../../assets/trash-03-2.svg';
 import edit from '../../assets/icons8-edit.svg';
 import { deleteTemplate } from "../../shared/api/template";
+import { FC } from "react";
 
-const FormTemplateItem = ({template} : {template: ITemplate}) => {
+interface FormTemplateItemProps {
+    template: ITemplate,
+    refresh: () => void
+}
+
+const FormTemplateItem:FC<FormTemplateItemProps> = ({template, refresh}) => {
     const user = useAppSelector((store) => store.user);
     const navigate = useNavigate();
     const hasRights = template.user_id + '' === user.id || user.is_admin;
 
     const handleDeleteTemplate = (id: string) => {
         deleteTemplate(id)
+        .then(() => refresh());
     }
 
     return (
