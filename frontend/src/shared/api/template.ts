@@ -83,14 +83,14 @@ export const updateTemplate = async (templateId: string, updatedFields: Partial<
         throw new Error('Токен не найден');
     }
 
-    const res = await fetch(`${base_url}/template/update/${templateId}`, {
+    const res = await fetch(`${base_url}/templates/update/${templateId}`, {
       method: 'PUT',
       headers: {
         accept: 'application/json',
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify(updatedFields),  // Передаем только обновленные поля
+      body: JSON.stringify(updatedFields),
       credentials: 'include',
     });
 
@@ -99,23 +99,21 @@ export const updateTemplate = async (templateId: string, updatedFields: Partial<
 
 
 export const deleteTemplate = async (templateId: string) => {
-    console.log(templateId)
     const token = localStorage.getItem('token');
     
     if (!token) {
-        throw new Error('Токен не найден');
+        throw new Error('Token not found');
     }
-  
-    const res = await fetch(`${base_url}/templates/delete/${templateId}`, {
-      method: 'DELETE',
-      headers: {
-        accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
-      },
-      credentials: 'include',
-    });
-  
-    return checkResponse<ITemplate>(res);
+        const res = await fetch(`${base_url}/template/delete/${templateId}/`, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+            credentials: 'include',
+        });
+
+        return checkResponse<ITemplate>(res);
 };
 

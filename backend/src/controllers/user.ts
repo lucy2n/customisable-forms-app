@@ -147,7 +147,7 @@ export const deleteUser = async (req: IUserRequest, res: Response): Promise<void
       throw new NotFoundError(NOT_FOUND_ERROR_USER_MESSAGE)
     }
 
-    if (req.user?.id !== user.id && !req.user?.is_admin) {
+    if (req.user?.id !== user.id) {
       throw new ForbiddenError(FORBIDDEN_ERROR_USER);
     }
 
