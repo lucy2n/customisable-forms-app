@@ -6,6 +6,6 @@ const router = Router();
 router.post('/create', createTemplate);
 router.get('/:id', getTemplate);
 router.put('/update/:id', updateTemplate);
-router.delete('/delete/:id', deleteTemplate);
+router.delete('/:id', deleteTemplate);
 
 export default router;

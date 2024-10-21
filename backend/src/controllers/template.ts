@@ -82,20 +82,19 @@ export const updateTemplate = async (req: IUserRequest, res: Response): Promise<
 
 export const deleteTemplate = async (req: IUserRequest, res: Response): Promise<void> => {
   try {
-    const template = await Template.findByPk(req.params.id);
+    const { id } = req.params;
+    const template = await Template.findByPk(id);
+
     if (!template) {
-      console.log('Template not found:', req.params.id);
       throw new NotFoundError(NOT_FOUND_ERROR_TEMPLATE_MESSAGE);
     }
 
     if (!req.user) {
-      console.log('Unauthorized request:', req.params.id);
       throw new UnauthorizedError(UNAUTHORIZED_ERROR_USER_MESSAGE);
     }
 
 
     if (template.user_id !== req.user.id) {
-      console.log('Forbidden deletion attempt by user:', req.user.id);
       throw new ForbiddenError(FORBIDDEN_ERROR_USER);
     }
 
