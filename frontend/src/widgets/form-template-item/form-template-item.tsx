@@ -5,11 +5,12 @@ import { ITemplate } from "../../entities/template/model/template";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../app/routes/lib/hook";
 import { deleteTemplate } from "../../shared/api/template";
+import { getLikes, addLike, removeLike } from "../../shared/api/like";
+import { ILike } from "../../entities/like/model/like";
 import trash from '../../assets/trash-03-2.svg';
 import edit from '../../assets/icons8-edit.svg';
 import like from '../../assets/icons8-heart-24.png';
-import { getLikes, addLike, removeLike } from "../../shared/api/like";
-import { ILike } from "../../entities/like/model/like";
+import unlike from '../../assets/icons8-heart-24-2.png';
 
 interface FormTemplateItemProps {
     template: ITemplate;
@@ -64,8 +65,8 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ template, refresh }) => {
             <CardHeader className="absolute z-10 top-1 justify-end !items-end">
                 <div className="flex flex-grow gap-2 items-center">
                     <img
-                        className={`w-6 h-6 cursor-pointer ${isLikedByUser ? 'text-red-500' : ''}`}
-                        src={like}
+                        className={`w-6 h-6 cursor-pointer`}
+                        src={isLikedByUser ? unlike : like}
                         alt="like form"
                         onClick={toggleLike}
                     />
