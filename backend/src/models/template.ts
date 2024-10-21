@@ -12,7 +12,6 @@ class Template extends Model implements ModelWithAssociations {
   public description!: string;
   public user_id!: number;
   public questions?: string[];
-  public likes?: Like[];
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;

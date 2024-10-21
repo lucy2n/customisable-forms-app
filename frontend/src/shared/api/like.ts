@@ -21,21 +21,21 @@ export const getLikes = async (id: string) => {
     return checkResponse<ILike[]>(res);
   };
 
-export const addLike = async (templateId: string) => {
+export const addLike = async (like: ILike) => {
     const token = localStorage.getItem('token');
     
     if (!token) {
         throw new Error('Токен не найден');
     }
 
-    const res = await fetch(`${base_url}/likes/add/${templateId}`, {
+    const res = await fetch(`${base_url}/likes/add/${like.template_id}`, {
       method: 'POST',
       headers: {
         accept: 'application/json',
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify({ templateId }),
+      body: JSON.stringify(like),
       credentials: 'include',
     });
 

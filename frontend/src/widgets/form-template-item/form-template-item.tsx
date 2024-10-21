@@ -1,5 +1,6 @@
-import { FC, useState } from "react";
-import {Card, CardFooter, Image, Button, CardHeader, Tooltip} from "@nextui-org/react";
+import { FC, useEffect, useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
+import { Card, CardFooter, Image, Button, CardHeader, Tooltip } from "@nextui-org/react";
 import { ITemplate } from "../../entities/template/model/template";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../app/routes/lib/hook";
@@ -7,65 +8,100 @@ import { deleteTemplate } from "../../shared/api/template";
 import trash from '../../assets/trash-03-2.svg';
 import edit from '../../assets/icons8-edit.svg';
 import like from '../../assets/icons8-heart-24.png';
+import { getLikes, addLike, removeLike } from "../../shared/api/like";
+import { ILike } from "../../entities/like/model/like";
 
 interface FormTemplateItemProps {
-    template: ITemplate,
-    refresh: () => void
+    template: ITemplate;
+    refresh: () => void;
 }
 
-const FormTemplateItem:FC<FormTemplateItemProps> = ({template, refresh}) => {
+const FormTemplateItem: FC<FormTemplateItemProps> = ({ template, refresh }) => {
     const user = useAppSelector((store) => store.user);
     const navigate = useNavigate();
     const hasRights = template.user_id + '' === user.id || user.is_admin;
-    const [isLiked, setIsLiked] = useState(false);
-    const [likesCount, setLikesCount] = useState(template.likes_count); 
+    const [likes, setLikes] = useState<ILike[]>([]);
+    const [isLikedByUser, setIsLikedByUser] = useState<boolean>(false);
 
     const handleDeleteTemplate = (id: string) => {
         deleteTemplate(id)
-        .then(() => refresh());
+            .then(() => refresh());
     }
 
     const toggleLike = () => {
-
+        if (isLikedByUser) {
+            removeLike(template.id)
+                .then(() => {
+                    setIsLikedByUser(false);
+                })
+                .catch((err) => console.error(err));
+        } else {
+            const like = {
+                id: uuidv4(),
+                template_id: template.id,
+                user_id: +user.id,
+            }
+            addLike(like)
+                .then(() => {
+                    setIsLikedByUser(true);
+                })
+                .catch((err) => console.error(err));
+        }
     }
 
+    useEffect(() => {
+        getLikes(template.id)
+            .then(res => {
+                setLikes(res);
+                setIsLikedByUser(res.some(like => like.user_id === +user.id));
+            })
+            .catch(err => console.log(err));
+    }, [template.id, user.id]);
+
     return (
-            <Card isFooterBlurred className="relative w-1/4 h-[300px] col-span-12 sm:col-span-7">
+        <Card isFooterBlurred className="relative w-1/4 h-[300px] col-span-12 sm:col-span-7 group">
+            <CardHeader className="absolute z-10 top-1 justify-end !items-end">
+                <div className="flex flex-grow gap-2 items-center">
+                    <img
+                        className={`w-6 h-6 cursor-pointer ${isLikedByUser ? 'text-red-500' : ''}`}
+                        src={like}
+                        alt="like form"
+                        onClick={toggleLike}
+                    />
+                    <p className="text-base">{likes.length}</p>
+                </div>
                 {
-                    hasRights && 
-                        <CardHeader className="absolute z-10 top-1 justify-end !items-end">
-                            <Button isIconOnly color="secondary" variant="light" size="sm" onClick={() => handleDeleteTemplate(template.id)}>
-                                    <img src={trash} alt="delete form" />
-                            </Button>
-                            <Button color="secondary" variant="light" size="sm" onClick={() => navigate(`/template/${template.id}/edit`)}>
-                                <img src={edit} alt="edit form" />
-                            </Button>
-                    </CardHeader>
+                    hasRights &&
+                    <div className="flex gap-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300 ease-in-out">
+                        <Button isIconOnly color="secondary" variant="light" size="sm" onClick={() => handleDeleteTemplate(template.id)}>
+                            <img src={trash} alt="delete form" />
+                        </Button>
+                        <Button color="secondary" variant="light" size="sm" onClick={() => navigate(`/template/${template.id}/edit`)}>
+                            <img src={edit} alt="edit form" />
+                        </Button>
+                    </div>
                 }
-              <Image
+            </CardHeader>
+
+            <Image
                 removeWrapper
                 alt="Card background"
                 className="z-0 w-full h-full object-cover"
                 src="https://images.unsplash.com/photo-1727949236824-d3227df462bc?q=80&w=3132&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              />
+            />
+
             <CardFooter className="absolute bg-white/40 bottom-0 z-10 border-t-1 border-default-600 dark:border-default-100">
                 <div className="flex flex-grow gap-2 items-center">
-                <div className="flex flex-col">
-                    <b className="text-base">{template.title}</b>
+                    <div className="flex flex-col">
+                        <b className="text-base">{template.title}</b>
+                    </div>
                 </div>
-                </div>
-                <div className="flex justify-end !items-end">
-                    <Tooltip color="secondary" content="If you want to use this template you should be authorized">
-                        <Button color="secondary" radius="full" size="sm" onClick={() => navigate(`/form/${template.id}`)}>Fill form</Button>
-                    </Tooltip>
-                    <Button color="secondary" variant="light" size="sm" >
-                        <img src={like} alt="like form" />
-                    </Button>
-                </div>
+                <Tooltip color="secondary" content="If you want to use this template you should be authorized">
+                    <Button color="secondary" radius="full" size="sm" onClick={() => navigate(`/form/${template.id}`)}>Fill form</Button>
+                </Tooltip>
             </CardFooter>
-            
-            </Card>
-          );
+        </Card>
+    );
 }
 
 export default FormTemplateItem;

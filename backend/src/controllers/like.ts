@@ -6,7 +6,7 @@ import { BAD_REQUEST_ERROR_LIKE_MESSAGE, CREATED, NOT_FOUND_ERROR_LIKE_MESSAGE }
 import BadRequestError from '../errors/bad-request-error';
 import NotFoundError from '../errors/not-found-error';
 
-export const getLikes = async (req: Request, res: Response): Promise<void> => {
+export const getLikes = async (req: IUserRequest, res: Response): Promise<void> => {
     try {
         const { id } = req.params;
         const likes = await Like.findAll({
@@ -17,7 +17,12 @@ export const getLikes = async (req: Request, res: Response): Promise<void> => {
         throw new NotFoundError('Template not found')
       }
   
-      res.json(likes);
+      const like = await Like.create({
+        ...req.body,
+        user_id: req.user?.id,
+      });
+        res.status(CREATED).json(like);
+
     } catch (err: any) {
       console.error('Error fetching questions:', err);
       throw new InternalServerError(err.message)
@@ -40,6 +45,7 @@ export const likeTemplate = async (req: IUserRequest, res: Response): Promise<vo
       }
   
       const like = await Like.create({
+        id: req.body.id,
         user_id: req.user!.id,
         template_id: id
       });
