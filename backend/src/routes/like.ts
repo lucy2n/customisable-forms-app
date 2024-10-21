@@ -3,7 +3,7 @@ import { createComment, getComments } from '../controllers/comment';
 
 const router = Router();
 
-router.get('/add', getComments);
-router.post('/remove', createComment);
+router.get('/add/:id', getComments);
+router.post('/remove/:id', createComment);
 
 export default router;
