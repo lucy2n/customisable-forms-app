@@ -36,7 +36,7 @@ const CreateFormPage = () => {
         }
     }, [id]);
 
-    if (!template || !questions || !id || !user || !answers) {
+    if (!template || !questions || !id || !answers) {
         return <div>Loading...</div>;
     }
 

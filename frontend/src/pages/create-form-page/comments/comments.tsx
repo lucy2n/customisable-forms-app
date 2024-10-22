@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 interface CommentsProps {
     templateId: string;
-    userId: number;
+    userId?: number;
 }
 
 const Comments: FC<CommentsProps> = ({ templateId, userId }) => {
@@ -15,6 +15,8 @@ const Comments: FC<CommentsProps> = ({ templateId, userId }) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const handleSubmitComment = async () => {
+        if (!userId) return; 
+        
         const commentData: IComment = {
             id: uuidv4(),
             user_id: +userId,

@@ -10,6 +10,7 @@ import { createUser, login } from "../controllers/user";
 import auth from "../middlewares/auth";
 import { getLatestTemplates, getMostLikedTemplates, getTemplate, getTemplates, getTemplatesByUser } from "../controllers/template";
 import { getLikes } from "../controllers/like";
+import { getQuestions } from "../controllers/question";
 
 const router = Router();
 
@@ -26,6 +27,7 @@ router.get('/templates/latest', getLatestTemplates);
 router.get('/templates/most-popular', getMostLikedTemplates);
 router.get('/templates', getTemplates);
 router.get('/templates/:id', getTemplate);
+router.get('/questions/:id', getQuestions);
 router.get('/likes/:id', getLikes);
 
 router.use(auth);

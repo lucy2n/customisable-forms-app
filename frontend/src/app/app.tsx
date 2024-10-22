@@ -57,7 +57,7 @@ function App() {
         <Route path={RoutePathname.loginPage} element={<LoginPage />} />
         <Route path={RoutePathname.registerPage} element={<RegisterPage />} />
         <Route path={RoutePathname.createTemplate} element={<OnlyAuth component={<CreateTemplatePage />} />} />
-        <Route path={RoutePathname.createForm} element={<OnlyAuth component={<CreateFormPage />} />} />
+        <Route path={RoutePathname.createForm} element={<CreateFormPage />} />
         <Route path={RoutePathname.profilePage} element={<OnlyAuth component={<ProfilePage />} />} />
         <Route path={RoutePathname.editTemplate} element={<OnlyAuth component={<EditTemplatePage />} />} />
         <Route path={RoutePathname.adminPage} element={<AdminPage />} />

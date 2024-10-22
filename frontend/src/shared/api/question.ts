@@ -23,19 +23,11 @@ export const createQuestion = async (question: IQuestion) => {
 };
 
 export const getQuestions = async (id: string) => {
-    const token = localStorage.getItem('token');
-    
-    if (!token) {
-        throw new Error('Токен не найден');
-    }
-
     const res = await fetch(`${base_url}/questions/${id}`, {
       method: 'GET',
       headers: {
         accept: 'application/json',
-        Authorization: `Bearer ${token}`,
       },
-      credentials: 'include',
     });
     
     return checkResponse<IQuestion[]>(res);

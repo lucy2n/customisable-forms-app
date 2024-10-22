@@ -11,32 +11,30 @@ import { createAnswer } from '../../shared/api/answer';
 interface IFormProps {
   template: ITemplate;
   questions: IQuestion[];
-  userId: number;
+  userId?: number;
 }
 
 const Form: FC<IFormProps> = ({ template, questions, userId }) => {
-  // Состояние для хранения ответов в виде массива объектов IAnswer
   const [answers, setAnswers] = useState<IAnswer[]>([]);
   const form_id = uuidv4();
 
-  // Обработчик изменения ответа на вопрос
   const handleAnswerChange = (questionId: string, answer: string | string[]) => {
+    if (!userId) return; 
+
     setAnswers((prevAnswers) => {
       const existingAnswerIndex = prevAnswers.findIndex(
         (a) => a.question_id === questionId
       );
-  
-      // Новый объект ответа без id
+
       const newAnswer: IAnswer = {
-        id: uuidv4(), 
+        id: uuidv4(),
         question_id: questionId,
         form_id: form_id,
         template_id: template.id,
         user_id: userId,
-        answer, // Ответ (строка или массив строк)
+        answer,
       };
-  
-      // Если ответ уже существует, обновляем его, иначе добавляем новый
+
       if (existingAnswerIndex !== -1) {
         return [
           ...prevAnswers.slice(0, existingAnswerIndex),
@@ -48,48 +46,50 @@ const Form: FC<IFormProps> = ({ template, questions, userId }) => {
       }
     });
   };
-  
 
   const handleSubmitForm = async () => {
+    if (!userId) return; // Предотвращаем отправку формы без userId
+
     const cleanedAnswers = answers.map((answer) => ({
       ...answer,
       answer: Array.isArray(answer.answer)
-        ? answer.answer.map((a) => a.trim()) // удаляем пробелы у каждого элемента в массиве
-        : answer.answer.trim(), // удаляем пробелы у строки
+        ? answer.answer.map((a) => a.trim())
+        : answer.answer.trim(),
     }));
 
     const formData: IForm = {
-        id: form_id,
-        user_id: userId,
-        template_id: template.id,
-        answers: cleanedAnswers.map((answer) => answer.id),
+      id: form_id,
+      user_id: userId,
+      template_id: template.id,
+      answers: cleanedAnswers.map((answer) => answer.id),
     };
-    console.log(answers);
+
     try {
-        const res = await createForm(formData);
-        console.log("Form created:", res);
+      const res = await createForm(formData);
+      console.log("Form created:", res);
 
-        const answerPromises = answers.map(answer => createAnswer({
-            id: answer.id,
-            question_id: answer.question_id,
-            template_id: template.id,
-            form_id: form_id,
-            user_id: userId,
-            answer: answer.answer
-        }));
+      const answerPromises = answers.map((answer) =>
+        createAnswer({
+          id: answer.id,
+          question_id: answer.question_id,
+          template_id: template.id,
+          form_id: form_id,
+          user_id: userId,
+          answer: answer.answer,
+        })
+      );
 
-        await Promise.all(answerPromises);
+      await Promise.all(answerPromises);
 
-        console.log("Answers created:", answers);
-
+      console.log("Answers created:", answers);
     } catch (err) {
-        console.error("Error creating template and questions:", err);
+      console.error("Error creating template and answers:", err);
     }
   };
 
-  // Функция для рендеринга вопросов в зависимости от их типа
   const renderQuestion = (question: IQuestion) => {
-    const currentAnswer = answers.find((a) => a.question_id === question.id)?.answer || '';
+    const currentAnswer =
+      answers.find((a) => a.question_id === question.id)?.answer || '';
 
     switch (question.type) {
       case QuestionType.text:
@@ -101,6 +101,7 @@ const Form: FC<IFormProps> = ({ template, questions, userId }) => {
               key={question.id}
               value={typeof currentAnswer === 'string' ? currentAnswer : ''}
               onChange={(e) => handleAnswerChange(question.id, e.target.value)}
+              isReadOnly={!userId} // Делаем поле только для чтения, если нет userId
             />
           </div>
         );
@@ -113,6 +114,7 @@ const Form: FC<IFormProps> = ({ template, questions, userId }) => {
               key={question.id}
               value={typeof currentAnswer === 'string' ? currentAnswer : ''}
               onChange={(e) => handleAnswerChange(question.id, e.target.value)}
+              isReadOnly={!userId} // Делаем поле только для чтения, если нет userId
             />
           </div>
         );
@@ -124,6 +126,7 @@ const Form: FC<IFormProps> = ({ template, questions, userId }) => {
             label={question.text}
             value={typeof currentAnswer === 'string' ? currentAnswer : ''}
             onChange={(e) => handleAnswerChange(question.id, e.target.value)}
+            isDisabled={!userId} // Отключаем выбор, если нет userId
           >
             {question.options.map((option) => (
               <Radio key={option} value={option}>
@@ -142,6 +145,7 @@ const Form: FC<IFormProps> = ({ template, questions, userId }) => {
               label="Options"
               value={typeof currentAnswer === 'string' ? currentAnswer : ''}
               onChange={(e) => handleAnswerChange(question.id, e.target.value)}
+              isDisabled={!userId} // Отключаем выбор, если нет userId
             >
               {question.options.map((option) => (
                 <SelectItem key={option} value={option}>
@@ -159,6 +163,7 @@ const Form: FC<IFormProps> = ({ template, questions, userId }) => {
             color="secondary"
             value={Array.isArray(currentAnswer) ? currentAnswer : []}
             onChange={(val) => handleAnswerChange(question.id, val)}
+            isDisabled={!userId} // Отключаем выбор, если нет userId
           >
             {question.options.map((option) => (
               <Checkbox key={option} value={option}>
@@ -185,7 +190,7 @@ const Form: FC<IFormProps> = ({ template, questions, userId }) => {
           {questions.map(renderQuestion)}
         </CardBody>
       </Card>
-      <Button color="secondary" onClick={handleSubmitForm}>
+      <Button color="secondary" onClick={handleSubmitForm} isDisabled={!userId}>
         Submit Form
       </Button>
     </div>
