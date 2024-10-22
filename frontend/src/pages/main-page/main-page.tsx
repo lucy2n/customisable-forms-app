@@ -2,18 +2,23 @@ import { motion } from "framer-motion";
 import FormTemplateList from "../../widgets/form-template-list/form-template-list";
 import { useEffect, useState } from "react";
 import { ITemplate } from "../../entities/template/model/template";
-import { getTemplates } from "../../shared/api/template";
+import { getLatestTemplates, getTemplates } from "../../shared/api/template";
 
 const MainPage = () => {
     const [templates, setTemplates] = useState<ITemplate[]>([]);
+    const [latestTemplates, setLatesTemplates] = useState<ITemplate[]>([]);
+    const [mostPopularTemplates, setMostPopularTemplates] = useState<ITemplate[]>([]);
 
     useEffect(() => {
         refresh();
     }, []);
 
     const refresh = () => {
+        getLatestTemplates()
+        .then(res => setLatesTemplates(res))
+        .catch(err => console.log(err))
         getTemplates()
-        .then(res => setTemplates(res))
+        .then(res => setMostPopularTemplates(res))
         .catch(err => console.log(err))
     };
 
@@ -36,7 +41,8 @@ const MainPage = () => {
                     Create quizzes, surveys, polls, and more with ease! Whether you’re collecting feedback, conducting tests, or gathering data through questionnaires, FormLab empowers you to build fully customizable forms tailored to your needs.
                 </motion.p>
             </section>
-            <FormTemplateList title='New Templates' templates={templates} refresh={refresh}/>
+            <FormTemplateList title='New Templates' templates={latestTemplates} refresh={refresh}/>
+            <FormTemplateList title='Most popular' templates={mostPopularTemplates} refresh={refresh}/>
         </main>
     );
 }

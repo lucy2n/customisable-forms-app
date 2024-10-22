@@ -16,6 +16,34 @@ export const getTemplates = async () => {
     return res.json();
 };
 
+export const getLatestTemplates = async () => {
+
+    const res = await fetch(`${base_url}/templates/latest`, {
+        method: 'GET',
+        headers: {
+            accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+    });
+
+
+    return res.json();
+};
+
+export const getMostPopularTemplates = async () => {
+
+    const res = await fetch(`${base_url}/templates/most-popular`, {
+        method: 'GET',
+        headers: {
+            accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+    });
+
+
+    return res.json();
+};
+
 export const getTemplatesByUser = async (user_id: string) => {
     const token = localStorage.getItem('token');
     
