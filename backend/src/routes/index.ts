@@ -9,6 +9,7 @@ import likeRouter from './like';
 import { createUser, login } from "../controllers/user";
 import auth from "../middlewares/auth";
 import { getTemplates, getTemplatesByUser } from "../controllers/template";
+import { getLikes } from "../controllers/like";
 
 const router = Router();
 
@@ -22,6 +23,7 @@ router.post('/signup', createUser);
 router.post('/signin', login);
 
 router.get('/templates', getTemplates);
+router.get('/likes/:id', getLikes);
 
 router.use(auth);
 
