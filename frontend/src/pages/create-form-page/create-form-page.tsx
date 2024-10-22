@@ -26,33 +26,45 @@ const CreateFormPage = () => {
 
     useEffect(() => {
         if (id) {
-            Promise.all([getTemplate(id), getQuestions(id), getAnswers(id)])
+            const promises = [getTemplate(id), getQuestions(id)];
+
+            // Если пользователь авторизован, добавляем запрос для получения ответов
+            if (user?.id) {
+                promises.push(getAnswers(id));
+            }
+
+            Promise.all(promises)
                 .then(([templateRes, questionsRes, answersRes]) => {
                     setTemplate(templateRes);
                     setQuestions(questionsRes);
-                    setAnswers(answersRes);
+
+                    // Если пользователь авторизован, сохраняем ответы
+                    if (answersRes) {
+                        setAnswers(answersRes);
+                    }
                 })
                 .catch(err => console.log(err));
         }
-    }, [id]);
+    }, [id, user?.id]); // Добавляем зависимость от user.id
 
-    if (!template || !questions || !id || !answers) {
+    if (!template || !questions || !id) {
         return <div>Loading...</div>;
     }
 
-    const isCreator = template.user_id + '' === user.id;
+    // Проверяем, является ли пользователь создателем формы
+    const isCreator = template.user_id + '' === user?.id;
 
     return (
         <main className="flex flex-col justify-between w-11/12 mr-auto ml-auto pt-10 gap-10">
             <FormTabs updateTab={updateTab}/>
             {selectedTab === 'Form' && (
-               <Form template={template} questions={questions} userId={+user.id} />
+               <Form template={template} questions={questions} userId={+user?.id} />
             )}
             {selectedTab === 'Comments' && (
-               <Comments templateId={id} userId={+user.id}/>
+               <Comments templateId={id} userId={+user?.id}/>
             )}
-            {selectedTab === 'Answers' && isCreator && (
-               <Answers answers={answers ?? []} questions={questions}/>
+            {selectedTab === 'Answers' && isCreator && answers && (
+               <Answers answers={answers} questions={questions}/>
             )}
         </main>
     );

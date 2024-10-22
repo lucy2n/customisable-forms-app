@@ -16,7 +16,7 @@ const Comments: FC<CommentsProps> = ({ templateId, userId }) => {
 
     const handleSubmitComment = async () => {
         if (!userId) return; 
-        
+
         const commentData: IComment = {
             id: uuidv4(),
             user_id: +userId,
@@ -60,8 +60,9 @@ const Comments: FC<CommentsProps> = ({ templateId, userId }) => {
                         placeholder="Your comment"
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
+                        isReadOnly={!userId}
                     />
-                    <Button color="secondary" isDisabled={inputValue.length === 0} onClick={handleSubmitComment}>
+                    <Button color="secondary" isDisabled={inputValue.length === 0 || !userId} onClick={handleSubmitComment}>
                         Send comment
                     </Button>
                 </CardBody>

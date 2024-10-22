@@ -11,6 +11,7 @@ import auth from "../middlewares/auth";
 import { getLatestTemplates, getMostLikedTemplates, getTemplate, getTemplates, getTemplatesByUser } from "../controllers/template";
 import { getLikes } from "../controllers/like";
 import { getQuestions } from "../controllers/question";
+import { getComments } from "../controllers/comment";
 
 const router = Router();
 
@@ -29,6 +30,7 @@ router.get('/templates', getTemplates);
 router.get('/templates/:id', getTemplate);
 router.get('/questions/:id', getQuestions);
 router.get('/likes/:id', getLikes);
+router.get('/comments/:id', getComments);
 
 router.use(auth);
 

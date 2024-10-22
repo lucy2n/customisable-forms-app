@@ -24,19 +24,12 @@ export const createComment = async (comment: IComment) => {
 
 
 export const getComments = async (id: string) => {
-  const token = localStorage.getItem('token');
-  
-  if (!token) {
-      throw new Error('Токен не найден');
-  }
 
   const res = await fetch(`${base_url}/comments/${id}`, {
     method: 'GET',
     headers: {
       accept: 'application/json',
-      Authorization: `Bearer ${token}`,
     },
-    credentials: 'include',
   });
   
   console.log(res)
