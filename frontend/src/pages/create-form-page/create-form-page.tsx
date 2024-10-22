@@ -11,6 +11,7 @@ import Comments from "./comments/comments";
 import Answers from "./answers/answers";
 import { IAnswer } from "../../entities/answer/model/answer";
 import { getAnswers } from "../../shared/api/answer";
+import FormSkeleton from "../../widgets/form-skeleton/form-skeleton";
 
 const CreateFormPage = () => {
     const { id } = useParams();
@@ -43,12 +44,13 @@ const CreateFormPage = () => {
                         setAnswers(answersRes);
                     }
                 })
-                .catch(err => console.log(err));
+                .catch(err => console.log(err))
         }
-    }, [id, user?.id]); // Добавляем зависимость от user.id
+    }, [id, user?.id]);
 
     if (!template || !questions || !id) {
-        return <div>Loading...</div>;
+        
+        return <FormSkeleton />;
     }
 
     // Проверяем, является ли пользователь создателем формы

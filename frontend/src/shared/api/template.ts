@@ -84,7 +84,7 @@ export const createTemplate = async (template: ITemplate) => {
         throw new Error('Токен не найден');
     }
 
-    const res = await fetch(`${base_url}/template/create/`, {
+    const res = await fetch(`${base_url}/templates/create/`, {
       method: 'POST',
       headers: {
         accept: 'application/json',

@@ -2,7 +2,9 @@ import { Button, Card, CardBody, Input, User } from "@nextui-org/react";
 import { FC, useEffect, useState } from "react";
 import { createComment, getComments } from "../../../shared/api/comments";
 import { IComment } from "../../../entities/comment/model/comment";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { v4 as uuidv4 } from 'uuid';
+import ItemSkeleton from "../item-skeleton/item-skeleton";
 
 interface CommentsProps {
     templateId: string;
@@ -44,7 +46,7 @@ const Comments: FC<CommentsProps> = ({ templateId, userId }) => {
     }, [templateId]);
 
     if (isLoading) {
-        return <div>Loading...</div>;
+        return <ItemSkeleton />
     }
 
     return (
@@ -67,15 +69,26 @@ const Comments: FC<CommentsProps> = ({ templateId, userId }) => {
                     </Button>
                 </CardBody>
             </Card>
-            <div className="flex flex-col w-full items-start m-0 p-5 gap-5 border shadow-lg rounded-lg">
-                {comments && comments.map((com) => (
+            {comments.length !== 0 &&
+                <div className="w-full">
+                <InfiniteScroll
+                    className="flex flex-col w-full items-start m-0 p-5 gap-5 border shadow-lg rounded-lg"
+                    dataLength={comments ? comments.length : 1}
+                    hasMore={false}
+                    next={() => console.log(comments.length)}
+                    loader={comments.length !== 0 ? '' : <p>Loading...</p>}
+                    height={250}
+                >
+                {comments.map((com) => (
                     <User
                         key={com.id}
                         description={com.text}
                         name={com.user_id.toString()}
                     />
                 ))}
-            </div>
+                </InfiniteScroll>  
+                </div>
+            }
         </div>
     );
 };

@@ -17,7 +17,7 @@ import EditTemplatePage from '../pages/edit-template-page/edit-template-page';
 
 function App() {
   const dispatch = useAppDispatch();
-  const [loading, setLoading] = useState(true); // Флаг загрузки данных пользователя
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -37,14 +37,13 @@ function App() {
           localStorage.removeItem('token');
         })
         .finally(() => {
-          setLoading(false); // Завершить загрузку
+          setLoading(false);
         });
     } else {
-      setLoading(false); // Завершить загрузку, если токена нет
+      setLoading(false);
     }
   }, [dispatch]);
 
-  // Если данные пользователя еще загружаются, можно показывать индикатор загрузки
   if (loading) {
     return <div>Загрузка...</div>;
   }
@@ -61,7 +60,6 @@ function App() {
         <Route path={RoutePathname.profilePage} element={<OnlyAuth component={<ProfilePage />} />} />
         <Route path={RoutePathname.editTemplate} element={<OnlyAuth component={<EditTemplatePage />} />} />
         <Route path={RoutePathname.adminPage} element={<AdminPage />} />
-        {/* <Route path={RoutePathname.adminPage} element={<OnlyAuth component={<AdminPage />} />} /> */}
       </Routes>
     </div>
   );

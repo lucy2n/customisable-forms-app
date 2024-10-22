@@ -1,5 +1,5 @@
 import { Card, CardBody, User } from "@nextui-org/react";
-import { FC, useEffect } from "react"
+import { FC } from "react"
 import AnswersPiechart from "./ui/answers-piechart";
 import { IAnswer } from "../../../entities/answer/model/answer";
 import { IQuestion, QuestionType } from "../../../entities/question/model/question";
@@ -11,11 +11,6 @@ interface AnswersProps {
 }
 
 const Answers: FC<AnswersProps> = ({ answers, questions }) => {
-
-    useEffect(() => {
-        console.log(answers, questions);
-    }, [answers, questions]);
-
     const renderAnswer = (question: IQuestion, answers: IAnswer[]) => {
         switch (question.type) {
           case QuestionType.text:

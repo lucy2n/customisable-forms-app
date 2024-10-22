@@ -8,18 +8,26 @@ const MainPage = () => {
     const [templates, setTemplates] = useState<ITemplate[]>([]);
     const [latestTemplates, setLatesTemplates] = useState<ITemplate[]>([]);
     const [mostPopularTemplates, setMostPopularTemplates] = useState<ITemplate[]>([]);
+    const [loadingLatest, setLoadingLatest] = useState<boolean>(true);
+    const [loadingPopular, setLoadingPopular] = useState<boolean>(true);
 
     useEffect(() => {
         refresh();
     }, []);
 
     const refresh = () => {
+        setLoadingLatest(true);
+        setLoadingPopular(true);
+
         getLatestTemplates()
-        .then(res => setLatesTemplates(res))
-        .catch(err => console.log(err))
+            .then(res => setLatesTemplates(res))
+            .catch(err => console.log(err))
+            .finally(() => setLoadingLatest(false));
+
         getTemplates()
-        .then(res => setMostPopularTemplates(res))
-        .catch(err => console.log(err))
+            .then(res => setMostPopularTemplates(res))
+            .catch(err => console.log(err))
+            .finally(() => setLoadingPopular(false));
     };
 
     return (
@@ -41,10 +49,22 @@ const MainPage = () => {
                     Create quizzes, surveys, polls, and more with ease! Whether you’re collecting feedback, conducting tests, or gathering data through questionnaires, FormLab empowers you to build fully customizable forms tailored to your needs.
                 </motion.p>
             </section>
-            <FormTemplateList title='New Templates' templates={latestTemplates} refresh={refresh}/>
-            <FormTemplateList title='Most popular' templates={mostPopularTemplates} refresh={refresh}/>
+
+            <FormTemplateList 
+                title='New Templates' 
+                templates={latestTemplates} 
+                refresh={refresh} 
+                loading={loadingLatest}
+            />
+
+            <FormTemplateList 
+                title='Most popular' 
+                templates={mostPopularTemplates} 
+                refresh={refresh} 
+                loading={loadingPopular}
+            />
         </main>
     );
-}
+};
 
 export default MainPage;

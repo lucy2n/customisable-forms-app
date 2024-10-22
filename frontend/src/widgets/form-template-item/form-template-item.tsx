@@ -7,10 +7,10 @@ import { useAppSelector } from "../../app/routes/lib/hook";
 import { deleteTemplate } from "../../shared/api/template";
 import { getLikes, addLike, removeLike } from "../../shared/api/like";
 import { ILike } from "../../entities/like/model/like";
-import trash from '../../assets/trash-03-2.svg';
 import edit from '../../assets/icons8-edit.svg';
 import like from '../../assets/icons8-heart-24.png';
 import unlike from '../../assets/icons8-heart-24-2.png';
+import DeleteModal from "./ui/delete-modal";
 
 interface FormTemplateItemProps {
     template: ITemplate;
@@ -75,9 +75,10 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ template, refresh }) => {
                 {
                     hasRights &&
                     <div className="flex gap-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300 ease-in-out">
-                        <Button isIconOnly color="secondary" variant="light" size="sm" onClick={() => handleDeleteTemplate(template.id)}>
+                        {/* <Button isIconOnly color="secondary" variant="light" size="sm" onClick={() => handleDeleteTemplate(template.id)}>
                             <img src={trash} alt="delete form" />
-                        </Button>
+                        </Button> */}
+                        <DeleteModal handleDeleteTemplate={handleDeleteTemplate} templateId={template.id}/>
                         <Button color="secondary" variant="light" size="sm" onClick={() => navigate(`/template/${template.id}/edit`)}>
                             <img src={edit} alt="edit form" />
                         </Button>
