@@ -59,15 +59,17 @@ export const getMostLikedTemplates = async (req: Request, res: Response): Promis
         }
       ],
       attributes: {
-        include: [[sequelize.fn('COUNT', sequelize.col('likes.id')), 'likeCount']]
+        include: [[sequelize.fn('COUNT', sequelize.col('likes.template_id')), 'likeCount']]
       },
       group: ['Template.id'],
       order: [[sequelize.literal('likeCount'), 'DESC']],
       limit: 5
     });
 
+    // Возвращаем шаблоны вместе с количеством лайков
     res.json(templates);
   } catch (err: any) {
+    console.error('Get most liked templates error:', err.message);
     throw new InternalServerError(err.message);
   }
 };
