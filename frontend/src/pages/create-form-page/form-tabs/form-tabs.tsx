@@ -3,9 +3,10 @@ import { FC } from "react";
 
 interface FormTabsProps {
     updateTab: (tab: string) => void;
+    isLogined: boolean
 }
 
-const FormTabs: FC<FormTabsProps> = ({ updateTab }) => {
+const FormTabs: FC<FormTabsProps> = ({ updateTab, isLogined }) => {
     return (
         <div className="flex w-full justify-center items-center flex-col">
             <Tabs
@@ -28,10 +29,13 @@ const FormTabs: FC<FormTabsProps> = ({ updateTab }) => {
                     key="Comments"
                     title={<div className="flex items-center space-x-2"><span>Comments</span></div>}
                 />
-                <Tab
-                    key="Answers"
-                    title={<div className="flex items-center space-x-2"><span>Answers</span></div>}
-                />
+                {
+                    isLogined && 
+                    <Tab
+                        key="Answers"
+                        title={<div className="flex items-center space-x-2"><span>Answers</span></div>}
+                    />
+                }
             </Tabs>
         </div>
     );
