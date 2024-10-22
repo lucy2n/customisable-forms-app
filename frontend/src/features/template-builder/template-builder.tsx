@@ -123,7 +123,7 @@ const TemplateBuilder = () => {
               removeQuestion={removeQuestion}
             />
           ))}
-          <div className="flex justify-end mt-2">
+          <div className="flex justify-center mt-2">
             <Button isIconOnly onClick={addQuestion} color="secondary">
               <img src={add} alt="add" />
             </Button>

@@ -5,6 +5,7 @@ import { IQuestion } from "../../entities/question/model/question";
 import { getTemplate } from "../../shared/api/template";
 import { getQuestions } from "../../shared/api/question";
 import TemplateEditor from "../../features/template-editor/template-editor";
+import FormSkeleton from "../../widgets/form-skeleton/form-skeleton";
 
 const EditTemplatePage = () => {
     const { id } = useParams();
@@ -29,7 +30,7 @@ const EditTemplatePage = () => {
     }, [id]);
 
     if (!template || !questions) {
-        return <div>Loading...</div>;
+        return <FormSkeleton />;
     }
 
     return (

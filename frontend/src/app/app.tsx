@@ -17,7 +17,6 @@ import EditTemplatePage from '../pages/edit-template-page/edit-template-page';
 
 function App() {
   const dispatch = useAppDispatch();
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -36,17 +35,8 @@ function App() {
           dispatch(loggedOut());
           localStorage.removeItem('token');
         })
-        .finally(() => {
-          setLoading(false);
-        });
-    } else {
-      setLoading(false);
     }
   }, [dispatch]);
-
-  if (loading) {
-    return <div>Загрузка...</div>;
-  }
 
   return (
     <div className="flex justify-center flex-col w-screen mb-10">

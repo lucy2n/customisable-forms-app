@@ -4,6 +4,7 @@ import AnswersPiechart from "./ui/answers-piechart";
 import { IAnswer } from "../../../entities/answer/model/answer";
 import { IQuestion, QuestionType } from "../../../entities/question/model/question";
 import AnswersVerticalBarChart from "./ui/answers-vertical-bar";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 interface AnswersProps {
     answers: IAnswer[];
@@ -15,8 +16,16 @@ const Answers: FC<AnswersProps> = ({ answers, questions }) => {
         switch (question.type) {
           case QuestionType.text:
             return (
-                <div className="flex flex-col w-full items-start m-0 p-5 gap-5">
+                <div className="w-full">
                 <p className="text-base">{question.text}</p>
+                <InfiniteScroll
+                    className="flex flex-col w-full items-start m-0 p-5 gap-5"
+                    dataLength={answers ? answers.length : 1}
+                    hasMore={false}
+                    next={() => console.log(answers.length)}
+                    loader={answers.length !== 0 ? '' : <p>Loading...</p>}
+                    height={200}
+                >
                 {
                     answers.map((answer) =>
                         <User
@@ -26,13 +35,22 @@ const Answers: FC<AnswersProps> = ({ answers, questions }) => {
                         />
                     )
                 }
+                </InfiniteScroll>
               </div>
             );
           case QuestionType.longText:
             return (
-                <div className="flex flex-col w-full items-start m-0 p-5 gap-5">
+                <div className="w-full">
                  <p className="text-base">{question.text}</p>
-                {
+                 <InfiniteScroll
+                    className="flex flex-col w-full items-start m-0 p-5 gap-5"
+                    dataLength={answers ? answers.length : 1}
+                    hasMore={false}
+                    next={() => console.log(answers.length)}
+                    loader={answers.length !== 0 ? '' : <p>Loading...</p>}
+                    height={200}
+                >
+                    {
                     answers.map((answer) =>
                         <User
                             key={answer.id}
@@ -41,6 +59,7 @@ const Answers: FC<AnswersProps> = ({ answers, questions }) => {
                         />
                     )
                 }
+                </InfiniteScroll>
               </div>
             );
           case QuestionType.radio:
