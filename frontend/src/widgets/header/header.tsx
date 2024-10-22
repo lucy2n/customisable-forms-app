@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/routes/lib/hook";
 import { logout } from "../../shared/api/user";
 import { resetUser } from "../../entities/user/model/userSlice";
+import SearchTemplates from "../../features/search-templates/ui/search-templates";
 
 const Header = () => {
   const [mounted, setMounted] = useState(false);
@@ -41,6 +42,7 @@ const Header = () => {
           Lab
         </p>
       </div>
+      <SearchTemplates />
       <div className="flex flex-wrap items-center gap-2">
         {user.isLoggedIn ? (
           <>
