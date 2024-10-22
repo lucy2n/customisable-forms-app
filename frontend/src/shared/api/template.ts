@@ -65,18 +65,11 @@ export const getTemplatesByUser = async (user_id: string) => {
 };
 
 export const getTemplate = async (id: string) => {
-    const token = localStorage.getItem('token');
-    
-    if (!token) {
-        throw new Error('Токен не найден');
-    }
-
     const res = await fetch(`${base_url}/templates/${id}`, {
         method: 'GET',
         headers: {
             accept: 'application/json',
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
         },
     });
 

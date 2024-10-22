@@ -1,4 +1,4 @@
-import { Card, CardBody } from "@nextui-org/react";
+import { Card, CardBody, User } from "@nextui-org/react";
 import { FC, useEffect } from "react"
 import AnswersPiechart from "./ui/answers-piechart";
 import { IAnswer } from "../../../entities/answer/model/answer";
@@ -16,73 +16,85 @@ const Answers: FC<AnswersProps> = ({ answers, questions }) => {
         console.log(answers, questions);
     }, [answers, questions]);
 
+    const renderAnswer = (question: IQuestion, answers: IAnswer[]) => {
+        switch (question.type) {
+          case QuestionType.text:
+            return (
+                <div className="flex flex-col w-full items-start m-0 p-5 gap-5">
+                <p className="text-base">{question.text}</p>
+                {
+                    answers.map((answer) =>
+                        <User
+                            key={answer.id}
+                            description={answer.answer}
+                            name={answer.user_id.toString()}
+                        />
+                    )
+                }
+              </div>
+            );
+          case QuestionType.longText:
+            return (
+                <div className="flex flex-col w-full items-start m-0 p-5 gap-5">
+                 <p className="text-base">{question.text}</p>
+                {
+                    answers.map((answer) =>
+                        <User
+                            key={answer.id}
+                            description={answer.answer}
+                            name={answer.user_id.toString()}
+                        />
+                    )
+                }
+              </div>
+            );
+          case QuestionType.radio:
+            return (
+                <div className="flex flex-col gap-2">
+                <p className="text-base">{question.text}</p>
+                <AnswersPiechart data={
+                    transformArray(answers)
+                }/>
+              </div>
+            );
+          case QuestionType.select:
+            return (
+              <div className="flex flex-col gap-2">
+                <p className="text-base">{question.text}</p>
+                <AnswersPiechart data={
+                    transformArray(answers)
+                }/>
+              </div>
+            );
+          case QuestionType.checkbox:
+            return (
+                <div className="flex flex-col gap-2">
+                    <p className="text-base">{question.text}</p>
+                    <AnswersVerticalBarChart 
+                        choices={ answers.map(answer => answer.answer as string[])} 
+                        initialOptions={question.options}
+                    />
+                </div>
+            );
+          default:
+            return null;
+        }
+      };
+
     return (
         <div className="flex flex-col w-1/2 mr-auto ml-auto gap-10">
             {
                 questions.map((question) => 
                     <Card>
-                         { renderAnswer(question, answers.filter(answer => answer.question_id == question.id)) }
+                        <CardBody className="flex flex-col gap-10">
+                            { renderAnswer(question, answers.filter(answer => answer.question_id == question.id)) }
+                        </CardBody>
                     </Card>
                 )
             }
         </div>
     )
 }
-
-  // Функция для рендеринга вопросов в зависимости от их типа
-  const renderAnswer = (question: IQuestion, answers: IAnswer[]) => {
-    switch (question.type) {
-      case QuestionType.text:
-        return (
-          <div className="flex flex-col gap-2">
-            <p>{question.text}</p>
-            {
-                answers.map((answer) =>
-                    <p>{ answer.answer }</p>
-                )
-            }
-          </div>
-        );
-      case QuestionType.longText:
-        return (
-          <div className="flex flex-col gap-2">
-            <p>{question.text}</p>
-            {
-                answers.map((answer) =>
-                    <p>{ answer.answer }</p>
-                )
-            }
-          </div>
-        );
-      case QuestionType.radio:
-        return (
-            <div className="flex flex-col gap-2">
-            <p>{question.text}</p>
-            <AnswersPiechart data={
-                transformArray(answers)
-            }/>
-          </div>
-        );
-      case QuestionType.select:
-        return (
-          <div className="flex flex-col gap-2">
-            <p>{question.text}</p>
-          </div>
-        );
-      case QuestionType.checkbox:
-        return (
-            <div className="flex flex-col gap-2">
-                <p>{question.text}</p>
-                <AnswersVerticalBarChart 
-                    choices={ answers.map(answer => answer.answer as string[])} 
-                    initialOptions={question.options}
-                />
-            </div>
-        );
-      default:
-        return null;
-    }
-  };
 
 const transformArray = (inputArray: IAnswer[]) => {
     const answerCountMap: { [key: string]: number } = inputArray.reduce((acc, obj) => {

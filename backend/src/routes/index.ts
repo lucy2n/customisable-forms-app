@@ -8,7 +8,7 @@ import commentRouter from './comment';
 import likeRouter from './like';
 import { createUser, login } from "../controllers/user";
 import auth from "../middlewares/auth";
-import { getLatestTemplates, getMostLikedTemplates, getTemplates, getTemplatesByUser } from "../controllers/template";
+import { getLatestTemplates, getMostLikedTemplates, getTemplate, getTemplates, getTemplatesByUser } from "../controllers/template";
 import { getLikes } from "../controllers/like";
 
 const router = Router();
@@ -25,6 +25,7 @@ router.post('/signin', login);
 router.get('/templates/latest', getLatestTemplates);
 router.get('/templates/most-popular', getMostLikedTemplates);
 router.get('/templates', getTemplates);
+router.get('/templates/:id', getTemplate);
 router.get('/likes/:id', getLikes);
 
 router.use(auth);

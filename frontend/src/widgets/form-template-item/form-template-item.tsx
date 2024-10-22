@@ -99,7 +99,7 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ template, refresh }) => {
                     </div>
                 </div>
                 <Tooltip color="secondary" content="If you want to use this template you should be authorized">
-                    <Button color="secondary" radius="full" size="sm" onClick={() => navigate(`/form/${template.id}`)}>{user ? 'Fill form' : 'View form'}</Button>
+                    <Button color="secondary" radius="full" size="sm" onClick={() => navigate(`/form/${template.id}`)}>{user.isLoggedIn ? 'Fill form' : 'View form'}</Button>
                 </Tooltip>
             </CardFooter>
         </Card>

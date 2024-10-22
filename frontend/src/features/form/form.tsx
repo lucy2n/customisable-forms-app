@@ -95,7 +95,7 @@ const Form: FC<IFormProps> = ({ template, questions, userId }) => {
       case QuestionType.text:
         return (
           <div className="flex flex-col gap-2">
-            <p>{question.text}</p>
+            <p className="text-base">{question.text}</p>
             <Input
               label="Short answer"
               key={question.id}
@@ -107,7 +107,7 @@ const Form: FC<IFormProps> = ({ template, questions, userId }) => {
       case QuestionType.longText:
         return (
           <div className="flex flex-col gap-2">
-            <p>{question.text}</p>
+            <p className="text-base">{question.text}</p>
             <Textarea
               label="Long answer"
               key={question.id}
@@ -135,7 +135,7 @@ const Form: FC<IFormProps> = ({ template, questions, userId }) => {
       case QuestionType.select:
         return (
           <div className="flex flex-col gap-2">
-            <p>{question.text}</p>
+            <p className="text-base">{question.text}</p>
             <Select
               key={question.id}
               color="secondary"
@@ -177,7 +177,7 @@ const Form: FC<IFormProps> = ({ template, questions, userId }) => {
       <Card className="border-t-8 border-purple-700">
         <CardBody className="flex flex-col w-full gap-2">
           <h2 style={{ fontSize: '38px' }}>{template.title}</h2>
-          <p>{template.description}</p>
+          <p className="text-base">{template.description}</p>
         </CardBody>
       </Card>
       <Card>

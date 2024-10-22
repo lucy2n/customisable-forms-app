@@ -4,7 +4,6 @@ import { createTemplate, deleteTemplate, getTemplate, getTemplates, updateTempla
 const router = Router();
 
 router.post('/create', createTemplate);
-router.get('/:id', getTemplate);
 router.put('/update/:id', updateTemplate);
 router.delete('/:id', deleteTemplate);
 

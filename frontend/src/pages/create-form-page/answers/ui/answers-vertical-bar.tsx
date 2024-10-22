@@ -6,18 +6,9 @@ type DataProps = {
   initialOptions: string[];
 };
 
-// Helper function to generate random colors for bars
-const getRandomColor = () => {
-  const letters = '0123456789ABCDEF';
-  let color = '#';
-  for (let i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
-};
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#FF6666', '#FF8888', '#FFAAAA'];
 
 const AnswersVerticalBarChart: React.FC<DataProps> = ({ choices, initialOptions }) => {
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [chartData, setChartData] = useState<{ name: string; count: number }[]>([]);
 
   useEffect(() => {
@@ -28,37 +19,22 @@ const AnswersVerticalBarChart: React.FC<DataProps> = ({ choices, initialOptions 
     setChartData(updatedData);
   }, [choices]);
 
-  const handleCheckboxChange = (option: string) => {
-    setSelectedOptions((prevSelected) =>
-      prevSelected.includes(option)
-        ? prevSelected.filter((selected) => selected !== option)
-        : [...prevSelected, option]
-    );
-  };
-
   return (
     <div style={{ display: 'flex' }}>
       {/* Left side: list of checkboxes */}
       <div style={{ marginRight: '20px' }}>
         <h3>Select Options</h3>
-        {initialOptions.map((option) => (
-          <div key={option}>
-            <input
-              type="checkbox"
-              id={option}
-              value={option}
-              onChange={() => handleCheckboxChange(option)}
-              checked={selectedOptions.includes(option)}
-            />
-            <label htmlFor={option}>{option}</label>
-          </div>
-        ))}
+        {initialOptions.map((entry, index) => (
+            <li key={`list-${index}`} style={{ color: COLORS[index % COLORS.length] }}>
+              {entry}
+            </li>
+          ))}
       </div>
 
       {/* Right side: Vertical bar chart */}
       <ResponsiveContainer width="80%" height={400}>
         <BarChart
-          data={chartData.filter((data) => selectedOptions.includes(data.name))}
+          data={chartData.filter((data) => choices.includes(data.name))}
           layout="vertical"
           margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
         >
@@ -67,12 +43,12 @@ const AnswersVerticalBarChart: React.FC<DataProps> = ({ choices, initialOptions 
           <YAxis dataKey="name" type="category" />
           <Tooltip />
           {chartData
-            .filter((data) => selectedOptions.includes(data.name))
+            .filter((data) => choices.includes(data.name))
             .map((_, index) => (
               <Bar
                 key={index}
                 dataKey="count"
-                fill={getRandomColor()}
+                fill={COLORS[index % COLORS.length]}
                 barSize={20}
                 radius={[5, 5, 0, 0]}
               />
