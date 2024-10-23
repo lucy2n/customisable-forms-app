@@ -9,6 +9,7 @@ import InternalServerError from '../errors/internal-server-error';
 import { CREATED, FORBIDDEN_ERROR_USER, NOT_FOUND_ERROR_TEMPLATE_MESSAGE, UNAUTHORIZED_ERROR_USER_MESSAGE } from '../utils/constants';
 import Like from '../models/like';
 import sequelize from 'sequelize';
+import Form from '../models/form';
 
 export const getTemplates = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -48,28 +49,27 @@ export const getLatestTemplates = async (req: Request, res: Response): Promise<v
   }
 };
 
-export const getMostLikedTemplates = async (req: Request, res: Response): Promise<void> => {
+export const getTemplatesByMostForms = async (req: Request, res: Response): Promise<void> => {
   try {
     const templates = await Template.findAll({
       include: [
         {
-          model: Like,
-          as: 'likes',
+          model: Form,
+          as: 'forms',
           attributes: [],
-        }
+        },
       ],
       attributes: {
-        include: [[sequelize.fn('COUNT', sequelize.col('likes.template_id')), 'likeCount']]
+        include: [[sequelize.fn('COUNT', sequelize.col('forms.template_id')), 'formCount']],
       },
       group: ['Template.id'],
-      order: [[sequelize.literal('likeCount'), 'DESC']],
-      limit: 5
+      order: [[sequelize.literal('formCount'), 'DESC']],
+      limit: 5,
     });
 
-    // Возвращаем шаблоны вместе с количеством лайков
     res.json(templates);
   } catch (err: any) {
-    console.error('Get most liked templates error:', err.message);
+    console.error('Get templates by most forms error:', err.message);
     throw new InternalServerError(err.message);
   }
 };
