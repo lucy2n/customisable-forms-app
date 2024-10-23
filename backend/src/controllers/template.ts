@@ -60,16 +60,17 @@ export const getTemplatesByMostForms = async (req: Request, res: Response): Prom
         },
       ],
       attributes: {
-        include: [[sequelize.fn('COUNT', sequelize.col('forms.template_id')), 'formCount']],
+        include: [
+          [sequelize.fn('COUNT', sequelize.col('forms.id')), 'formCount']
+        ],
       },
       group: ['Template.id'],
       order: [[sequelize.literal('formCount'), 'DESC']],
-      limit: 5,
     });
 
     res.json(templates);
   } catch (err: any) {
-    console.error('Get templates by most forms error:', err.message);
+    console.error('Error fetching templates by most forms:', err.message);
     throw new InternalServerError(err.message);
   }
 };
