@@ -7,7 +7,6 @@ import NotFoundError from '../errors/not-found-error';
 import BadRequestError from '../errors/bad-request-error';
 import InternalServerError from '../errors/internal-server-error';
 import { CREATED, FORBIDDEN_ERROR_USER, NOT_FOUND_ERROR_TEMPLATE_MESSAGE, UNAUTHORIZED_ERROR_USER_MESSAGE } from '../utils/constants';
-import Like from '../models/like';
 import sequelize from 'sequelize';
 import Form from '../models/form';
 
@@ -56,17 +55,20 @@ export const getTemplatesByMostForms = async (req: Request, res: Response): Prom
         {
           model: Form,
           as: 'forms',
-          attributes: [],
+          attributes: [], // Не возвращаем данные форм, только считаем
         },
       ],
       attributes: {
         include: [
-          [sequelize.fn('COUNT', sequelize.col('forms.id')), 'formCount']
+          [sequelize.fn('COUNT', sequelize.col('forms.id')), 'formCount'], // Считаем количество форм
         ],
       },
-      group: ['Template.id'],
-      order: [[sequelize.literal('formCount'), 'DESC']],
+      group: ['Template.id'], // Группируем по идентификатору шаблона
+      order: [[sequelize.literal('formCount'), 'DESC']], // Сортируем по количеству форм
     });
+
+    // Логируем результат перед отправкой его клиенту для проверки
+    console.log('Fetched templates with form count:', templates);
 
     res.json(templates);
   } catch (err: any) {
