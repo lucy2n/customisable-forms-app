@@ -2,7 +2,7 @@ import { Card, Skeleton, Button, CardBody } from "@nextui-org/react";
 
 const FormSkeleton = () => {
   return (
-    <div className="flex flex-col w-1/2 mr-auto ml-auto mt-20 gap-10">
+    <div className="flex flex-col w-full md:w-1/2 lg:w-1/2 mr-auto ml-auto mt-20 gap-10">
       <Card className="border-t-8 border-purple-700">
         <CardBody className="flex flex-col w-full gap-2">
           <Skeleton className="w-full rounded-lg">

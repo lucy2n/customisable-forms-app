@@ -57,7 +57,7 @@ const CreateFormPage = () => {
     const isCreator = template.user_id + '' === user?.id;
 
     return (
-        <main className="flex flex-col justify-between w-11/12 mr-auto ml-auto pt-10 gap-10">
+        <main className="flex flex-col justify-between w-11/12 mr-auto ml-auto pt-10 gap-10 max-w-screen-xl">
             <FormTabs updateTab={updateTab} isLogined={user?.isLoggedIn}/>
             {selectedTab === 'Form' && (
                <Form template={template} questions={questions} userId={+user?.id} />

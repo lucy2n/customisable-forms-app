@@ -29,8 +29,8 @@ const LoginPage = () => {
     };
       
     return (
-        <main className="flex flex-col items-center w-11/12 mr-auto ml-auto pt-24">
-            <Card shadow="lg" className="w-1/2 p-10 border-1 border-purple-700 border-dotted">
+        <main className="flex flex-col items-center w-11/12 sm:w-full mr-auto ml-auto pt-24 max-w-screen-xl">
+            <Card shadow="lg" className="sm:w-2/3 md:w-1/2 lg:w-1/2 lg:p-10 md:p-10 sm:p-0 border-1 border-purple-700 border-dotted">
                 <CardBody className="w-full flex flex-col items-center">  
                     <h2 className="font-mono font-bold text-2xl uppercase mb-3">
                         Login

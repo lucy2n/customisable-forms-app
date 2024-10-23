@@ -50,7 +50,7 @@ const Comments: FC<CommentsProps> = ({ templateId, userId }) => {
     }
 
     return (
-        <div className="flex flex-col w-1/2 mr-auto ml-auto gap-10">
+        <div className="flex flex-col w-full md:w-1/2 lg:w-1/2 mr-auto ml-auto gap-10">
             <Card>
                 <CardBody className="flex flex-col w-full gap-2">
                     <p className="text-base font-medium text-xl uppercase font-mono pt-2 pl-2 pb-10">{comments?.length} comments</p>

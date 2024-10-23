@@ -28,7 +28,7 @@ const LoginForm: FC<LoginFormProps> = ({handleLogin}) => {
                 type="email"
                 label="Email"
                 variant="bordered"
-                className="w-2/3"
+                className="sm:w-full lg:w-2/3"
                 onChange={(e) => setEmail(e.target.value)}
                 required
             />
@@ -46,7 +46,7 @@ const LoginForm: FC<LoginFormProps> = ({handleLogin}) => {
                     </button>
                 }
                 type={isVisible ? "text" : "password"}
-                className="w-2/3"
+                className="sm:w-full lg:w-2/3"
                 onChange={(e) => setPassword(e.target.value)}
                 required
             />

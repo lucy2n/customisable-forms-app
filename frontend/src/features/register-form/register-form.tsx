@@ -31,7 +31,7 @@ const RegisterForm: FC<RegisterFormProps> = ({handleRegister}) => {
                 label="Username"
                 placeholder="Enter your username"
                 variant="bordered"
-                className="w-2/3"
+                className="sm:w-full lg:w-2/3"
                 onChange={(e) => setName(e.target.value)}
                 required
             />
@@ -40,7 +40,7 @@ const RegisterForm: FC<RegisterFormProps> = ({handleRegister}) => {
                 label="Email"
                 placeholder="Enter your email"
                 variant="bordered"
-                className="w-2/3"
+                className="sm:w-full lg:w-2/3"
                 onChange={(e) => setEmail(e.target.value)}
                 required
             />
@@ -58,7 +58,7 @@ const RegisterForm: FC<RegisterFormProps> = ({handleRegister}) => {
                     </button>
                 }
                 type={isVisible ? "text" : "password"}
-                className="w-2/3"
+                className="sm:w-full lg:w-2/3"
                 onChange={(e) => setPassword(e.target.value)}
                 required
             />

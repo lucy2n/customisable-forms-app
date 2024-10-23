@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import FormTemplateList from "../../widgets/form-template-list/form-template-list";
 import { useEffect, useState } from "react";
 import { ITemplate } from "../../entities/template/model/template";
-import { getLatestTemplates, getTemplates } from "../../shared/api/template";
+import { getLatestTemplates, getMostPopularTemplates } from "../../shared/api/template";
 
 const MainPage = () => {
     const [templates, setTemplates] = useState<ITemplate[]>([]);
@@ -24,14 +24,14 @@ const MainPage = () => {
             .catch(err => console.log(err))
             .finally(() => setLoadingLatest(false));
 
-        getTemplates()
+        getMostPopularTemplates()
             .then(res => setMostPopularTemplates(res))
             .catch(err => console.log(err))
             .finally(() => setLoadingPopular(false));
     };
 
     return (
-        <main className="flex flex-col justify-between w-11/12 mr-auto ml-auto pt-24 bg-gradient">
+        <main className="flex flex-col justify-between w-11/12 mr-auto ml-auto pt-24 bg-gradient max-w-screen-xl">
             <section className="flex flex-col text-center items-center gap-5">
                 <motion.h1 
                     className="m-0 p-0 font-mono text-4xl"

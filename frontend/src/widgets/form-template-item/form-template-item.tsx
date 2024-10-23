@@ -61,7 +61,7 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ template, refresh }) => {
     }, [template.id, user.id]);
 
     return (
-        <Card isFooterBlurred className="relative w-1/4 h-[300px] col-span-12 sm:col-span-7 group">
+        <Card isFooterBlurred className="relative w-full h-[300px] sm:w-[48%] lg:w-[26%] max-w-1440px col-span-12 sm:col-span-6 lg:col-span-4 group">
             <CardHeader className="absolute z-10 top-1 justify-end !items-end">
                 <div className="flex flex-grow gap-2 items-center">
                     <img
@@ -75,11 +75,8 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ template, refresh }) => {
                 {
                     hasRights &&
                     <div className="flex gap-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300 ease-in-out">
-                        {/* <Button isIconOnly color="secondary" variant="light" size="sm" onClick={() => handleDeleteTemplate(template.id)}>
-                            <img src={trash} alt="delete form" />
-                        </Button> */}
                         <DeleteModal handleDeleteTemplate={handleDeleteTemplate} templateId={template.id}/>
-                        <Button color="secondary" variant="light" size="sm" onClick={() => navigate(`/template/${template.id}/edit`)}>
+                        <Button isIconOnly color="secondary" variant="light" size="sm" onClick={() => navigate(`/template/${template.id}/edit`)}>
                             <img src={edit} alt="edit form" />
                         </Button>
                     </div>

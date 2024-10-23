@@ -96,7 +96,7 @@ const Answers: FC<AnswersProps> = ({ answers, questions }) => {
       };
 
     return (
-        <div className="flex flex-col w-1/2 mr-auto ml-auto gap-10">
+        <div className="flex flex-col w-full md:w-1/2 lg:w-1/2 mr-auto ml-auto gap-10">
             {
                 questions.map((question) => 
                     <Card>

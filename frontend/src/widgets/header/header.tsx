@@ -18,9 +18,9 @@ const Header = () => {
   const user = useAppSelector((state) => state.user);
 
   const handleLogout = () => {
-      logout(); // Удаление токена на стороне сервера (или локально)
-      dispatch(resetUser()); // Сброс состояния пользователя
-      navigate(RoutePathname.loginPage); // Перенаправление на страницу входа
+      logout();
+      dispatch(resetUser());
+      navigate(RoutePathname.loginPage);
     };
   
 
@@ -33,7 +33,7 @@ const Header = () => {
   const isLightTheme = theme === 'light';
 
   return (
-    <header className="flex justify-between w-11/12 mr-auto ml-auto pt-10 items-center flex-wrap">
+    <header className="justify-center flex-col gap-5 flex lg:justify-between lg:flex-row w-11/12 mr-auto ml-auto pt-10 items-center flex-wrap sm:justify-center sm:flex-col sm:gap-5 max-w-screen-xl">
       <div className="flex cursor-pointer" onClick={() => navigate(RoutePathname.homePage)}>
         <p className="text-base font-medium text-xl uppercase text-purple-700 font-mono">
           Form
@@ -55,8 +55,8 @@ const Header = () => {
             >
               Create template
             </Button>
-            {/* Проверка наличия имени пользователя */}
             <Button
+              isIconOnly
               radius="full"
               color="secondary"
               variant="shadow"
@@ -64,7 +64,7 @@ const Header = () => {
               className="text-base"
               onClick={() => navigate(RoutePathname.profilePage)}
             >
-              {user.name ? user.name[0] : 'U'} {/* Показать первую букву или заглушку */}
+              {user.name ? user.name[0] : 'U'}
             </Button>
             <Button
               color="secondary"
