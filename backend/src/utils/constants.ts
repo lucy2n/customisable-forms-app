@@ -11,6 +11,7 @@ export const CAST_ERROR_NAME = 'CastError';
 
 export const NOT_FOUND_ERROR_FORM_MESSAGE = 'Form not found';
 export const NOT_FOUND_ERROR_USER_MESSAGE = 'User not found';
+export const NOT_FOUND_ERROR_QUESTION_MESSAGE = 'Question not found';
 export const NOT_FOUND_ERROR_COMMENTS_MESSAGE = 'Comments not found';
 export const NOT_FOUND_ERROR_TEMPLATE_MESSAGE = 'Template not found';
 export const NOT_FOUND_ERROR_LIKE_MESSAGE = 'Like not found'

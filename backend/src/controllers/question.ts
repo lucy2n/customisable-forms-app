@@ -4,7 +4,7 @@ import Template from '../models/template';
 import NotFoundError from '../errors/not-found-error';
 import InternalServerError from '../errors/internal-server-error';
 import BadRequestError from '../errors/bad-request-error';
-import { CREATED, NOT_FOUND_ERROR_TEMPLATE_MESSAGE } from '../utils/constants';
+import { CREATED, NOT_FOUND_ERROR_QUESTION_MESSAGE, NOT_FOUND_ERROR_TEMPLATE_MESSAGE } from '../utils/constants';
 
 export const getQuestions = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -75,7 +75,7 @@ export const deleteQuestion = async (req: Request, res: Response): Promise<void>
     try {
       const question = await Question.findByPk(req.params.id);
       if (!question)  {
-        throw new NotFoundError('Question not found')
+        throw new NotFoundError(NOT_FOUND_ERROR_QUESTION_MESSAGE)
     };
   
       await question.destroy();
