@@ -12,13 +12,14 @@ import Answers from "./answers/answers";
 import { IAnswer } from "../../entities/answer/model/answer";
 import { getAnswers } from "../../shared/api/answer";
 import FormSkeleton from "../../widgets/form-skeleton/form-skeleton";
+import { RootState } from "../../app/appStore";
 
 const CreateFormPage = () => {
     const { id } = useParams();
     const [template, setTemplate] = useState<ITemplate>();
     const [questions, setQuestions] = useState<IQuestion[]>();
     const [answers, setAnswers] = useState<IAnswer[]>();
-    const user = useAppSelector((store) => store.user);
+    const user = useAppSelector((store: RootState) => store.user);
     const [selectedTab, setSelectedTab] = useState<string>('Form');
 
     const updateTab = (tab: string) => {

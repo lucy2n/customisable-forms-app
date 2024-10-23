@@ -8,13 +8,14 @@ import { useAppSelector } from '../../app/routes/lib/hook';
 import { createTemplate } from '../../shared/api/template';
 import { ITemplate } from '../../entities/template/model/template';
 import { createQuestion } from '../../shared/api/question';
+import { RootState } from '../../app/appStore';
 
 const TemplateBuilder = () => {
     const [templateTitle, setTemplateTitle] = useState('New form');
     const [templateDesc, setTemplateDesc] = useState('');
     const [questions, setQuestions] = useState<IQuestion[]>([]);
     const [activeIndex, setActiveIndex] = useState<string | null>(null);
-    const user = useAppSelector((store) => store.user);
+    const user = useAppSelector((store: RootState) => store.user);
     const template_id = uuidv4();
   
     const addQuestion = () => {

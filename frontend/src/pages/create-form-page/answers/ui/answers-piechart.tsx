@@ -56,7 +56,6 @@ const renderCustomizedLabel = ({
 const AnswersPiechart: React.FC<AnswersPiechartProps> = ({ data }) => {
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
-      {/* Right side: Pie Chart */}
       <PieChart width={200} height={200}>
         <Pie
           data={data}
@@ -68,13 +67,12 @@ const AnswersPiechart: React.FC<AnswersPiechartProps> = ({ data }) => {
           fill="#8884d8"
           dataKey="value"
         >
-          {data.map((entry, index) => (
+          {data.map((_entry, index) => (
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-          ))}
+        ))}
         </Pie>
       </PieChart>
 
-      {/* Left side: list of group names, now moved to the right */}
       <div style={{ marginLeft: '20px' }}>
         <ul>
           {data.map((entry, index) => (

@@ -1,9 +1,10 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAppSelector } from './lib/hook';
 import { RoutePathname } from './constants';
+import { RootState } from '../appStore';
 
 const Protected = ({ onlyUnAuth = false, component }: { onlyUnAuth?: boolean, component: JSX.Element}): JSX.Element | null => {
-  const user = useAppSelector((store) => store.user);
+  const user = useAppSelector((store: RootState) => store.user);
   const location = useLocation();
 
   if (onlyUnAuth && user.isLoggedIn) {

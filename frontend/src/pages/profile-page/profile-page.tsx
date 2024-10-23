@@ -5,9 +5,10 @@ import { getTemplatesByUser } from "../../shared/api/template";
 import { useAppSelector } from "../../app/routes/lib/hook";
 import ProfileTabs from "./profile-tabs/profile-tabs";
 import AdminPage from "../admin-page/admin-page";
+import { RootState } from "../../app/appStore";
 
 const ProfilePage = () => {
-    const user = useAppSelector(state => state.user);
+    const user = useAppSelector((store: RootState) => store.user);
     const [templates, setTemplates] = useState<ITemplate[]>();
     const [selectedTab, setSelectedTab] = useState<string>('My templates');
 
