@@ -55,20 +55,17 @@ export const getTemplatesByMostForms = async (req: Request, res: Response): Prom
         {
           model: Form,
           as: 'forms',
-          attributes: [], // Не возвращаем данные форм, только считаем
+          attributes: [],
         },
       ],
       attributes: {
         include: [
-          [sequelize.fn('COUNT', sequelize.col('forms.id')), 'formCount'], // Считаем количество форм
+          [sequelize.fn('COUNT', sequelize.col('forms.id')), 'formCount'],
         ],
       },
-      group: ['Template.id'], // Группируем по идентификатору шаблона
-      order: [[sequelize.literal('formCount'), 'DESC']], // Сортируем по количеству форм
+      group: ['Template.id'],
+      order: [[sequelize.literal('formCount'), 'DESC']],
     });
-
-    // Логируем результат перед отправкой его клиенту для проверки
-    console.log('Fetched templates with form count:', templates);
 
     res.json(templates);
   } catch (err: any) {

@@ -1,10 +1,11 @@
 import { FC, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { Button, Input, Card, CardBody } from '@nextui-org/react';
 import { ITemplate } from '../../entities/template/model/template';
-import { IQuestion } from '../../entities/question/model/question';
+import { IQuestion, QuestionType } from '../../entities/question/model/question';
 import { updateTemplate } from '../../shared/api/template'; // Предположим, что эти API уже существуют
 import QuestionEditor from '../template-builder/ui/question-editor/question-editor';
-import { updateQuestion } from '../../shared/api/question';
+import { updateQuestion, deleteQuestion } from '../../shared/api/question';
 
 interface ITemplateEditorProps {
     template: ITemplate;
@@ -17,6 +18,28 @@ const TemplateEditor: FC<ITemplateEditorProps> = ({ template, questions }) => {
     const [questionList, setQuestionList] = useState<IQuestion[]>(questions);
     const [activeIndex, setActiveIndex] = useState<string | null>(null);
 
+    const addQuestion = () => {
+        setQuestionList([
+          ...questionList, 
+          {
+            id: uuidv4(), 
+            type: QuestionType.text, 
+            text: '', 
+            options: [], 
+            template_id: template.id 
+          }
+        ]);
+    };
+
+    const removeQuestion = async (id: string) => {
+        try {
+            await deleteQuestion(id);
+            setQuestionList(questionList.filter((question) => question.id !== id));
+        } catch (err) {
+            console.error('Failed to delete question:', err);
+        }
+    };
+
     const handleUpdateTemplate = async () => {
         try {
             await updateTemplate(template.id, {
@@ -24,7 +47,7 @@ const TemplateEditor: FC<ITemplateEditorProps> = ({ template, questions }) => {
                 description: templateDesc,
             });
 
-            const questionPromises = questionList.map(q => updateQuestion(q.id, q));
+            const questionPromises = questionList.map(question => updateQuestion(question.id, question));
             await Promise.all(questionPromises);
 
             console.log('Template updated successfully');
@@ -34,8 +57,8 @@ const TemplateEditor: FC<ITemplateEditorProps> = ({ template, questions }) => {
     };
 
     const handleUpdateQuestion = (id: string, updatedQuestion: IQuestion) => {
-        const updatedQuestions = questionList.map((q) =>
-            q.id === id ? { ...updatedQuestion } : q
+        const updatedQuestions = questionList.map((question) =>
+            question.id === id ? { ...updatedQuestion } : question
         );
         setQuestionList(updatedQuestions);
     };
@@ -71,8 +94,14 @@ const TemplateEditor: FC<ITemplateEditorProps> = ({ template, questions }) => {
                         key={question.id}
                         question={question}
                         updateQuestion={handleUpdateQuestion}
+                        removeQuestion={removeQuestion}
                     />
                 ))}
+            </div>
+            <div className="flex justify-center mt-2">
+                <Button isIconOnly onClick={addQuestion} color="secondary">
+                    <p>Add</p>
+                </Button>
             </div>
             <Button color="secondary" onClick={handleUpdateTemplate}>
                 Save Changes

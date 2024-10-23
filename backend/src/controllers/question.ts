@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
 import Question from '../models/question';
 import Template from '../models/template';
-import Form from '../models/form';
 import NotFoundError from '../errors/not-found-error';
 import InternalServerError from '../errors/internal-server-error';
 import BadRequestError from '../errors/bad-request-error';
+import { CREATED, NOT_FOUND_ERROR_TEMPLATE_MESSAGE } from '../utils/constants';
 
 export const getQuestions = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -44,15 +44,30 @@ export const createQuestion = async (req: Request, res: Response): Promise<void>
 
 export const updateQuestion = async (req: Request, res: Response): Promise<void> => {
     try {
-      const question = await Question.findByPk(req.params.id);
-      if (!question)  {
-        throw new NotFoundError('Question not found')
-      };
-  
-      await question.update(req.body);
-        res.json(question);
+        const { template_id, ...questionData } = req.body;
+
+        let question = await Question.findByPk(req.params.id);
+
+        if (question) {
+            await question.update(questionData);
+            res.json(question);
+        } else {
+            const template = await Template.findByPk(template_id);
+
+            if (!template) {
+                throw new NotFoundError(NOT_FOUND_ERROR_TEMPLATE_MESSAGE);
+            }
+
+            question = await Question.create({
+                ...questionData,
+                template_id,
+            });
+
+            res.status(CREATED).json(question);
+        }
     } catch (err: any) {
-        throw new BadRequestError(err.message)
+        console.error('Error updating or creating question:', err);
+        throw new BadRequestError(err.message);
     }
 };
 

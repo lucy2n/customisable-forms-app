@@ -5,10 +5,10 @@ import x from '../../../../assets/x-02.svg';
 import { IQuestion, QuestionType } from '../../../../entities/question/model/question';
 
 interface IQuestionEditorProps {
-    question: IQuestion; // Тип для вопроса
-    updateQuestion: (id: string, updatedQuestion: IQuestion) => void; // Функция обновления вопроса
-    removeQuestion?: (id: string) => void; // Функция удаления вопроса
-    isActive: boolean; // Булевое значение для активности вопроса
+    question: IQuestion;
+    updateQuestion: (id: string, updatedQuestion: IQuestion) => void;
+    removeQuestion?: (id: string) => void;
+    isActive: boolean;
     setActiveIndex: (id: string) => void;
 }
 

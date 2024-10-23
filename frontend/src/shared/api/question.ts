@@ -53,3 +53,25 @@ export const updateQuestion = async (questionId: string, updatedFields: Partial<
 
   return checkResponse<IQuestion>(res);
 };
+
+export const deleteQuestion = async (questionId: string) => {
+  const token = localStorage.getItem('token');
+
+  if (!token) {
+      throw new Error('Токен не найден');
+  }
+
+  const res = await fetch(`${base_url}/questions/delete/${questionId}`, {
+      method: 'DELETE',
+      headers: {
+          accept: 'application/json',
+          Authorization: `Bearer ${token}`
+      },
+  });
+
+  if (!res.ok) {
+      throw new Error('Failed to delete question');
+  }
+
+  return res.json();
+};
