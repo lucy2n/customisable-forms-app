@@ -11,6 +11,7 @@ import edit from '../../assets/icons8-edit.svg';
 import like from '../../assets/icons8-heart-24.png';
 import unlike from '../../assets/icons8-heart-24-2.png';
 import DeleteModal from "./ui/delete-modal";
+import { RootState } from "../../app/appStore";
 
 interface FormTemplateItemProps {
     template: ITemplate;
@@ -18,7 +19,7 @@ interface FormTemplateItemProps {
 }
 
 const FormTemplateItem: FC<FormTemplateItemProps> = ({ template, refresh }) => {
-    const user = useAppSelector((store) => store.user);
+    const user = useAppSelector((store: RootState) => store.user);
     const navigate = useNavigate();
     const hasRights = template.user_id + '' === user.id || user.is_admin;
     const [likes, setLikes] = useState<ILike[]>([]);

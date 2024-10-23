@@ -9,13 +9,14 @@ import { useAppDispatch, useAppSelector } from "../../app/routes/lib/hook";
 import { logout } from "../../shared/api/user";
 import { resetUser } from "../../entities/user/model/userSlice";
 import SearchTemplates from "../../features/search-templates/ui/search-templates";
+import { RootState } from "../../app/appStore";
 
 const Header = () => {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.user);
+  const user = useAppSelector((state: RootState) => state.user);
 
   const handleLogout = () => {
       logout();

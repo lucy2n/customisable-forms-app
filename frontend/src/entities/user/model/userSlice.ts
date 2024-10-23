@@ -1,16 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type UserState = {
-  user: {
-    isLoggedIn: boolean,
-    id: number,
-    is_admin: boolean,
-    name: string,
-    email: string,
-  };
+  isLoggedIn: boolean;
+  id: string;
+  is_admin: boolean;
+  name: string;
+  email: string;
 };
 
-const initialState = {
+const initialState: UserState = {
   isLoggedIn: false,
   id: '',
   is_admin: false,
@@ -22,25 +20,25 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setId: (state, action: PayloadAction<string>) => {
-        state.id = action.payload;
+    setId: (state: UserState, action: PayloadAction<string>) => {
+      state.id = action.payload;
     },
-    setName: (state, action: PayloadAction<string>) => {
+    setName: (state: UserState, action: PayloadAction<string>) => {
       state.name = action.payload;
     },
-    setEmail: (state, action: PayloadAction<string>) => {
+    setEmail: (state: UserState, action: PayloadAction<string>) => {
       state.email = action.payload;
     },
-    setIsAdmin: (state, action: PayloadAction<boolean>) => {
+    setIsAdmin: (state: UserState, action: PayloadAction<boolean>) => {
       state.is_admin = action.payload;
     },
-    loggedIn: (state) => {
+    loggedIn: (state: UserState) => {
       state.isLoggedIn = true;
     },
-    loggedOut: (state) => {
+    loggedOut: (state: UserState) => {
       state.isLoggedIn = false;
     },
-    resetUser: (state) => {
+    resetUser: (state: UserState) => {
       Object.assign(state, initialState);
     },
   },
@@ -55,4 +53,5 @@ export const {
   resetUser,
   setIsAdmin
 } = userSlice.actions;
+
 export default userSlice.reducer;

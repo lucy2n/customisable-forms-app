@@ -4,7 +4,7 @@ import Header from '../widgets/header/header';
 import { RoutePathname } from './routes/constants';
 import RegisterPage from '../pages/register-page/register-page';
 import MainPage from '../pages/main-page/main-page';
-import { useAppDispatch, useAppSelector } from './routes/lib/hook';
+import { useAppDispatch } from './routes/lib/hook';
 import { useEffect } from 'react';
 import { OnlyAuth, OnlyUnAuth } from './routes/protected-route';
 import { getUserInformation } from '../shared/api/user';
@@ -17,7 +17,6 @@ import EditTemplatePage from '../pages/edit-template-page/edit-template-page';
 
 function App() {
   const dispatch = useAppDispatch();
-  const user = useAppSelector((store) => store.user);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -37,7 +36,7 @@ function App() {
           localStorage.removeItem('token');
         });
     }
-  }, [dispatch, user.isLoggedIn]);
+  }, [dispatch]);
 
   return (
     <div className="flex justify-center flex-col w-screen mb-10">
