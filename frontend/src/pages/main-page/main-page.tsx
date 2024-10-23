@@ -5,7 +5,7 @@ import { ITemplate } from "../../entities/template/model/template";
 import { getLatestTemplates, getMostPopularTemplates } from "../../shared/api/template";
 
 const MainPage = () => {
-    const [templates, setTemplates] = useState<ITemplate[]>([]);
+    // const [templates, setTemplates] = useState<ITemplate[]>([]);
     const [latestTemplates, setLatesTemplates] = useState<ITemplate[]>([]);
     const [mostPopularTemplates, setMostPopularTemplates] = useState<ITemplate[]>([]);
     const [loadingLatest, setLoadingLatest] = useState<boolean>(true);

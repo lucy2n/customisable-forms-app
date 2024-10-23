@@ -18,7 +18,8 @@ const LoginForm: FC<LoginFormProps> = ({handleLogin}) => {
         try {
             handleLogin(email, password);
         } catch (err) {
-          console.error('Ошибка регистрации:', err.message);
+            const error = err as Error;
+            console.error('Login error:', error.message);
         }
       };
 

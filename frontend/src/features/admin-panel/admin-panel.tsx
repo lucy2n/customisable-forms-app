@@ -15,86 +15,87 @@ const columns = [
     { name: "ACTIONS", uid: "actions" },
 ];
 
-const statusColorMap = {
-    active: "success",
-    paused: "danger",
-    vacation: "warning",
-};
 
 const AdminPanel = ({ users, refresh }: { users: IUser[], refresh: () => void }) => {
     const dispatch = useAppDispatch();
 
-    const handleDelete = (id: number) => {
+    const handleDelete = (id: number | undefined) => {
+      if (id !== undefined) {
         deleteUser(id)
-        .then(() => refresh());
-    }
+          .then(() => refresh());
+      } else {
+        console.error('ID is undefined');
+      }
+    };
 
-    const handleUpdateStatus = (id: number, user: IUser) => {
+    const handleUpdateStatus = (id: number | undefined, user: IUser) => {
         const newStatus = user.status === "active" ? "blocked" : "active";
-        updateUser(id, { status: newStatus })
-        .then(() => refresh());
+        if (id !== undefined) {
+          updateUser(id, { status: newStatus })
+          .then(() => refresh());
+        } else {
+          console.error('ID is undefined');
+        }
     }
 
-    const handleUpdateRole = (id: number, user: IUser) => {
-        const newRole = user.is_admin ? false : true; // Toggle role
+    const handleUpdateRole = (id: number | undefined, user: IUser) => {
+        const newRole = user.is_admin ? false : true;
+        if (id !== undefined) {
         updateUser(id, { is_admin: newRole })
             .then(() => {
                 dispatch(setIsAdmin(!user.is_admin))
                 refresh();
                 
             });
+        } else {
+            console.error('ID is undefined');
+        }
     }
 
-    const renderCell = React.useCallback((user, columnKey) => {
-        const cellValue = user[columnKey];
-
-        switch (columnKey) {
-            case "name":
-                return (
-                    <User
-                        description={user.email}
-                        name={cellValue}
-                    >
-                        {user.email}
-                    </User>
-                );
-            case "role":
-                return (
-                    <div className="flex flex-col">
-                        <p className="text-bold text-sm capitalize">{cellValue}</p>
-                        <p className="text-bold text-sm capitalize">{user.is_admin ? 'admin' : 'user'}</p>
-                    </div>
-                );
-            case "status":
-                return (
-                    <Chip className="capitalize" color={statusColorMap[user.status]} size="sm" variant="flat">
-                        {cellValue}
-                    </Chip>
-                );
-            case "actions":
-                return (
-                    <div className="relative flex justify-center items-center gap-2">
-                        <Tooltip content={user.is_admin ? "Revoke admin" : "Make admin"}>
-                            <span className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={() => handleUpdateRole(user.id ,user)}>
-                                <img src={admin} alt="toggle admin" />
-                            </span>
-                        </Tooltip>
-                        <Tooltip content={user.status === 'active' ? "Block admin" : "Unblock admin"}>
-                            <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                                <img src={lock} alt="lock user" onClick={() => handleUpdateStatus(user.id ,user)}/>
-                            </span>
-                        </Tooltip>
-                        <Tooltip color="danger" content="Delete user">
-                            <span className="text-lg text-danger cursor-pointer active:opacity-50" onClick={() => handleDelete(user.id)}>
-                                <img src={trash} alt="delete user" />
-                            </span>
-                        </Tooltip>
-                    </div>
-                );
-            default:
-                return cellValue;
-        }
-    }, []);
+    const renderCell = React.useCallback((user: IUser, columnKey: string) => {
+      switch (columnKey) {
+          case "name":
+              return (
+                  <User description={user.email} name={user.name}>
+                      {user.email}
+                  </User>
+              );
+          case "role":
+              return (
+                  <div className="flex flex-col">
+                      <p className="text-bold text-sm capitalize">{user.is_admin ? 'admin' : 'user'}</p>
+                  </div>
+              );
+          case "status":
+              return (
+                  <Chip className="capitalize" color={user.status === 'active' ? 'success' : 'danger'} size="sm" variant="flat">
+                      {user.status}
+                  </Chip>
+              );
+          case "actions":
+              return (
+                  <div className="relative flex justify-center items-center gap-2">
+                      <Tooltip content={user.is_admin ? "Revoke admin" : "Make admin"}>
+                          <span className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={() => handleUpdateRole(user.id, user)}>
+                              <img src={admin} alt="toggle admin" />
+                          </span>
+                      </Tooltip>
+                      <Tooltip content={user.status === 'active' ? "Block user" : "Unblock user"}>
+                          <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+                              <img src={lock} alt="lock user" onClick={() => handleUpdateStatus(user.id, user)} />
+                          </span>
+                      </Tooltip>
+                      <Tooltip color="danger" content="Delete user">
+                          <span className="text-lg text-danger cursor-pointer active:opacity-50" onClick={() => handleDelete(user.id)}>
+                              <img src={trash} alt="delete user" />
+                          </span>
+                      </Tooltip>
+                  </div>
+              );
+          default:
+              return null;
+      }
+  }, []);
 
     return (
         <Table aria-label="Example table with custom cells">
@@ -108,7 +109,7 @@ const AdminPanel = ({ users, refresh }: { users: IUser[], refresh: () => void })
             <TableBody items={users}>
                 {(user) => (
                     <TableRow key={user.email}>
-                        {(columnKey) => <TableCell>{renderCell(user, columnKey)}</TableCell>}
+                        {(columnKey) => <TableCell>{renderCell(user, columnKey + '')}</TableCell>}
                     </TableRow>
                 )}
             </TableBody>

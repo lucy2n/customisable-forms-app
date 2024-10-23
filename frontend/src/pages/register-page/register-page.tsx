@@ -14,14 +14,15 @@ const RegisterPage = () => {
           name: name,
           email: email,
           password: password,
+          status: 'active'
         };
       
         try {
-          console.log(newUser, 'user')
           const registeredUser = await createUser(newUser);
-          console.log('Пользователь зарегистрирован:', registeredUser);
+          console.log('Registration success:', registeredUser);
         } catch (err) {
-          console.error('Ошибка регистрации:', err.message);
+          const error = err as Error;
+          console.error('Registration error:', error.message);
         }
         navigate(RoutePathname.loginPage)
       };

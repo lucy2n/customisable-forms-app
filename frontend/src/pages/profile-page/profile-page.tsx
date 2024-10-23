@@ -31,7 +31,7 @@ const ProfilePage = () => {
             <ProfileTabs updateTab={updateTab} isAdmin={user.is_admin}/>
 
             {selectedTab === 'My templates' && templates && (
-                <FormTemplateList refresh={refresh} templates={templates} title="My templates" />
+                <FormTemplateList refresh={refresh} templates={templates} title="My templates" loading={false} />
             )}
 
             {selectedTab === 'Admin' && user.is_admin && (

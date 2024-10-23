@@ -112,11 +112,12 @@ const Answers: FC<AnswersProps> = ({ answers, questions }) => {
 
 const transformArray = (inputArray: IAnswer[]) => {
     const answerCountMap: { [key: string]: number } = inputArray.reduce((acc, obj) => {
-        acc[obj.answer] = (acc[obj.answer] || 0) + 1;
+        if (typeof obj.answer === 'string') {
+            acc[obj.answer] = (acc[obj.answer] || 0) + 1;
+        }
         return acc;
-    }, {});
-
-    // Transform the map into the desired array format
+    }, {} as { [key: string]: number });
+    
     return Object.keys(answerCountMap).map(key => ({
         name: key,
         value: answerCountMap[key]

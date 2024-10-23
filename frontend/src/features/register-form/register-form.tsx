@@ -20,8 +20,9 @@ const RegisterForm: FC<RegisterFormProps> = ({handleRegister}) => {
         try {
           handleRegister(name, email, password);
         } catch (err) {
-          console.error('Ошибка регистрации:', err.message);
-        }
+            const error = err as Error;
+            console.error('Registration error:', error.message);
+          }
       };
 
     return (
