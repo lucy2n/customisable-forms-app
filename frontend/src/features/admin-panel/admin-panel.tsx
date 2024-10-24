@@ -39,11 +39,11 @@ const AdminPanel = ({ users, refresh }: { users: IUser[], refresh: () => void })
     }
 
     const handleUpdateRole = (user: IUser) => {
-        const newRole = user.is_admin ? false : true;
+        const newRole = !user.is_admin;
         if (user.id !== undefined) {
         updateUser(user.id, { is_admin: newRole })
             .then(() => {
-                dispatch(setIsAdmin(!user.is_admin))
+                dispatch(setIsAdmin(newRole))
                 refresh();
                 
             });
