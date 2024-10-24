@@ -1,14 +1,11 @@
-import { useNavigate } from "react-router-dom";
 import LoginForm from "../../features/login-form/login-form";
 import { Card, CardBody } from "@nextui-org/react";
-import { RoutePathname } from "../../app/routes/constants";
 import { loginUser } from "../../shared/api/user";
 import { useAppDispatch } from "../../app/routes/lib/hook";
 import { loggedIn, resetUser, setEmail } from "../../entities/user/model/userSlice";
 
 
 const LoginPage = () => {
-    const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
 
@@ -19,7 +16,6 @@ const LoginPage = () => {
             localStorage.setItem('token', res.token);
             dispatch(loggedIn());
             dispatch(setEmail(email));
-            navigate(RoutePathname.homePage);
         })
         } catch (err) {
             localStorage.removeItem('token');

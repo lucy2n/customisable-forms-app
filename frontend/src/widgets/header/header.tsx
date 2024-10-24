@@ -6,8 +6,7 @@ import { useEffect, useState } from "react";
 import { RoutePathname } from "../../app/routes/constants";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/routes/lib/hook";
-import { logout } from "../../shared/api/user";
-import { resetUser } from "../../entities/user/model/userSlice";
+import { loggedOut, resetUser } from "../../entities/user/model/userSlice";
 import SearchTemplates from "../../features/search-templates/ui/search-templates";
 import { RootState } from "../../app/appStore";
 
@@ -19,7 +18,8 @@ const Header = () => {
   const user = useAppSelector((state: RootState) => state.user);
 
   const handleLogout = () => {
-      logout();
+      dispatch(loggedOut());
+      localStorage.removeItem('token');
       dispatch(resetUser());
       navigate(RoutePathname.loginPage);
     };

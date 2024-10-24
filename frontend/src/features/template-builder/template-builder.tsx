@@ -9,8 +9,11 @@ import { createTemplate } from '../../shared/api/template';
 import { ITemplate } from '../../entities/template/model/template';
 import { createQuestion } from '../../shared/api/question';
 import { RootState } from '../../app/appStore';
+import { useNavigate } from 'react-router-dom';
+import { RoutePathname } from '../../app/routes/constants';
 
 const TemplateBuilder = () => {
+    const navigate = useNavigate();
     const [templateTitle, setTemplateTitle] = useState('New form');
     const [templateDesc, setTemplateDesc] = useState('');
     const [questions, setQuestions] = useState<IQuestion[]>([]);
@@ -67,6 +70,8 @@ const TemplateBuilder = () => {
           await Promise.all(questionPromises);
 
           console.log("Questions created:", questions);
+
+          navigate(RoutePathname.homePage);
 
       } catch (err) {
           console.error("Error creating template and questions:", err);

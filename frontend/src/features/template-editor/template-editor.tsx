@@ -6,6 +6,8 @@ import { IQuestion, QuestionType } from '../../entities/question/model/question'
 import { updateTemplate } from '../../shared/api/template'; // Предположим, что эти API уже существуют
 import QuestionEditor from '../template-builder/ui/question-editor/question-editor';
 import { updateQuestion, deleteQuestion } from '../../shared/api/question';
+import { useNavigate } from 'react-router-dom';
+import { RoutePathname } from '../../app/routes/constants';
 
 interface ITemplateEditorProps {
     template: ITemplate;
@@ -17,6 +19,7 @@ const TemplateEditor: FC<ITemplateEditorProps> = ({ template, questions }) => {
     const [templateDesc, setTemplateDesc] = useState(template.description);
     const [questionList, setQuestionList] = useState<IQuestion[]>(questions);
     const [activeIndex, setActiveIndex] = useState<string | null>(null);
+    const navigate = useNavigate()
 
     const addQuestion = () => {
         setQuestionList([
@@ -51,6 +54,7 @@ const TemplateEditor: FC<ITemplateEditorProps> = ({ template, questions }) => {
             await Promise.all(questionPromises);
 
             console.log('Template updated successfully');
+            navigate(RoutePathname.homePage);
         } catch (err) {
             console.error('Failed to update template:', err);
         }

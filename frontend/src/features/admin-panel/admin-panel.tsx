@@ -6,8 +6,7 @@ import admin from '../../assets/icons8-admin-32.png';
 import lock from '../../assets/icons8-lock.svg';
 import { deleteUser, updateUser } from "../../shared/api/user";
 import { setIsAdmin } from "../../entities/user/model/userSlice";
-import { useAppDispatch, useAppSelector } from "../../app/routes/lib/hook";
-import { RootState } from "../../app/appStore";
+import { useAppDispatch } from "../../app/routes/lib/hook";
 
 const columns = [
     { name: "NAME", uid: "name" },

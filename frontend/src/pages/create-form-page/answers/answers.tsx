@@ -13,6 +13,15 @@ interface AnswersProps {
 
 const Answers: FC<AnswersProps> = ({ answers, questions }) => {
     const renderAnswer = (question: IQuestion, answers: IAnswer[]) => {
+        if (answers.length === 0) {
+            return (
+                <div className="flex flex-col gap-5 pb-5">
+                    <p className="text-base">{question.text}</p>
+                    <p className="text-sm text-center text-gray-500">No answers</p>
+                </div>
+            );
+        }
+
         switch (question.type) {
           case QuestionType.text:
             return (

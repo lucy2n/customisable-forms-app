@@ -102,10 +102,4 @@ export const deleteUser = async (userId: number) => {
 
   return checkResponse<IUser>(res);
 };
-
-export const logout = () => {
-  localStorage.removeItem('token');
-  console.log('Вы вышли из системы');
-};
-
   

@@ -7,6 +7,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { createForm } from '../../shared/api/form';
 import { IForm } from '../../entities/form/form';
 import { createAnswer } from '../../shared/api/answer';
+import { useNavigate } from 'react-router-dom';
+import { RoutePathname } from '../../app/routes/constants';
 
 interface IFormProps {
   template: ITemplate;
@@ -17,6 +19,7 @@ interface IFormProps {
 const Form: FC<IFormProps> = ({ template, questions, userId }) => {
   const [answers, setAnswers] = useState<IAnswer[]>([]);
   const form_id = uuidv4();
+  const navigate = useNavigate();
 
   const handleAnswerChange = (questionId: string, answer: string | string[]) => {
     if (!userId) return; 
@@ -82,6 +85,8 @@ const Form: FC<IFormProps> = ({ template, questions, userId }) => {
       await Promise.all(answerPromises);
 
       console.log("Answers created:", answers);
+
+      navigate(RoutePathname.homePage)
     } catch (err) {
       console.error("Error creating template and answers:", err);
     }

@@ -1,12 +1,15 @@
 import { FC, useState } from "react";
 import { Input, Button } from "@nextui-org/react";
 import eye from '../../assets/icons8-eye-24.png'
+import { useNavigate } from "react-router-dom";
+import { RoutePathname } from "../../app/routes/constants";
 
 interface LoginFormProps {
     handleLogin : (email: string, password: string) => void
 }
 
 const LoginForm: FC<LoginFormProps> = ({handleLogin}) => {
+    const navigate = useNavigate()
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [isVisible, setIsVisible] = useState(false);
@@ -16,7 +19,8 @@ const LoginForm: FC<LoginFormProps> = ({handleLogin}) => {
         e.preventDefault(); 
     
         try {
-            handleLogin(email, password);
+            handleLogin(email, password)
+            navigate(RoutePathname.homePage);
         } catch (err) {
             const error = err as Error;
             console.error('Login error:', error.message);
@@ -31,7 +35,7 @@ const LoginForm: FC<LoginFormProps> = ({handleLogin}) => {
                 variant="bordered"
                 className="sm:w-full lg:w-2/3"
                 onChange={(e) => setEmail(e.target.value)}
-                required
+                isRequired
             />
             <Input
                 label="Password"
@@ -49,7 +53,7 @@ const LoginForm: FC<LoginFormProps> = ({handleLogin}) => {
                 type={isVisible ? "text" : "password"}
                 className="sm:w-full lg:w-2/3"
                 onChange={(e) => setPassword(e.target.value)}
-                required
+                isRequired
             />
             <Button size="lg" color="secondary" type="submit" className="w-1/4 font-mono">
                 Submit

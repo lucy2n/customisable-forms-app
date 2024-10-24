@@ -35,6 +35,7 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ template, refresh }) => {
             removeLike(template.id)
                 .then(() => {
                     setIsLikedByUser(false);
+                    setLikes((prevLikes) => prevLikes.filter((like) => like.user_id !== +user.id));
                 })
                 .catch((err) => console.error(err));
         } else {
@@ -42,15 +43,15 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ template, refresh }) => {
                 id: uuidv4(),
                 template_id: template.id,
                 user_id: +user.id,
-            }
-            console.log(like)
+            };
             addLike(like)
                 .then(() => {
                     setIsLikedByUser(true);
+                    setLikes((prevLikes) => [...prevLikes, like]);
                 })
                 .catch((err) => console.error(err));
         }
-    }
+    };
 
     useEffect(() => {
         getLikes(template.id)
