@@ -15,20 +15,6 @@ export const getTemplates = async () => {
     return res.json();
 };
 
-export const getSearchTemplates = async (searchTerm: string) => {
-    console.log(searchTerm)
-    const res = await fetch(`${base_url}/templates/search?search=${encodeURIComponent(searchTerm)}`, {
-        method: 'GET',
-        headers: {
-            accept: 'application/json',
-            'Content-Type': 'application/json',
-        },
-    });
-
-
-    return res.json();
-};
-
 export const getLatestTemplates = async () => {
     const res = await fetch(`${base_url}/templates/latest`, {
         method: 'GET',

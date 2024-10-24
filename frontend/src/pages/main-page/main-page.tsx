@@ -2,51 +2,58 @@ import { motion } from "framer-motion";
 import FormTemplateList from "../../widgets/form-template-list/form-template-list";
 import { useEffect, useState } from "react";
 import { ITemplate } from "../../entities/template/model/template";
-import { getLatestTemplates, getMostPopularTemplates, getSearchTemplates } from "../../shared/api/template";
+import { getLatestTemplates, getMostPopularTemplates, getTemplates } from "../../shared/api/template";
 import { useAppSelector } from "../../app/routes/lib/hook";
 import { RootState } from "../../app/appStore";
 
 const MainPage = () => {
+    const [templates, setTemplates] = useState<ITemplate[]>([]);
     const [searchTemplates, setSearchTemplates] = useState<ITemplate[]>([]);
-    const [latestTemplates, setLatesTemplates] = useState<ITemplate[]>([]);
+    const [latestTemplates, setLatestTemplates] = useState<ITemplate[]>([]);
     const [mostPopularTemplates, setMostPopularTemplates] = useState<ITemplate[]>([]);
-    const [loadingLatest, setLoadingLatest] = useState<boolean>(true);
-    const [loadingPopular, setLoadingPopular] = useState<boolean>(true);
-    const [loadingSearch, setLoadingSearch] = useState<boolean>(false);
-    const { search } = useAppSelector((state: RootState) => state.searchByInputTemp);
-    
-    useEffect(() => {
-            setLoadingSearch(true);
-            getSearchTemplates(search)
-                .then(res => {
-                    setSearchTemplates(res);
-                    console.log(res,'here')
+    const [loading, setLoading] = useState<{ latest: boolean, popular: boolean }>({
+        latest: true,
+        popular: true
+    });
 
-                })
-                .catch(err => {
-                    console.error(err, 'here');
-                    setSearchTemplates([]);
-                })
-                .finally(() => setLoadingSearch(false));
-    }, [search]);
+    const { search } = useAppSelector((state: RootState) => state.searchByInputTemp);
+
+    useEffect(() => {
+        if (search) {
+            setSearchTemplates(
+                templates.filter(template =>
+                    template.title.toLowerCase().includes(search.toLowerCase()) ||
+                    template.description.toLowerCase().includes(search.toLowerCase())
+                )
+            );
+        }
+    }, [search, templates]);
 
     useEffect(() => {
         refresh();
     }, []);
 
+    const fetchTemplates = async () => {
+        try {
+            const [allTemplates, latest, popular] = await Promise.all([
+                getTemplates(),
+                getLatestTemplates(),
+                getMostPopularTemplates()
+            ]);
+
+            setTemplates(allTemplates);
+            setLatestTemplates(latest);
+            setMostPopularTemplates(popular);
+        } catch (error) {
+            console.error("Error fetching templates:", error);
+        } finally {
+            setLoading({ latest: false, popular: false });
+        }
+    };
+
     const refresh = () => {
-        setLoadingLatest(true);
-        setLoadingPopular(true);
-
-        getLatestTemplates()
-            .then(res => setLatesTemplates(res))
-            .catch(err => console.log(err))
-            .finally(() => setLoadingLatest(false));
-
-        getMostPopularTemplates()
-            .then(res => setMostPopularTemplates(res))
-            .catch(err => console.log(err))
-            .finally(() => setLoadingPopular(false));
+        setLoading({ latest: true, popular: true });
+        fetchTemplates();
     };
 
     return (
@@ -64,17 +71,18 @@ const MainPage = () => {
                     initial={{ opacity: 0, y: -50 }} 
                     animate={{ opacity: 1, y: 0 }} 
                     transition={{ duration: 1 }}
-                    className="font-mono w-9/12">
+                    className="font-mono w-9/12"
+                >
                     Create quizzes, surveys, polls, and more with ease! Whether you’re collecting feedback, conducting tests, or gathering data through questionnaires, FormLab empowers you to build fully customizable forms tailored to your needs.
                 </motion.p>
             </section>
 
-            {searchTemplates && searchTemplates.length !== 0 ? (
+            {search && searchTemplates.length > 0 ? (
                 <FormTemplateList 
                     title='Search Templates' 
                     templates={searchTemplates} 
                     refresh={refresh} 
-                    loading={loadingSearch}
+                    loading={false}
                 />
             ) : (
                 <>
@@ -82,13 +90,13 @@ const MainPage = () => {
                         title='New Templates' 
                         templates={latestTemplates} 
                         refresh={refresh} 
-                        loading={loadingLatest}
+                        loading={loading.latest}
                     />
                     <FormTemplateList 
-                        title='Most popular' 
+                        title='Most Popular' 
                         templates={mostPopularTemplates} 
                         refresh={refresh} 
-                        loading={loadingPopular}
+                        loading={loading.popular}
                     />
                 </>
             )}
