@@ -16,7 +16,8 @@ export const getTemplates = async () => {
 };
 
 export const getSearchTemplates = async (searchTerm: string) => {
-    const res = await fetch(`${base_url}/templates/search?q=${searchTerm}`, {
+    console.log(searchTerm)
+    const res = await fetch(`${base_url}/templates/search?q=${encodeURIComponent(searchTerm)}`, {
         method: 'GET',
         headers: {
             accept: 'application/json',

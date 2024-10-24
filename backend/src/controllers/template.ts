@@ -102,7 +102,7 @@ export const createTemplate = async (req: IUserRequest, res: Response): Promise<
 
 export const searchTemplates = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { q } = req.query;
+    const { q } = req.body;
 
     // Check if the query parameter exists and is a string
     if (!q || typeof q !== 'string' || q.trim() === '') {

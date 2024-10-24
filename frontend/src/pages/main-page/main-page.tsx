@@ -16,22 +16,18 @@ const MainPage = () => {
     const { search } = useAppSelector((state: RootState) => state.searchByInputTemp);
     
     useEffect(() => {
-        if (search.trim() !== "") {
             setLoadingSearch(true);
             getSearchTemplates(search)
                 .then(res => {
                     setSearchTemplates(res);
+                    console.log(res,'here')
 
                 })
                 .catch(err => {
-                    console.error(err);
+                    console.error(err, 'here');
                     setSearchTemplates([]);
                 })
                 .finally(() => setLoadingSearch(false));
-        } else {
-            setSearchTemplates([]);
-            setLoadingSearch(false);
-        }
     }, [search]);
 
     useEffect(() => {
