@@ -95,8 +95,8 @@ const MainPage = () => {
                     />
                     <FormTemplateList 
                         title='Most Popular' 
-                        templates={mostPopularTemplates} 
-                        refresh={refresh} 
+                        templates={mostPopularTemplates.slice(0, 5)} 
+                        refresh={refresh}
                         loading={loading.popular}
                     />
                 </>
