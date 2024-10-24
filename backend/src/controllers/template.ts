@@ -65,12 +65,13 @@ export const getTemplatesByMostForms = async (req: Request, res: Response): Prom
         ],
       },
       group: ['Template.id'],
-      order: [[sequelize.literal('formCount'), 'DESC']]
+      order: [[sequelize.literal('formCount'), 'DESC']],
+      limit: 5
     });
 
     res.json(templates);
   } catch (err: any) {
-    res.status(500).json({ message: 'Internal server error', error: err.message });
+    throw new InternalServerError(err);
   }
 };
 
