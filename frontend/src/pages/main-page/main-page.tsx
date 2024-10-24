@@ -73,7 +73,7 @@ const MainPage = () => {
                 </motion.p>
             </section>
 
-            {searchTemplates.length !== 0 ? (
+            {searchTemplates && searchTemplates.length !== 0 ? (
                 <FormTemplateList 
                     title='Search Templates' 
                     templates={searchTemplates} 

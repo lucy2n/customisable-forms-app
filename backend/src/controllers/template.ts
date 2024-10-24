@@ -107,17 +107,23 @@ export const searchTemplates = async (req: Request, res: Response): Promise<void
       res.json([]);
     }
 
+    const searchQuery = q.toString().toLowerCase();
+
     let templates = await Template.findAll({
-      where: {
-        title: { [Op.like]: `%${q}%` },
-      },
+      where: sequelize.where(
+        sequelize.fn('LOWER', sequelize.col('title')),
+        'LIKE',
+        `%${searchQuery}%`
+      ),
     });
 
     if (templates.length === 0) {
       templates = await Template.findAll({
-        where: {
-          description: { [Op.like]: `%${q}%` },
-        },
+        where: sequelize.where(
+          sequelize.fn('LOWER', sequelize.col('description')),
+          'LIKE',
+          `%${searchQuery}%`
+        ),
       });
     }
 
@@ -127,6 +133,7 @@ export const searchTemplates = async (req: Request, res: Response): Promise<void
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
 export const updateTemplate = async (req: IUserRequest, res: Response): Promise<void> => {
   try {
     const template = await Template.findByPk(req.params.id);
