@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Button, Card, CardBody, Input, RadioGroup, Radio, CheckboxGroup, Checkbox, Textarea, Select, SelectItem } from '@nextui-org/react';
 import { IQuestion, QuestionType } from '../../entities/question/model/question';
 import { ITemplate } from '../../entities/template/model/template';
@@ -18,8 +18,25 @@ interface IFormProps {
 
 const Form: FC<IFormProps> = ({ template, questions, userId }) => {
   const [answers, setAnswers] = useState<IAnswer[]>([]);
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
   const form_id = uuidv4();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    validateForm();
+  }, [answers]);
+
+  const validateForm = () => {
+    const allRequiredAnswered = questions.every((question) => {
+      if (question.is_required) {
+        const answer = answers.find((a) => a.question_id === question.id);
+        return answer && answer.answer && answer.answer.length > 0;
+      }
+      return true;
+    });
+
+    setIsSubmitDisabled(!allRequiredAnswered);
+  };
 
   const handleAnswerChange = (questionId: string, answer: string | string[]) => {
     if (!userId) return; 
@@ -51,7 +68,7 @@ const Form: FC<IFormProps> = ({ template, questions, userId }) => {
   };
 
   const handleSubmitForm = async () => {
-    if (!userId) return; // Предотвращаем отправку формы без userId
+    if (!userId) return;
 
     const cleanedAnswers = answers.map((answer) => ({
       ...answer,
@@ -200,7 +217,7 @@ const Form: FC<IFormProps> = ({ template, questions, userId }) => {
           {questions.map(renderQuestion)}
         </CardBody>
       </Card>
-      <Button color="secondary" onClick={handleSubmitForm} isDisabled={!userId}>
+      <Button color="secondary" onClick={handleSubmitForm} isDisabled={isSubmitDisabled || !userId}>
         Submit Form
       </Button>
     </div>
