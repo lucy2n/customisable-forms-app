@@ -13,6 +13,7 @@ export const searchTemplatesSlice = createSlice({
   initialState,
   reducers: {
     setSearchByInputTemplates: (state, { payload }: { payload: string }) => {
+        console.log(payload, 'payload')
       state.search = payload;
     },
   },

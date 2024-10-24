@@ -12,19 +12,23 @@ const MainPage = () => {
     const [mostPopularTemplates, setMostPopularTemplates] = useState<ITemplate[]>([]);
     const [loadingLatest, setLoadingLatest] = useState<boolean>(true);
     const [loadingPopular, setLoadingPopular] = useState<boolean>(true);
-    const [loadingSearch, setLoadingSearch] = useState<boolean>(false);  // Изначально false
+    const [loadingSearch, setLoadingSearch] = useState<boolean>(false);
     const { search } = useAppSelector((state: RootState) => state.searchByInputTemp);
     
     useEffect(() => {
-        // Проверяем, что в search есть непустая строка
+        console.log(search, 'search')
         if (search.trim() !== "") {
             setLoadingSearch(true);
             getSearchTemplates(search)
-                .then(res => setSearchTemplates(res))
-                .catch(err => console.log(err))
+                .then(res => {
+                    setSearchTemplates(res ? res : []);
+                })
+                .catch(err => {
+                    console.error(err);
+                    setSearchTemplates([]);
+                })
                 .finally(() => setLoadingSearch(false));
         } else {
-            // Очищаем результаты поиска, если строка пустая
             setSearchTemplates([]);
             setLoadingSearch(false);
         }
@@ -72,7 +76,7 @@ const MainPage = () => {
             {search.trim() !== "" && searchTemplates.length !== 0 ? (
                 <FormTemplateList 
                     title='Search Templates' 
-                    templates={searchTemplates} 
+                    templates={searchTemplates && searchTemplates.length > 0 ? searchTemplates : []} 
                     refresh={refresh} 
                     loading={loadingSearch}
                 />

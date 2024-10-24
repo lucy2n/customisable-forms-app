@@ -23,6 +23,7 @@ const SearchTemplates = () => {
 
     return (
         <Input
+          value={searchValue}
           type="email"
           color="success"
           size="md"
