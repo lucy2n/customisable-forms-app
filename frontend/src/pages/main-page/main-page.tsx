@@ -18,6 +18,7 @@ const MainPage = () => {
 
     const { search } = useAppSelector((state: RootState) => state.searchByInputTemp);
 
+    //TODO: Move search logic to back
     useEffect(() => {
         if (search) {
             setSearchTemplates(

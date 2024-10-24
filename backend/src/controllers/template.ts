@@ -100,38 +100,6 @@ export const createTemplate = async (req: IUserRequest, res: Response): Promise<
   }
 };
 
-export const searchTemplates = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { search } = req.query;
-
-    if (!search) {
-      res.status(400).json({ message: 'Search parameter is required' });
-    }
-
-    const templates = await Template.findAll({
-      where: {
-        [Op.or]: [
-          {
-            title: {
-              [Op.like]: `%${search}%`
-            }
-          },
-          {
-            description: {
-              [Op.like]: `%${search}%`
-            }
-          }
-        ]
-      }
-    });
-
-    res.json(templates);
-  } catch (error: any) {
-    console.error('Error while searching templates:', error);
-    res.status(500).json({ message: 'An error occurred while searching templates' });
-  }
-};
-
 export const updateTemplate = async (req: IUserRequest, res: Response): Promise<void> => {
   try {
     const template = await Template.findByPk(req.params.id);
