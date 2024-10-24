@@ -9,6 +9,7 @@ import InternalServerError from '../errors/internal-server-error';
 import { CREATED, FORBIDDEN_ERROR_USER, NOT_FOUND_ERROR_TEMPLATE_MESSAGE, UNAUTHORIZED_ERROR_USER_MESSAGE } from '../utils/constants';
 import sequelize, { Op } from 'sequelize';
 import Form from '../models/form';
+import User from '../models/user';
 
 export const getTemplates = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -145,6 +146,7 @@ export const searchTemplates = async (req: Request, res: Response): Promise<void
 export const updateTemplate = async (req: IUserRequest, res: Response): Promise<void> => {
   try {
     const template = await Template.findByPk(req.params.id);
+    const user = await User.findByPk(req.user?.id);
     
     if (!template) {
       throw new NotFoundError(NOT_FOUND_ERROR_TEMPLATE_MESSAGE);
@@ -154,7 +156,7 @@ export const updateTemplate = async (req: IUserRequest, res: Response): Promise<
       throw new UnauthorizedError(UNAUTHORIZED_ERROR_USER_MESSAGE);
     }
 
-    if (template.user_id !== req.user.id && !req.user.is_admin) {
+    if (template.user_id !== req.user.id && !user?.is_admin) {
       throw new ForbiddenError(FORBIDDEN_ERROR_USER);
     }
 
@@ -169,6 +171,7 @@ export const deleteTemplate = async (req: IUserRequest, res: Response): Promise<
   try {
     const { id } = req.params;
     const template = await Template.findByPk(id);
+    const user = await User.findByPk(req.user?.id);
 
     if (!template) {
       throw new NotFoundError(NOT_FOUND_ERROR_TEMPLATE_MESSAGE);
@@ -178,7 +181,7 @@ export const deleteTemplate = async (req: IUserRequest, res: Response): Promise<
       throw new UnauthorizedError(UNAUTHORIZED_ERROR_USER_MESSAGE);
     }
 
-    if (!req.user.is_admin) {
+    if (template.user_id !== req.user.id && !user?.is_admin) {
       throw new ForbiddenError(FORBIDDEN_ERROR_USER);
     }
 
