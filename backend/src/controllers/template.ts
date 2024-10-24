@@ -111,10 +111,7 @@ export const searchTemplates = async (req: Request, res: Response): Promise<void
 
     const templates = await Template.findAll({
       where: {
-        [Op.or]: [
-          { title: { [Op.like]: `%${q}%` } },
-          { description: { [Op.like]: `%${q}%` } },
-        ],
+        title : q,
       },
     });
 
