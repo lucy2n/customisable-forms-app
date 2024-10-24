@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export type SearchTemplateState = {
-    search: string;
+  search: string;
 };
 
 const initialState: SearchTemplateState = {
@@ -12,10 +12,9 @@ export const searchTemplatesSlice = createSlice({
   name: "searchByInputTemp",
   initialState,
   reducers: {
-    setSearchByInputTemplates: (state: SearchTemplateState, { payload: search }: { payload: string }) => ({
-      ...state,
-      search: search,
-    }),
+    setSearchByInputTemplates: (state, { payload }: { payload: string }) => {
+      state.search = payload;
+    },
   },
 });
 

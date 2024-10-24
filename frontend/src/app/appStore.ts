@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userReducer from '../entities/user/model/userSlice';
-import searchByInputTemp from '../features/search-templates/ui/search-templates';
+import searchTemplatesReducer from '../features/search-templates/model/searchTemplatesSlice'; 
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
-    searchByInputTemp: searchByInputTemp,
+    searchByInputTemp: searchTemplatesReducer, 
   },
 });
 
