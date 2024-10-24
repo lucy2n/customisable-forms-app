@@ -107,7 +107,7 @@ export const searchTemplates = async (req: Request, res: Response): Promise<void
       res.json([]);
     }
 
-    const searchQuery = q.toString().toLowerCase();
+    const searchQuery = q?.toString().toLowerCase();
 
     let templates = await Template.findAll({
       where: sequelize.where(
