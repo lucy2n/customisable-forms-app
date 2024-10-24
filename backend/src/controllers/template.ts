@@ -7,7 +7,7 @@ import NotFoundError from '../errors/not-found-error';
 import BadRequestError from '../errors/bad-request-error';
 import InternalServerError from '../errors/internal-server-error';
 import { CREATED, FORBIDDEN_ERROR_USER, NOT_FOUND_ERROR_TEMPLATE_MESSAGE, UNAUTHORIZED_ERROR_USER_MESSAGE } from '../utils/constants';
-import sequelize from 'sequelize';
+import sequelize, { Op } from 'sequelize';
 import Form from '../models/form';
 
 export const getTemplates = async (req: Request, res: Response): Promise<void> => {
@@ -96,6 +96,30 @@ export const createTemplate = async (req: IUserRequest, res: Response): Promise<
       res.status(CREATED).json(template);
   } catch (err: any) {
     throw new BadRequestError(err.message)
+  }
+};
+
+export const searchTemplates = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { q } = req.query;
+
+    if (!q) {
+      res.json([]);
+    }
+
+    const templates = await Template.findAll({
+      where: {
+        [Op.or]: [
+          { title: { [Op.like]: `%${q}%` } },
+          { description: { [Op.like]: `%${q}%` } },
+        ],
+      },
+    });
+
+    res.json(templates);
+  } catch (err: any) {
+    console.error('Error searching templates:', err.message);
+    throw new InternalServerError(err.message);
   }
 };
 

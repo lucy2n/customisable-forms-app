@@ -2,14 +2,29 @@ import { motion } from "framer-motion";
 import FormTemplateList from "../../widgets/form-template-list/form-template-list";
 import { useEffect, useState } from "react";
 import { ITemplate } from "../../entities/template/model/template";
-import { getLatestTemplates, getMostPopularTemplates } from "../../shared/api/template";
+import { getLatestTemplates, getMostPopularTemplates, getSearchTemplates } from "../../shared/api/template";
+import { useAppSelector } from "../../app/routes/lib/hook";
+import { RootState } from "../../app/appStore";
 
 const MainPage = () => {
-    // const [templates, setTemplates] = useState<ITemplate[]>([]);
+    const [searchTemplates, setSearchTemplates] = useState<ITemplate[]>([]);
     const [latestTemplates, setLatesTemplates] = useState<ITemplate[]>([]);
     const [mostPopularTemplates, setMostPopularTemplates] = useState<ITemplate[]>([]);
     const [loadingLatest, setLoadingLatest] = useState<boolean>(true);
     const [loadingPopular, setLoadingPopular] = useState<boolean>(true);
+    const [loadingSearch, setLoadingSearch] = useState<boolean>(true);
+    const {search} = useAppSelector((state: RootState) => state.searchByInputTemp);
+
+    useEffect(() => {
+        setLoadingSearch(true)
+
+        getSearchTemplates(search)
+        .then(res => setSearchTemplates(res))
+        .catch(err => console.log(err))
+        .finally(() => setLoadingSearch(false))
+
+    }, [search])
+
 
     useEffect(() => {
         refresh();
@@ -50,19 +65,33 @@ const MainPage = () => {
                 </motion.p>
             </section>
 
-            <FormTemplateList 
-                title='New Templates' 
-                templates={latestTemplates} 
-                refresh={refresh} 
-                loading={loadingLatest}
-            />
+            {
+                searchTemplates.length !== 0 ? 
+                <FormTemplateList 
+                    title='Search Templates' 
+                    templates={searchTemplates} 
+                    refresh={refresh} 
+                    loading={loadingSearch}
+                />
 
-            <FormTemplateList 
-                title='Most popular' 
-                templates={mostPopularTemplates} 
-                refresh={refresh} 
-                loading={loadingPopular}
-            />
+                :
+            <>
+                <FormTemplateList 
+                    title='New Templates' 
+                    templates={latestTemplates} 
+                    refresh={refresh} 
+                    loading={loadingLatest}
+                />
+
+                <FormTemplateList 
+                    title='Most popular' 
+                    templates={mostPopularTemplates} 
+                    refresh={refresh} 
+                    loading={loadingPopular}
+                />
+            </>
+            }
+
         </main>
     );
 };
