@@ -16,12 +16,12 @@ const MainPage = () => {
     const { search } = useAppSelector((state: RootState) => state.searchByInputTemp);
     
     useEffect(() => {
-        console.log(search, 'search')
         if (search.trim() !== "") {
             setLoadingSearch(true);
             getSearchTemplates(search)
                 .then(res => {
-                    setSearchTemplates(res ? res : []);
+                    setSearchTemplates(res);
+
                 })
                 .catch(err => {
                     console.error(err);
@@ -76,7 +76,7 @@ const MainPage = () => {
             {search.trim() !== "" && searchTemplates.length !== 0 ? (
                 <FormTemplateList 
                     title='Search Templates' 
-                    templates={searchTemplates && searchTemplates.length > 0 ? searchTemplates : []} 
+                    templates={searchTemplates} 
                     refresh={refresh} 
                     loading={loadingSearch}
                 />

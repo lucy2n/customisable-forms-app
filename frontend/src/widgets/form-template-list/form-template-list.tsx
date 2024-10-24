@@ -11,10 +11,6 @@ interface IFormTemplateList {
 }
 
 const FormTemplateList: FC<IFormTemplateList> = ({ title, templates, refresh, loading }) => {
-    if (!templates || templates.length === 0) {
-        return <div>No templates found</div>;
-    }
-
     return (
         <section className="w-full mr-auto ml-auto flex flex-col items-center pt-24">
             <h2 className="font-medium text-3xl text-center uppercase text-purple-700 font-mono pb-5">
