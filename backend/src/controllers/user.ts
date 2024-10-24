@@ -78,6 +78,7 @@ export const getMe = async (req: IUserRequest, res: Response): Promise<void> => 
   try {
     const userId = req.user?.id;
     console.log(userId)
+    console.log(req.user?.is_admin);
 
     if (!userId) {
       throw new BadRequestError(NOT_FOUND_ERROR_USER_MESSAGE)
