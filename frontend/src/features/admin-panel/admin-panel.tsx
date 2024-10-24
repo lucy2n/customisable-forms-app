@@ -78,7 +78,7 @@ const AdminPanel = ({ users, refresh }: { users: IUser[], refresh: () => void })
               return (
                   <div className="relative flex justify-center items-center gap-2">
                       <Tooltip content={u.is_admin ? "Revoke admin" : "Make admin"}>
-                          <span className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={() => handleUpdateRole(+user.id, u)}>
+                          <span className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={() => handleUpdateRole(u.id, u)}>
                               <img src={admin} alt="toggle admin" />
                           </span>
                       </Tooltip>

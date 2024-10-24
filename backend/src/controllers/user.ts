@@ -126,7 +126,7 @@ export const updateUser = async (req: IUserRequest, res: Response): Promise<void
       throw new NotFoundError(NOT_FOUND_ERROR_USER_MESSAGE);
     }
 
-    if (!req.user?.is_admin) {
+    if (!user.is_admin) {
       throw new ForbiddenError('Only admins can update user information.');
     }
 
@@ -147,7 +147,7 @@ export const deleteUser = async (req: IUserRequest, res: Response): Promise<void
       throw new NotFoundError(NOT_FOUND_ERROR_USER_MESSAGE)
     }
 
-    if (req.user?.id !== user.id) {
+    if (!user.is_admin) {
       throw new ForbiddenError(FORBIDDEN_ERROR_USER);
     }
 

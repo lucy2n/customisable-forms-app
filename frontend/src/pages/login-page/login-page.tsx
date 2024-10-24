@@ -14,13 +14,13 @@ const LoginPage = () => {
 
     const handleLogin = async (email: string, password: string) => {
         try {
-            const response = await loginUser(email, password);
-            if (response.token) {
-                localStorage.setItem('token', response.token);
-                dispatch(loggedIn());
-                dispatch(setEmail(email));
-                navigate(RoutePathname.homePage);
-            }
+        loginUser(email, password)
+        .then((res) => {
+            localStorage.setItem('token', res.token);
+            dispatch(loggedIn());
+            dispatch(setEmail(email));
+            navigate(RoutePathname.homePage);
+        })
         } catch (err) {
             localStorage.removeItem('token');
             dispatch(resetUser());

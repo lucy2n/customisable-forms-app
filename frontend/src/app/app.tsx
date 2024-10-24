@@ -14,29 +14,30 @@ import CreateFormPage from '../pages/create-form-page/create-form-page';
 import AdminPage from '../pages/admin-page/admin-page';
 import ProfilePage from '../pages/profile-page/profile-page';
 import EditTemplatePage from '../pages/edit-template-page/edit-template-page';
+import { IUser } from '../entities/user/model/user';
 
 function App() {
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-
-    if (token) {
-      getUserInformation()
-        .then(({ id, email, name, is_admin }) => {
-          dispatch(setId(id + ''));
-          dispatch(setEmail(email));
-          dispatch(setIsAdmin(is_admin));
-          dispatch(setName(name ?? ''));
-          dispatch(loggedIn());
-        })
-        .catch((err) => {
-          console.error('Error fetching user information:', err);
-          dispatch(loggedOut());
-          localStorage.removeItem('token');
-        });
-    }
-  }, [dispatch]);
+  useEffect(()=> {
+		if (localStorage.getItem('token')) {
+			getUserInformation()
+            .then(({id, email, name, is_admin }: IUser)=>{
+              if(id) {
+                dispatch(setId(id + ''));
+              }
+                dispatch(loggedIn());
+                dispatch(setEmail(email));
+                dispatch(setName(name??''));
+                dispatch(setIsAdmin(!!is_admin));
+            })
+            .catch((err) => {
+                dispatch(loggedOut());
+                localStorage.removeItem('token');
+                console.error(err);
+            });
+        }
+    }, [dispatch]);
 
   return (
     <div className="flex justify-center flex-col w-screen mb-10">
