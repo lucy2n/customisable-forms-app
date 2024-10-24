@@ -19,7 +19,6 @@ const columns = [
 
 const AdminPanel = ({ users, refresh }: { users: IUser[], refresh: () => void }) => {
     const dispatch = useAppDispatch();
-    const user = useAppSelector((store: RootState) => store.user);
 
     const handleDelete = (id: number | undefined) => {
       if (id !== undefined) {
@@ -30,20 +29,20 @@ const AdminPanel = ({ users, refresh }: { users: IUser[], refresh: () => void })
       }
     };
 
-    const handleUpdateStatus = (id: number | undefined, user: IUser) => {
+    const handleUpdateStatus = (user: IUser) => {
         const newStatus = user.status === "active" ? "blocked" : "active";
-        if (id !== undefined) {
-          updateUser(id, { status: newStatus })
+        if (user.id !== undefined) {
+          updateUser(user.id, { status: newStatus })
           .then(() => refresh());
         } else {
           console.error('ID is undefined');
         }
     }
 
-    const handleUpdateRole = (id: number | undefined, user: IUser) => {
+    const handleUpdateRole = (user: IUser) => {
         const newRole = user.is_admin ? false : true;
-        if (id !== undefined) {
-        updateUser(id, { is_admin: newRole })
+        if (user.id !== undefined) {
+        updateUser(user.id, { is_admin: newRole })
             .then(() => {
                 dispatch(setIsAdmin(!user.is_admin))
                 refresh();
@@ -78,17 +77,17 @@ const AdminPanel = ({ users, refresh }: { users: IUser[], refresh: () => void })
               return (
                   <div className="relative flex justify-center items-center gap-2">
                       <Tooltip content={u.is_admin ? "Revoke admin" : "Make admin"}>
-                          <span className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={() => handleUpdateRole(u.id, u)}>
+                          <span className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={() => handleUpdateRole(u)}>
                               <img src={admin} alt="toggle admin" />
                           </span>
                       </Tooltip>
                       <Tooltip content={u.status === 'active' ? "Block user" : "Unblock user"}>
                           <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                              <img src={lock} alt="lock user" onClick={() => handleUpdateStatus(+user.id, u)} />
+                              <img src={lock} alt="lock user" onClick={() => handleUpdateStatus(u)} />
                           </span>
                       </Tooltip>
                       <Tooltip color="danger" content="Delete user">
-                          <span className="text-lg text-danger cursor-pointer active:opacity-50" onClick={() => handleDelete(+user.id)}>
+                          <span className="text-lg text-danger cursor-pointer active:opacity-50" onClick={() => handleDelete(u.id)}>
                               <img src={trash} alt="delete user" />
                           </span>
                       </Tooltip>

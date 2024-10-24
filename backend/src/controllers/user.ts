@@ -119,15 +119,18 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
 
 export const updateUser = async (req: IUserRequest, res: Response): Promise<void> => {
   try {
+    const currentUserId = req.user?.id;
+    const currentUser = await User.findByPk(currentUserId);
+
+    if (!currentUser || !currentUser.is_admin) {
+      throw new ForbiddenError('Only admins can update user information.');
+    }
+
     const { id } = req.params;
     const user = await User.findByPk(id);
 
     if (!user) {
       throw new NotFoundError(NOT_FOUND_ERROR_USER_MESSAGE);
-    }
-
-    if (!user.is_admin) {
-      throw new ForbiddenError('Only admins can update user information.');
     }
 
     await user.update(req.body);
@@ -140,15 +143,18 @@ export const updateUser = async (req: IUserRequest, res: Response): Promise<void
 
 export const deleteUser = async (req: IUserRequest, res: Response): Promise<void> => {
   try {
+    const currentUserId = req.user?.id;
+    const currentUser = await User.findByPk(currentUserId);
+
+    if (!currentUser || !currentUser.is_admin) {
+      throw new ForbiddenError(FORBIDDEN_ERROR_USER);
+    }
+
     const { id } = req.params;
     const user = await User.findByPk(id);
 
     if (!user) {
       throw new NotFoundError(NOT_FOUND_ERROR_USER_MESSAGE)
-    }
-
-    if (!user.is_admin) {
-      throw new ForbiddenError(FORBIDDEN_ERROR_USER);
     }
 
     await user?.destroy();
