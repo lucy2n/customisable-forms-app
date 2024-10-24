@@ -61,13 +61,11 @@ export const getTemplatesByMostForms = async (req: Request, res: Response): Prom
       ],
       attributes: {
         include: [
-          [sequelize.fn('COUNT', sequelize.col('forms.template_id')), 'formCount'],
+          [sequelize.fn('COUNT', sequelize.col('forms.id')), 'formCount'],
         ],
       },
       group: ['Template.id'],
-      order: [[sequelize.literal('formCount'), 'DESC']],
-      limit: 5,
-      raw: true,  // Ensures raw result instead of mapped models
+      order: [[sequelize.literal('formCount'), 'DESC']]
     });
 
     res.json(templates);
