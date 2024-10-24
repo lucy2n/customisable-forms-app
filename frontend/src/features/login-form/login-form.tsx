@@ -15,8 +15,6 @@ const LoginForm: FC<LoginFormProps> = ({handleLogin, error}) => {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault(); 
-        console.log(error)
-    
         try {
             handleLogin(email, password)
         } catch (err) {

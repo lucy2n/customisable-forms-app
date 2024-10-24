@@ -30,6 +30,7 @@ const LoginPage = () => {
             })
             navigate(RoutePathname.homePage);
         }).catch((err) => {
+            setError(err.message)
             dispatch(loggedOut());
             localStorage.removeItem('token');
             console.error(err);
