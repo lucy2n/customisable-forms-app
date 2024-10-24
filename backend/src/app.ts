@@ -1,14 +1,14 @@
 import express, { Request, Response, NextFunction } from 'express';
 import routes from './routes/index';
-import sequelize from './config/database';  // Импорт конфигурации базы данных
-import User from './models/user';           // Импорт моделей
+import sequelize from './config/database';
+import User from './models/user';
 import Template from './models/template';
 import Form from './models/form';
 import Question from './models/question';
 import Answer from './models/answer';
 import Like from './models/like';
 import cors from 'cors';
-import { errors } from 'celebrate';
+import { SERVER_ERROR } from './utils/constants';
 
 const app = express();
 
@@ -31,15 +31,13 @@ Like.associate && Like.associate();
 app.use(routes);
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-  // если у ошибки нет статуса, выставляем 500
-  const { statusCode = 500, message } = err;
+  const { statusCode = SERVER_ERROR, message } = err;
 
   res
     .status(statusCode)
     .send({
-      // проверяем статус и выставляем сообщение в зависимости от него
-      message: statusCode === 500
-        ? 'На сервере произошла ошибка'
+      message: statusCode === SERVER_ERROR
+        ? 'Server error'
         : message
     });
 }); 

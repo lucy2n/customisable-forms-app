@@ -4,10 +4,12 @@ import { createUser } from "../../shared/api/user";
 import { IUser } from "../../entities/user/model/user";
 import { useNavigate } from "react-router-dom";
 import { RoutePathname } from "../../app/routes/constants";
+import { useState } from "react";
 
 
 const RegisterPage = () => {
   const navigate = useNavigate();
+  const [error, setError] = useState<string>('');
 
     const handleRegister = async (name: string, email: string, password: string) => {
         const newUser: IUser = {
@@ -16,15 +18,13 @@ const RegisterPage = () => {
           password: password,
           status: 'active'
         };
-      
-        try {
-          const registeredUser = await createUser(newUser);
-          console.log('Registration success:', registeredUser);
-        } catch (err) {
-          const error = err as Error;
-          console.error('Registration error:', error.message);
-        }
-        navigate(RoutePathname.loginPage)
+        await createUser(newUser)
+        .then((res) => {
+          setError('')
+          console.log(res)
+          navigate(RoutePathname.loginPage)
+        })
+        .catch(err => setError(err.message))
       };
 
     return (
@@ -34,7 +34,7 @@ const RegisterPage = () => {
                     <h2 className="font-mono font-bold text-2xl uppercase mb-12">
                         Registration
                     </h2>
-                    <RegisterForm handleRegister={handleRegister}/>
+                    <RegisterForm handleRegister={handleRegister} error={error}/>
                 </CardBody>
             </Card>
         </main>

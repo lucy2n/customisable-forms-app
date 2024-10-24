@@ -154,7 +154,7 @@ export const updateTemplate = async (req: IUserRequest, res: Response): Promise<
       throw new UnauthorizedError(UNAUTHORIZED_ERROR_USER_MESSAGE);
     }
 
-    if (template.user_id !== req.user.id && !req.user.is_admin) {
+    if (template.user_id !== req.user.id || !req.user.is_admin) {
       throw new ForbiddenError(FORBIDDEN_ERROR_USER);
     }
 
@@ -178,7 +178,7 @@ export const deleteTemplate = async (req: IUserRequest, res: Response): Promise<
       throw new UnauthorizedError(UNAUTHORIZED_ERROR_USER_MESSAGE);
     }
 
-    if (template.user_id !== req.user.id && !req.user.is_admin) {
+    if (template.user_id !== req.user.id || !req.user.is_admin) {
       throw new ForbiddenError(FORBIDDEN_ERROR_USER);
     }
 

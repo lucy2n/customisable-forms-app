@@ -5,27 +5,29 @@ import { useAppDispatch } from "../../app/routes/lib/hook";
 import { loggedIn, resetUser, setEmail } from "../../entities/user/model/userSlice";
 import { useNavigate } from "react-router-dom";
 import { RoutePathname } from "../../app/routes/constants";
+import { useState } from "react";
 
 
 const LoginPage = () => {
     const dispatch = useAppDispatch();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const [error, setError] = useState<string>('')
 
 
     const handleLogin = async (email: string, password: string) => {
-        try {
         loginUser(email, password)
-        .then((res) => {
-            localStorage.setItem('token', res.token);
-            dispatch(loggedIn());
-            dispatch(setEmail(email));
-            navigate(RoutePathname.homePage);
-        })
-        } catch (err) {
-            localStorage.removeItem('token');
-            dispatch(resetUser());
-            console.error('Ошибка входа:', err);
-        }
+            .then((res) => {
+                setError('')
+                localStorage.setItem('token', res.token);
+                dispatch(loggedIn());
+                dispatch(setEmail(email));
+                navigate(RoutePathname.homePage);
+            })
+            .catch((err) => {
+                setError(err.message)
+                localStorage.removeItem('token');
+                dispatch(resetUser());
+            });
     };
       
     return (
@@ -38,7 +40,7 @@ const LoginPage = () => {
                     <p className="mb-5 font-mono w-full text-center">
                         <span className="text-green-500">Sign in</span> to create your own form
                     </p>
-                    <LoginForm handleLogin={handleLogin}/>
+                    <LoginForm handleLogin={handleLogin} error={error}/>
                 </CardBody>
             </Card>
         </main>
