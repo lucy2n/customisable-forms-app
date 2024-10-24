@@ -99,35 +99,42 @@ export const createTemplate = async (req: IUserRequest, res: Response): Promise<
   }
 };
 
+
 export const searchTemplates = async (req: Request, res: Response): Promise<void> => {
   try {
     const { q } = req.query;
 
-    // Проверка, был ли передан параметр q и является ли он строкой
+    // Check if parameter q is provided and is a string
     if (!q || typeof q !== 'string') {
-      res.json([]); // Возвращаем пустой массив, если q отсутствует
+      res.json([]);
+      return;
     }
 
-    const searchQuery = q?.toString().toLowerCase();
+    const searchQuery = q.toLowerCase(); // Convert to lowercase
 
+    // Perform the database search
     const templates = await Template.findAll({
       where: {
         [Op.or]: [
           {
             title: {
-              [Op.like]: `%${searchQuery}%`, // Поиск в заголовке
+              [Op.like]: `%${searchQuery}%`, // Search in title
             },
           },
           {
             description: {
-              [Op.like]: `%${searchQuery}%`, // Поиск в описании
+              [Op.like]: `%${searchQuery}%`, // Search in description
             },
           },
         ],
       },
     });
 
-    // Возвращаем найденные шаблоны
+    // Log the search query and results for debugging
+    console.log('Search query:', searchQuery);
+    console.log('Templates found:', templates);
+
+    // Return found templates
     res.json(templates);
   } catch (err: any) {
     console.error('Error searching templates:', err.message);

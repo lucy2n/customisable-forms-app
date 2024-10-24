@@ -6,7 +6,8 @@ import admin from '../../assets/icons8-admin-32.png';
 import lock from '../../assets/icons8-lock.svg';
 import { deleteUser, updateUser } from "../../shared/api/user";
 import { setIsAdmin } from "../../entities/user/model/userSlice";
-import { useAppDispatch } from "../../app/routes/lib/hook";
+import { useAppDispatch, useAppSelector } from "../../app/routes/lib/hook";
+import { RootState } from "../../app/appStore";
 
 const columns = [
     { name: "NAME", uid: "name" },
@@ -18,6 +19,7 @@ const columns = [
 
 const AdminPanel = ({ users, refresh }: { users: IUser[], refresh: () => void }) => {
     const dispatch = useAppDispatch();
+    const user = useAppSelector((store: RootState) => store.user);
 
     const handleDelete = (id: number | undefined) => {
       if (id !== undefined) {
@@ -52,41 +54,41 @@ const AdminPanel = ({ users, refresh }: { users: IUser[], refresh: () => void })
         }
     }
 
-    const renderCell = React.useCallback((user: IUser, columnKey: string) => {
+    const renderCell = React.useCallback((u: IUser, columnKey: string) => {
       switch (columnKey) {
           case "name":
               return (
-                  <User description={user.email} name={user.name}>
-                      {user.email}
+                  <User description={u.email} name={u.name}>
+                      {u.email}
                   </User>
               );
           case "role":
               return (
                   <div className="flex flex-col">
-                      <p className="text-bold text-sm capitalize">{user.is_admin ? 'admin' : 'user'}</p>
+                      <p className="text-bold text-sm capitalize">{u.is_admin ? 'admin' : 'user'}</p>
                   </div>
               );
           case "status":
               return (
-                  <Chip className="capitalize" color={user.status === 'active' ? 'success' : 'danger'} size="sm" variant="flat">
-                      {user.status}
+                  <Chip className="capitalize" color={u.status === 'active' ? 'success' : 'danger'} size="sm" variant="flat">
+                      {u.status}
                   </Chip>
               );
           case "actions":
               return (
                   <div className="relative flex justify-center items-center gap-2">
-                      <Tooltip content={user.is_admin ? "Revoke admin" : "Make admin"}>
-                          <span className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={() => handleUpdateRole(user.id, user)}>
+                      <Tooltip content={u.is_admin ? "Revoke admin" : "Make admin"}>
+                          <span className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={() => handleUpdateRole(+user.id, u)}>
                               <img src={admin} alt="toggle admin" />
                           </span>
                       </Tooltip>
-                      <Tooltip content={user.status === 'active' ? "Block user" : "Unblock user"}>
+                      <Tooltip content={u.status === 'active' ? "Block user" : "Unblock user"}>
                           <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                              <img src={lock} alt="lock user" onClick={() => handleUpdateStatus(user.id, user)} />
+                              <img src={lock} alt="lock user" onClick={() => handleUpdateStatus(+user.id, u)} />
                           </span>
                       </Tooltip>
                       <Tooltip color="danger" content="Delete user">
-                          <span className="text-lg text-danger cursor-pointer active:opacity-50" onClick={() => handleDelete(user.id)}>
+                          <span className="text-lg text-danger cursor-pointer active:opacity-50" onClick={() => handleDelete(+user.id)}>
                               <img src={trash} alt="delete user" />
                           </span>
                       </Tooltip>
