@@ -11,6 +11,7 @@ const ProfilePage = () => {
     const user = useAppSelector((store: RootState) => store.user);
     const [templates, setTemplates] = useState<ITemplate[]>();
     const [selectedTab, setSelectedTab] = useState<string>('My templates');
+    const [loading, setLoading] = useState<boolean>(false);
 
     const updateTab = (tab: string) => {
         setSelectedTab(tab);
@@ -22,9 +23,12 @@ const ProfilePage = () => {
     }, [user.id]);
 
     const refresh = () => {
+        setLoading(true)
+
         getTemplatesByUser(user.id)
         .then(res => setTemplates(res))
-        .catch(err => console.log(err));
+        .catch(err => console.log(err))
+        .finally(() => setLoading(false))
     };
 
     return (
@@ -32,7 +36,7 @@ const ProfilePage = () => {
             <ProfileTabs updateTab={updateTab} isAdmin={user.is_admin}/>
 
             {selectedTab === 'My templates' && templates && (
-                <FormTemplateList refresh={refresh} templates={templates} title="My templates" loading={false} />
+                <FormTemplateList refresh={refresh} templates={templates} title="My templates" loading={loading} />
             )}
 
             {selectedTab === 'Admin' && user.is_admin && (
