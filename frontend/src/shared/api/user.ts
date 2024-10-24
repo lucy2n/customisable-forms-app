@@ -1,66 +1,58 @@
 import { IUser } from "../../entities/user/model/user";
-import { checkResponse } from "./api";
+import { checkResponse, getToken } from "./api";
 import { base_url } from "./constants";
 
 export const createUser = async (user: IUser) => {
-    const res = await fetch(`${base_url}/signup/`, {
-      method: 'POST',
-      headers: {
-        accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(user),
-      credentials: 'include',
-    });
-    return checkResponse<IUser>(res);
+  const res = await fetch(`${base_url}/signup/`, {
+    method: 'POST',
+    headers: {
+      accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(user),
+    credentials: 'include',
+  });
+  return checkResponse<IUser>(res);
 };
 
 export const loginUser = async (email: string, password: string): Promise<{ token: string, user: IUser }> => {
-    const res = await fetch(`${base_url}/signin/`, {
-    method: 'POST',
-    headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-    },
-      body: JSON.stringify({ email, password }),
-    });
+  const res = await fetch(`${base_url}/signin/`, {
+  method: 'POST',
+  headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+  },
+    body: JSON.stringify({ email, password }),
+  });
 
-    const data = await checkResponse<{ token: string, user: IUser }>(res);
+  const data = await checkResponse<{ token: string, user: IUser }>(res);
 
-    localStorage.setItem('token', data.token);
+  localStorage.setItem('token', data.token);
 
-    return data;
+  return data;
 };
 
 export const getUserInformation = async () => {
-    const token = localStorage.getItem('token');
-    
-    if (!token) {
-        throw new Error('Токен не найден');
-    }
+  const token = getToken();
 
-    const res = await fetch(`${base_url}/users/me/`, {
-        method: 'GET',
-        headers: {
-            accept: 'application/json',
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}` // Добавьте токен сюда
-        },
-    });
+  const res = await fetch(`${base_url}/users/me/`, {
+      method: 'GET',
+      headers: {
+          accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+      },
+  });
 
-    if (!res.ok) {
-        throw new Error(`Ошибка: ${res.status}`);
-    }
+  if (!res.ok) {
+      throw new Error(`Ошибка: ${res.status}`);
+  }
 
     return res.json();
 };
 
 export const getUsers = async () => {
-  const token = localStorage.getItem('token');
-  
-  if (!token) {
-      throw new Error('Токен не найден');
-  }
+  const token = getToken();
 
   const res = await fetch(`${base_url}/users/`, {
       method: 'GET',
@@ -79,11 +71,7 @@ export const getUsers = async () => {
 };
 
 export const updateUser = async (userId: number, updatedFields: Partial<IUser>) => {
-  const token = localStorage.getItem('token');
-  
-  if (!token) {
-      throw new Error('Токен не найден');
-  }
+  const token = getToken();
 
   const res = await fetch(`${base_url}/users/${userId}/`, {
     method: 'PUT',
@@ -100,11 +88,7 @@ export const updateUser = async (userId: number, updatedFields: Partial<IUser>) 
 };
 
 export const deleteUser = async (userId: number) => {
-  const token = localStorage.getItem('token');
-  
-  if (!token) {
-      throw new Error('Токен не найден');
-  }
+  const token = getToken();
 
   const res = await fetch(`${base_url}/users/${userId}/`, {
     method: 'DELETE',

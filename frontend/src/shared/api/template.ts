@@ -1,9 +1,8 @@
 import { ITemplate } from "../../entities/template/model/template";
-import { checkResponse } from "./api";
+import { checkResponse, getToken } from "./api";
 import { base_url } from "./constants";
 
 export const getTemplates = async () => {
-
     const res = await fetch(`${base_url}/templates/`, {
         method: 'GET',
         headers: {
@@ -17,7 +16,6 @@ export const getTemplates = async () => {
 };
 
 export const getLatestTemplates = async () => {
-
     const res = await fetch(`${base_url}/templates/latest`, {
         method: 'GET',
         headers: {
@@ -31,7 +29,6 @@ export const getLatestTemplates = async () => {
 };
 
 export const getMostPopularTemplates = async () => {
-
     const res = await fetch(`${base_url}/templates/most-popular`, {
         method: 'GET',
         headers: {
@@ -45,11 +42,7 @@ export const getMostPopularTemplates = async () => {
 };
 
 export const getTemplatesByUser = async (user_id: string) => {
-    const token = localStorage.getItem('token');
-    
-    if (!token) {
-        throw new Error('Токен не найден');
-    }
+    const token = getToken();
 
     const res = await fetch(`${base_url}/users/${user_id}/templates/`, {
         method: 'GET',
@@ -78,11 +71,7 @@ export const getTemplate = async (id: string) => {
 };
 
 export const createTemplate = async (template: ITemplate) => {
-    const token = localStorage.getItem('token');
-    
-    if (!token) {
-        throw new Error('Токен не найден');
-    }
+    const token = getToken();
 
     const res = await fetch(`${base_url}/templates/create/`, {
       method: 'POST',
@@ -98,11 +87,7 @@ export const createTemplate = async (template: ITemplate) => {
 };
 
 export const updateTemplate = async (templateId: string, updatedFields: Partial<ITemplate>) => {
-    const token = localStorage.getItem('token');
-    
-    if (!token) {
-        throw new Error('Токен не найден');
-    }
+    const token = getToken();
 
     const res = await fetch(`${base_url}/templates/update/${templateId}`, {
       method: 'PUT',
@@ -120,21 +105,18 @@ export const updateTemplate = async (templateId: string, updatedFields: Partial<
 
 
 export const deleteTemplate = async (templateId: string) => {
-    const token = localStorage.getItem('token');
-    
-    if (!token) {
-        throw new Error('Token not found');
-    }
-        const res = await fetch(`${base_url}/templates/${templateId}`, {
-            method: 'DELETE',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
-            },
-            credentials: 'include',
-        });
+    const token = getToken();
 
-        return checkResponse<ITemplate>(res);
+    const res = await fetch(`${base_url}/templates/${templateId}`, {
+        method: 'DELETE',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+        credentials: 'include',
+    });
+
+    return checkResponse<ITemplate>(res);
 };
 

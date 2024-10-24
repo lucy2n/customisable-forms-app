@@ -1,13 +1,9 @@
 import { IQuestion } from "../../entities/question/model/question";
-import { checkResponse } from "./api";
+import { checkResponse, getToken } from "./api";
 import { base_url } from "./constants";
 
 export const createQuestion = async (question: IQuestion) => {
-    const token = localStorage.getItem('token');
-    
-    if (!token) {
-        throw new Error('Токен не найден');
-    }
+    const token = getToken();
 
     const res = await fetch(`${base_url}/questions/create/`, {
       method: 'POST',
@@ -34,11 +30,7 @@ export const getQuestions = async (id: string) => {
 };
 
 export const updateQuestion = async (questionId: string, updatedFields: Partial<IQuestion>) => {
-  const token = localStorage.getItem('token');
-  
-  if (!token) {
-      throw new Error('Токен не найден');
-  }
+  const token = getToken();
 
   const res = await fetch(`${base_url}/questions/update/${questionId}`, {
     method: 'PUT',
@@ -55,11 +47,7 @@ export const updateQuestion = async (questionId: string, updatedFields: Partial<
 };
 
 export const deleteQuestion = async (questionId: string) => {
-  const token = localStorage.getItem('token');
-
-  if (!token) {
-      throw new Error('Токен не найден');
-  }
+  const token = getToken();
 
   const res = await fetch(`${base_url}/questions/delete/${questionId}`, {
       method: 'DELETE',

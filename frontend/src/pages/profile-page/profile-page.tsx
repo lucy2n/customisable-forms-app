@@ -11,7 +11,7 @@ const ProfilePage = () => {
     const user = useAppSelector((store: RootState) => store.user);
     const [templates, setTemplates] = useState<ITemplate[]>();
     const [selectedTab, setSelectedTab] = useState<string>('My templates');
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
 
     const updateTab = (tab: string) => {
         setSelectedTab(tab);
