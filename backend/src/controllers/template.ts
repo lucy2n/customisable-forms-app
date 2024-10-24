@@ -104,40 +104,36 @@ export const searchTemplates = async (req: Request, res: Response): Promise<void
   try {
     const { q } = req.query;
 
-    // Check if parameter q is provided and is a string
+    // Check if the query parameter exists and is a string
     if (!q || typeof q !== 'string' || q.trim() === '') {
-      res.json([]);  // Return empty array if no valid query
+      res.json([]);  // Return an empty array if no query is provided
       return;
     }
 
-    const searchQuery = q.trim().toLowerCase(); // Convert to lowercase and trim whitespace
+    const searchQuery = q.trim().toLowerCase(); // Trim and normalize to lowercase
 
-    // Perform the database search (MySQL LIKE is case-insensitive if collation is set to _ci)
+    // Perform the search in the 'title' and 'description' fields using the 'LIKE' operator
     const templates = await Template.findAll({
       where: {
         [Op.or]: [
           {
             title: {
-              [Op.like]: `%${searchQuery}%`, // Case-insensitive in MySQL by default if collation is _ci
+              [Op.like]: `%${searchQuery}%`,  // Search in 'title'
             },
           },
           {
             description: {
-              [Op.like]: `%${searchQuery}%`, // Search in description
+              [Op.like]: `%${searchQuery}%`,  // Search in 'description'
             },
           },
         ],
       },
     });
 
-    // Log the search query and results for debugging
-    console.log('Search query:', searchQuery);
-    console.log('Templates found:', templates);
-
-    // Return found templates
+    // Send the found templates as JSON response
     res.json(templates);
-  } catch (err: any) {
-    console.error('Error searching templates:', err.message);
+  } catch (err) {
+    console.error('Error searching templates:', err);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
