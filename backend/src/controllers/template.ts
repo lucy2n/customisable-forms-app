@@ -102,6 +102,7 @@ export const createTemplate = async (req: IUserRequest, res: Response): Promise<
 export const updateTemplate = async (req: IUserRequest, res: Response): Promise<void> => {
   try {
     const template = await Template.findByPk(req.params.id);
+    
     if (!template) {
       throw new NotFoundError(NOT_FOUND_ERROR_TEMPLATE_MESSAGE);
     }
@@ -110,14 +111,14 @@ export const updateTemplate = async (req: IUserRequest, res: Response): Promise<
       throw new UnauthorizedError(UNAUTHORIZED_ERROR_USER_MESSAGE);
     }
 
-    if (template.user_id !== req.user.id) {
-      throw new ForbiddenError(FORBIDDEN_ERROR_USER)
+    if (template.user_id !== req.user.id && !req.user.is_admin) {
+      throw new ForbiddenError(FORBIDDEN_ERROR_USER);
     }
 
     await template.update(req.body);
     res.json(template);
   } catch (err: any) {
-    throw new BadRequestError(err.message)
+    throw new BadRequestError(err.message);
   }
 };
 
@@ -134,8 +135,7 @@ export const deleteTemplate = async (req: IUserRequest, res: Response): Promise<
       throw new UnauthorizedError(UNAUTHORIZED_ERROR_USER_MESSAGE);
     }
 
-
-    if (template.user_id !== req.user.id) {
+    if (template.user_id !== req.user.id && !req.user.is_admin) {
       throw new ForbiddenError(FORBIDDEN_ERROR_USER);
     }
 
