@@ -101,11 +101,13 @@ export const createTemplate = async (req: IUserRequest, res: Response): Promise<
 
 export const searchTemplates = async (req: Request, res: Response): Promise<void> => {
   try {
-    const q = req.query.q ? String(req.query.q) : '';
+    const q = req.query.q ? String(req.query.q).trim() : '';
 
     if (!q) {
-      res.json([]);
+       res.json([]);
     }
+
+    console.log('Search query:', q);
 
     const templates = await Template.findAll({
       where: {
@@ -116,10 +118,12 @@ export const searchTemplates = async (req: Request, res: Response): Promise<void
       },
     });
 
+    console.log('Templates found:', templates);
+
     res.json(templates);
   } catch (err: any) {
     console.error('Error searching templates:', err.message);
-    throw new InternalServerError(err.message);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
