@@ -110,27 +110,17 @@ export const searchTemplates = async (req: Request, res: Response): Promise<void
       return;
     }
 
-    const searchQuery = q.trim().toLowerCase(); // Trim and normalize to lowercase
+    const searchQuery = `%${q.trim()}%`;
 
-    // Perform the search in the 'title' and 'description' fields using the 'LIKE' operator
     const templates = await Template.findAll({
       where: {
         [Op.or]: [
-          {
-            title: {
-              [Op.like]: `%${searchQuery}%`,  // Search in 'title'
-            },
-          },
-          {
-            description: {
-              [Op.like]: `%${searchQuery}%`,  // Search in 'description'
-            },
-          },
+          sequelize.where(sequelize.fn('LOWER', sequelize.col('title')), 'LIKE', searchQuery.toLowerCase()),
+          sequelize.where(sequelize.fn('LOWER', sequelize.col('description')), 'LIKE', searchQuery.toLowerCase()),
         ],
       },
     });
 
-    // Send the found templates as JSON response
     res.json(templates);
   } catch (err) {
     console.error('Error searching templates:', err);
