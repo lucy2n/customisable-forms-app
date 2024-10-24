@@ -102,29 +102,33 @@ export const createTemplate = async (req: IUserRequest, res: Response): Promise<
 
 export const searchTemplates = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { q } = req.body;
+    const { search } = req.query;
 
-    // Check if the query parameter exists and is a string
-    if (!q || typeof q !== 'string' || q.trim() === '') {
-      res.json([]);  // Return an empty array if no query is provided
-      return;
+    if (!search) {
+      res.status(400).json({ message: 'Search parameter is required' });
     }
-
-    const searchQuery = `%${q.trim()}%`;
 
     const templates = await Template.findAll({
       where: {
         [Op.or]: [
-          sequelize.where(sequelize.fn('LOWER', sequelize.col('title')), 'LIKE', searchQuery.toLowerCase()),
-          sequelize.where(sequelize.fn('LOWER', sequelize.col('description')), 'LIKE', searchQuery.toLowerCase()),
-        ],
-      },
+          {
+            title: {
+              [Op.like]: `%${search}%`
+            }
+          },
+          {
+            description: {
+              [Op.like]: `%${search}%`
+            }
+          }
+        ]
+      }
     });
 
     res.json(templates);
-  } catch (err) {
-    console.error('Error searching templates:', err);
-    res.status(500).json({ message: 'Internal server error' });
+  } catch (error: any) {
+    console.error('Error while searching templates:', error);
+    res.status(500).json({ message: 'An error occurred while searching templates' });
   }
 };
 
