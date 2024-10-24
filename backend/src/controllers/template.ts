@@ -103,30 +103,31 @@ export const searchTemplates = async (req: Request, res: Response): Promise<void
   try {
     const { q } = req.query;
 
-    if (!q) {
-      res.json([]);
+    // Проверка, был ли передан параметр q и является ли он строкой
+    if (!q || typeof q !== 'string') {
+      res.json([]); // Возвращаем пустой массив, если q отсутствует
     }
 
     const searchQuery = q?.toString().toLowerCase();
 
-    let templates = await Template.findAll({
-      where: sequelize.where(
-        sequelize.fn('LOWER', sequelize.col('title')),
-        'LIKE',
-        `%${searchQuery}%`
-      ),
+    const templates = await Template.findAll({
+      where: {
+        [Op.or]: [
+          {
+            title: {
+              [Op.like]: `%${searchQuery}%`, // Поиск в заголовке
+            },
+          },
+          {
+            description: {
+              [Op.like]: `%${searchQuery}%`, // Поиск в описании
+            },
+          },
+        ],
+      },
     });
 
-    if (templates.length === 0) {
-      templates = await Template.findAll({
-        where: sequelize.where(
-          sequelize.fn('LOWER', sequelize.col('description')),
-          'LIKE',
-          `%${searchQuery}%`
-        ),
-      });
-    }
-
+    // Возвращаем найденные шаблоны
     res.json(templates);
   } catch (err: any) {
     console.error('Error searching templates:', err.message);
