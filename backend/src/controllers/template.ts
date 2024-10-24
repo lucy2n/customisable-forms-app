@@ -107,22 +107,26 @@ export const searchTemplates = async (req: Request, res: Response): Promise<void
       res.json([]);
     }
 
-    const templates = await Template.findAll({
+    let templates = await Template.findAll({
       where: {
-        [Op.or]: [
-          { title: { [Op.like]: `%${q}%` } },
-          { description: { [Op.like]: `%${q}%` } },
-        ],
+        title: { [Op.like]: `%${q}%` },
       },
     });
+
+    if (templates.length === 0) {
+      templates = await Template.findAll({
+        where: {
+          description: { [Op.like]: `%${q}%` },
+        },
+      });
+    }
 
     res.json(templates);
   } catch (err: any) {
     console.error('Error searching templates:', err.message);
-    throw new InternalServerError(err.message);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
-
 export const updateTemplate = async (req: IUserRequest, res: Response): Promise<void> => {
   try {
     const template = await Template.findByPk(req.params.id);
