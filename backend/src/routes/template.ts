@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createTemplate, deleteTemplate, getTemplate, getTemplates, updateTemplate } from "../controllers/template";
+import { createTemplate, deleteTemplate, updateTemplate } from "../controllers/template";
 
 const router = Router();
 

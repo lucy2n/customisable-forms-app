@@ -1,4 +1,4 @@
-import { Button, Card, CardBody, Input } from '@nextui-org/react';
+import { Button, Card, CardBody, Input, Switch } from '@nextui-org/react';
 import { useState, useEffect, FC, ChangeEvent } from 'react';
 import remove from '../../../../assets/trash-03-2.svg';
 import x from '../../../../assets/x-02.svg';
@@ -15,12 +15,13 @@ interface IQuestionEditorProps {
 const QuestionEditor: FC<IQuestionEditorProps> = ({ question, updateQuestion, removeQuestion, isActive, setActiveIndex })  => {
   const [text, setText] = useState(question.text || '');
   const [type, setType] = useState(question.type || 'text');
+  const [isRequired, setIsRequired] = useState<boolean>(false)
   const [options, setOptions] = useState(question.options || []);
 
   useEffect(() => {
-    // Обновляем локальные состояния при изменении вопроса
     setText(question.text);
     setType(question.type);
+    setIsRequired(question.is_required);
     setOptions(question.options);
   }, [question]);
 
@@ -33,6 +34,12 @@ const QuestionEditor: FC<IQuestionEditorProps> = ({ question, updateQuestion, re
   const handleTextChange = (e: ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);
     updateQuestion(question.id, { ...question, text: e.target.value });
+  };
+
+  const handleRequiredChange = () => {
+    const newIsRequired = !isRequired;
+    setIsRequired(newIsRequired);
+    updateQuestion(question.id, { ...question, is_required: newIsRequired });
   };
 
   const addOption = () => {
@@ -91,6 +98,19 @@ const QuestionEditor: FC<IQuestionEditorProps> = ({ question, updateQuestion, re
           >
             <img src={remove} alt="remove question" />
           </Button>
+        )}
+
+        {isActive && removeQuestion && (
+          <div className="flex">
+            <Switch
+              color="success"
+              defaultSelected
+              aria-label="Automatic updates"
+              isSelected={isRequired}
+              onChange={handleRequiredChange}
+            />
+            <p className="text-base">Required</p>
+          </div>
         )}
 
         {(type === 'radio' || type === 'checkbox' || type === 'select') && (

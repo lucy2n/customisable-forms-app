@@ -11,6 +11,15 @@ interface IFormTemplateList {
 }
 
 const FormTemplateList: FC<IFormTemplateList> = ({ title, templates, refresh, loading }) => {
+
+    if(templates.length  === 0 && !loading) {
+        return  (
+            <section className="w-full mr-auto ml-auto flex flex-col items-center pt-24">
+                <p className="text-5xl font-medium text-purple-700">No templates</p>
+            </section>
+        )
+    }
+
     return (
         <section className="w-full mr-auto ml-auto flex flex-col items-center pt-24">
             <h2 className="font-medium text-3xl text-center uppercase text-purple-700 font-mono pb-5">

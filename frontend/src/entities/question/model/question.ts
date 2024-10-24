@@ -12,4 +12,5 @@ export interface IQuestion {
     text: string;
     options: string[];
     template_id: string;
+    is_required: boolean
 }

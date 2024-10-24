@@ -29,7 +29,8 @@ const TemplateEditor: FC<ITemplateEditorProps> = ({ template, questions }) => {
             type: QuestionType.text, 
             text: '', 
             options: [], 
-            template_id: template.id 
+            template_id: template.id,
+            is_required: false
           }
         ]);
     };

@@ -19,25 +19,26 @@ import { IUser } from '../entities/user/model/user';
 function App() {
   const dispatch = useAppDispatch();
 
-  useEffect(()=> {
-		if (localStorage.getItem('token')) {
-			getUserInformation()
-            .then(({id, email, name, is_admin }: IUser)=>{
-              if(id) {
+useEffect(()=> {
+    const token = localStorage.getItem('token');
+    if (token) {
+        getUserInformation()
+        .then(({id, email, name, is_admin }: IUser)=>{
+            if(id) {
                 dispatch(setId(id + ''));
-              }
-                dispatch(loggedIn());
-                dispatch(setEmail(email));
-                dispatch(setName(name??''));
-                dispatch(setIsAdmin(!!is_admin));
-            })
-            .catch((err) => {
-                dispatch(loggedOut());
-                localStorage.removeItem('token');
-                console.error(err);
-            });
-        }
-    }, [dispatch]);
+            }
+            dispatch(loggedIn());
+            dispatch(setEmail(email));
+            dispatch(setName(name??''));
+            dispatch(setIsAdmin(!!is_admin));
+        })
+        .catch((err) => {
+            dispatch(loggedOut());
+            localStorage.removeItem('token');
+            console.error(err);
+        });
+    }
+}, [dispatch]);
 
   return (
     <div className="flex justify-center flex-col w-screen mb-10">

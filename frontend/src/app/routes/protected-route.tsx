@@ -8,7 +8,7 @@ const Protected = ({ onlyUnAuth = false, component }: { onlyUnAuth?: boolean, co
   const location = useLocation();
 
   if (onlyUnAuth && user.isLoggedIn) {
-    const { from } = location.state || { from: { pathname: RoutePathname.loginPage} };
+    const { from } = location.state as { from: Location } || { from: { pathname: RoutePathname.homePage } };
     return <Navigate to={from} />;
   }
 

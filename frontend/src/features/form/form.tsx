@@ -106,7 +106,8 @@ const Form: FC<IFormProps> = ({ template, questions, userId }) => {
               key={question.id}
               value={typeof currentAnswer === 'string' ? currentAnswer : ''}
               onChange={(e) => handleAnswerChange(question.id, e.target.value)}
-              isReadOnly={!userId} // Делаем поле только для чтения, если нет userId
+              isReadOnly={!userId}
+              isRequired={question.is_required}
             />
           </div>
         );
@@ -119,7 +120,8 @@ const Form: FC<IFormProps> = ({ template, questions, userId }) => {
               key={question.id}
               value={typeof currentAnswer === 'string' ? currentAnswer : ''}
               onChange={(e) => handleAnswerChange(question.id, e.target.value)}
-              isReadOnly={!userId} // Делаем поле только для чтения, если нет userId
+              isReadOnly={!userId}
+              isRequired={question.is_required}
             />
           </div>
         );
@@ -131,7 +133,8 @@ const Form: FC<IFormProps> = ({ template, questions, userId }) => {
             label={question.text}
             value={typeof currentAnswer === 'string' ? currentAnswer : ''}
             onChange={(e) => handleAnswerChange(question.id, e.target.value)}
-            isDisabled={!userId} // Отключаем выбор, если нет userId
+            isDisabled={!userId}
+            isRequired={question.is_required}
           >
             {question.options.map((option) => (
               <Radio key={option} value={option}>
@@ -150,7 +153,8 @@ const Form: FC<IFormProps> = ({ template, questions, userId }) => {
               label="Options"
               value={typeof currentAnswer === 'string' ? currentAnswer : ''}
               onChange={(e) => handleAnswerChange(question.id, e.target.value)}
-              isDisabled={!userId} // Отключаем выбор, если нет userId
+              isDisabled={!userId}
+              isRequired={question.is_required}
             >
               {question.options.map((option) => (
                 <SelectItem key={option} value={option}>
@@ -168,7 +172,8 @@ const Form: FC<IFormProps> = ({ template, questions, userId }) => {
             color="secondary"
             value={Array.isArray(currentAnswer) ? currentAnswer : []}
             onChange={(val) => handleAnswerChange(question.id, val)}
-            isDisabled={!userId} // Отключаем выбор, если нет userId
+            isDisabled={!userId}
+            isRequired={question.is_required}
           >
             {question.options.map((option) => (
               <Checkbox key={option} value={option}>

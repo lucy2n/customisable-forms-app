@@ -8,6 +8,7 @@ interface QuestionAttributes {
   type: string;
   template_id: string;
   options?: string[];
+  is_required: boolean;
 }
 
 interface QuestionCreationAttributes extends Optional<QuestionAttributes, 'id'> {}
@@ -18,6 +19,7 @@ class Question extends Model<QuestionAttributes, QuestionCreationAttributes> imp
   public type!: string;
   public template_id!: string;
   public options?: string[];
+  public is_required!: boolean
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -55,8 +57,12 @@ Question.init(
     },
     options: {
       type: DataTypes.JSON,
-      allowNull: true,  // Опции нужны не для всех типов вопросов
+      allowNull: true,
     },
+    is_required: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    }
   },
   {
     sequelize,

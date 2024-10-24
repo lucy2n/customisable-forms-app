@@ -29,7 +29,8 @@ const TemplateBuilder = () => {
           type: QuestionType.text, 
           text: '', 
           options: [], 
-          template_id: template_id 
+          template_id: template_id,
+          is_required: false
         }
       ]);
     };
@@ -64,7 +65,8 @@ const TemplateBuilder = () => {
               template_id: template_id,
               text: question.text,
               type: question.type,
-              options: question.options
+              options: question.options,
+              is_required: question.is_required
           }));
 
           await Promise.all(questionPromises);

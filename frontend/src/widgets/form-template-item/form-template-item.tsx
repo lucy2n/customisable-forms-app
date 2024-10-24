@@ -26,6 +26,7 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ template, refresh }) => {
     const [isLikedByUser, setIsLikedByUser] = useState<boolean>(false);
 
     const handleDeleteTemplate = (id: string) => {
+        console.log(user)
         deleteTemplate(id)
             .then(() => refresh());
     }
