@@ -90,7 +90,7 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ template, refresh }) => {
                 removeWrapper
                 alt="Card background"
                 className="z-0 w-full h-full object-cover"
-                src="https://images.unsplash.com/photo-1727949236824-d3227df462bc?q=80&w=3132&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                src="https://images.unsplash.com/photo-1728406970237-bc699733f027?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             />
 
             <CardFooter className="absolute bg-white/40 bottom-0 z-10 border-t-1 border-default-600 dark:border-default-100">
