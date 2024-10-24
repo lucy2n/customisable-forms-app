@@ -101,7 +101,7 @@ export const createTemplate = async (req: IUserRequest, res: Response): Promise<
 
 export const searchTemplates = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { q } = req.query;
+    const q = req.query.q ? String(req.query.q) : '';
 
     if (!q) {
       res.json([]);
