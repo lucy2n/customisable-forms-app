@@ -66,6 +66,7 @@ export const getTemplatesByMostForms = async (req: Request, res: Response): Prom
       },
       group: ['Template.id'],
       order: [[sequelize.literal('formCount'), 'DESC']],
+      limit: 5
     });
 
     res.json(templates);
