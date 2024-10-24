@@ -13,7 +13,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: 'https://customisable-forms-app-production.up.railway.app',
+  origin: 'https://customisable-forms-app.vercel.app',
   credentials: true,
 }));
 app.use(express.json());
