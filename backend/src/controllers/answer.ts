@@ -6,7 +6,7 @@ import NotFoundError from '../errors/not-found-error';
 import InternalServerError from '../errors/internal-server-error';
 import { CREATED, NOT_FOUND_ERROR_FORM_MESSAGE, NOT_FOUND_ERROR_TEMPLATE_MESSAGE } from '../utils/constants';
 
-export const createAnswer = async (req: Request, res: Response): Promise<void> => {
+export const createAnswer = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const formId = req.body.form_id;
     const form = await Form.findByPk(formId);
@@ -18,12 +18,10 @@ export const createAnswer = async (req: Request, res: Response): Promise<void> =
       ...req.body
     });
       res.status(CREATED).json(answer);
-  } catch (err: any) {
-     throw new BadRequestError(err.message)
-  }
+  } catch (err: any) {next(err)}
 };
 
-export const getAnswers = async (req: Request, res: Response): Promise<void> => {
+export const getAnswers = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const templateId = req.params.id;
     const answers = await Answer.findAll({
@@ -35,7 +33,5 @@ export const getAnswers = async (req: Request, res: Response): Promise<void> => 
     }
 
     res.json(answers);
-  } catch (err: any) {
-    throw new InternalServerError(err.message)
-  }
+  } catch (err: any) {next(err)}
 };

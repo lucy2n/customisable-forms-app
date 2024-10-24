@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from '../models/user';
@@ -10,7 +10,7 @@ import NotFoundError from '../errors/not-found-error';
 import InternalServerError from '../errors/internal-server-error';
 import { BAD_REQUEST_ERROR_ALL_FIELDS_REQUIRED, BAD_REQUEST_ERROR_USER_DATA_MESSAGE, BAD_REQUEST_ERROR_USER_EMAIL_MESSAGE, CREATED, FORBIDDEN_ERROR_USER, FORBIDDEN_ERROR_USER_BLOCKED, NOT_FOUND_ERROR_USER_MESSAGE, UNAUTHORIZED_ERROR_USER_MESSAGE } from '../utils/constants';
 
-export const createUser = async (req: Request, res: Response): Promise<void> => {
+export const createUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { name, email, password } = req.body;
 
@@ -33,13 +33,10 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
     });
 
     res.status(CREATED).json(newUser);
-  } catch (err: any) {
-    console.error(err);
-    throw new InternalServerError(err.message)
-  }
+  } catch (err: any) {next(err)}
 };
 
-export const login = async (req: Request, res: Response): Promise<void> => {
+export const login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { email, password } = req.body;
 
@@ -74,13 +71,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         email: user.email,
       },
     });
-  } catch (err: any) {
-    if (err instanceof UnauthorizedError) {
-      throw new UnauthorizedError(BAD_REQUEST_ERROR_USER_DATA_MESSAGE);
-    } else {
-      throw new InternalServerError(`Server error on login ${err}`)
-    }
-  }
+  } catch (err: any) {next(err)}
 };
 
 export const getMe = async (req: IUserRequest, res: Response): Promise<void> => {

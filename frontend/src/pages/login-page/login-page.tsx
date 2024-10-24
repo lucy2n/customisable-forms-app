@@ -3,10 +3,13 @@ import { Card, CardBody } from "@nextui-org/react";
 import { loginUser } from "../../shared/api/user";
 import { useAppDispatch } from "../../app/routes/lib/hook";
 import { loggedIn, resetUser, setEmail } from "../../entities/user/model/userSlice";
+import { useNavigate } from "react-router-dom";
+import { RoutePathname } from "../../app/routes/constants";
 
 
 const LoginPage = () => {
     const dispatch = useAppDispatch();
+    const navigate = useNavigate()
 
 
     const handleLogin = async (email: string, password: string) => {
@@ -16,6 +19,7 @@ const LoginPage = () => {
             localStorage.setItem('token', res.token);
             dispatch(loggedIn());
             dispatch(setEmail(email));
+            navigate(RoutePathname.homePage);
         })
         } catch (err) {
             localStorage.removeItem('token');

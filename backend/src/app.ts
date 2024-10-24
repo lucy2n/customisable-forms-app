@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import routes from './routes/index';
 import sequelize from './config/database';  // Импорт конфигурации базы данных
 import User from './models/user';           // Импорт моделей
@@ -30,7 +30,19 @@ Like.associate && Like.associate();
 
 app.use(routes);
 
-app.use(errors());
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  // если у ошибки нет статуса, выставляем 500
+  const { statusCode = 500, message } = err;
+
+  res
+    .status(statusCode)
+    .send({
+      // проверяем статус и выставляем сообщение в зависимости от него
+      message: statusCode === 500
+        ? 'На сервере произошла ошибка'
+        : message
+    });
+}); 
 
 sequelize.sync({ force: false })
   .then(() => {

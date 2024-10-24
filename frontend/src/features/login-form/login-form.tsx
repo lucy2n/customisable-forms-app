@@ -9,7 +9,6 @@ interface LoginFormProps {
 }
 
 const LoginForm: FC<LoginFormProps> = ({handleLogin}) => {
-    const navigate = useNavigate()
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [isVisible, setIsVisible] = useState(false);
@@ -20,7 +19,6 @@ const LoginForm: FC<LoginFormProps> = ({handleLogin}) => {
     
         try {
             handleLogin(email, password)
-            navigate(RoutePathname.homePage);
         } catch (err) {
             const error = err as Error;
             console.error('Login error:', error.message);
