@@ -100,26 +100,25 @@ export const createTemplate = async (req: IUserRequest, res: Response): Promise<
   }
 };
 
-
 export const searchTemplates = async (req: Request, res: Response): Promise<void> => {
   try {
     const { q } = req.query;
 
     // Check if parameter q is provided and is a string
-    if (!q || typeof q !== 'string') {
-      res.json([]);
+    if (!q || typeof q !== 'string' || q.trim() === '') {
+      res.json([]);  // Return empty array if no valid query
       return;
     }
 
-    const searchQuery = q.toLowerCase(); // Convert to lowercase
+    const searchQuery = q.trim().toLowerCase(); // Convert to lowercase and trim whitespace
 
-    // Perform the database search
+    // Perform the database search (MySQL LIKE is case-insensitive if collation is set to _ci)
     const templates = await Template.findAll({
       where: {
         [Op.or]: [
           {
             title: {
-              [Op.like]: `%${searchQuery}%`, // Search in title
+              [Op.like]: `%${searchQuery}%`, // Case-insensitive in MySQL by default if collation is _ci
             },
           },
           {
