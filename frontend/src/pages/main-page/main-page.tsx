@@ -5,6 +5,7 @@ import { ITemplate } from "../../entities/template/model/template";
 import { getLatestTemplates, getMostPopularTemplates, getTemplates } from "../../shared/api/template";
 import { useAppSelector } from "../../app/routes/lib/hook";
 import { RootState } from "../../app/appStore";
+import SearchTemplates from "../../features/search-templates/ui/search-templates";
 
 const MainPage = () => {
     const [templates, setTemplates] = useState<ITemplate[]>([]);
@@ -72,12 +73,12 @@ const MainPage = () => {
                     initial={{ opacity: 0, y: -50 }} 
                     animate={{ opacity: 1, y: 0 }} 
                     transition={{ duration: 1 }}
-                    className="font-mono w-9/12"
+                    className="font-mono w-9/12 mb-10"
                 >
                     Create quizzes, surveys, polls, and more with ease! Whether you’re collecting feedback, conducting tests, or gathering data through questionnaires, FormLab empowers you to build fully customizable forms tailored to your needs.
                 </motion.p>
+                <SearchTemplates />
             </section>
-
             {search && searchTemplates.length > 0 ? (
                 <FormTemplateList 
                     title='Search Templates' 

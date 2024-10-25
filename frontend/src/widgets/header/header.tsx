@@ -7,7 +7,6 @@ import { RoutePathname } from "../../app/routes/constants";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/routes/lib/hook";
 import { loggedOut, resetUser } from "../../entities/user/model/userSlice";
-import SearchTemplates from "../../features/search-templates/ui/search-templates";
 import { RootState } from "../../app/appStore";
 
 const Header = () => {
@@ -43,7 +42,6 @@ const Header = () => {
           Lab
         </p>
       </div>
-      <SearchTemplates />
       <div className="flex flex-wrap items-center gap-2">
         {user.isLoggedIn ? (
           <>
