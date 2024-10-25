@@ -29,8 +29,6 @@ const CreateFormPage = () => {
     useEffect(() => {
         if (id) {
             const promises = [getTemplate(id), getQuestions(id)];
-
-            // Если пользователь авторизован, добавляем запрос для получения ответов
             if (user?.id) {
                 promises.push(getAnswers(id));
             }
@@ -40,7 +38,6 @@ const CreateFormPage = () => {
                     setTemplate(templateRes);
                     setQuestions(questionsRes);
 
-                    // Если пользователь авторизован, сохраняем ответы
                     if (answersRes) {
                         setAnswers(answersRes);
                     }
@@ -54,7 +51,6 @@ const CreateFormPage = () => {
         return <FormSkeleton />;
     }
 
-    // Проверяем, является ли пользователь создателем формы
     const isCreator = template.user_id + '' === user?.id;
 
     return (

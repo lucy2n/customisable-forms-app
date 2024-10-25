@@ -24,7 +24,6 @@ class Question extends Model<QuestionAttributes, QuestionCreationAttributes> imp
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
-  // Ассоциации
   static associate() {
     Question.belongsTo(Template, { foreignKey: 'template_id', as: 'template' });
   }
@@ -49,7 +48,7 @@ Question.init(
       type: DataTypes.STRING,
       allowNull: false,
       references: {
-        model: Template,  // Связываемся с моделью Form
+        model: Template,
         key: 'id',
       },
       onDelete: 'CASCADE',
@@ -73,5 +72,4 @@ Question.init(
   }
 );
 
-// Экспорт модели
 export default Question;

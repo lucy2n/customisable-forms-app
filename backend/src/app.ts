@@ -12,7 +12,6 @@ import { SERVER_ERROR } from './utils/constants';
 
 const app = express();
 
-// Middleware
 app.use(cors({
   origin: 'https://customisable-forms-app.vercel.app',
   credentials: true,

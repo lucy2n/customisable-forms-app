@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Button, Input, Card, CardBody } from '@nextui-org/react';
 import { ITemplate } from '../../entities/template/model/template';
 import { IQuestion, QuestionType } from '../../entities/question/model/question';
-import { updateTemplate } from '../../shared/api/template'; // Предположим, что эти API уже существуют
+import { updateTemplate } from '../../shared/api/template';
 import QuestionEditor from '../template-builder/ui/question-editor/question-editor';
 import { updateQuestion, deleteQuestion } from '../../shared/api/question';
 import { useNavigate } from 'react-router-dom';

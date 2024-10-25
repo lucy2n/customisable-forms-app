@@ -1,23 +1,18 @@
 import React from 'react';
 import { PieChart, Pie, Cell } from 'recharts';
 
-// Define the structure of each data entry
 interface DataEntry {
   name: string;
   value: number;
 }
-
-// Define the component's props
 interface AnswersPiechartProps {
   data: DataEntry[];
 }
 
-// Extend color array to accommodate more groups
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#FF6666', '#FF8888', '#FFAAAA'];
 
 const RADIAN = Math.PI / 180;
 
-// Type for renderCustomizedLabel props
 interface LabelProps {
   cx: number;
   cy: number;

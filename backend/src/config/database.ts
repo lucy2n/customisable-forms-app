@@ -1,14 +1,13 @@
 import { Sequelize } from 'sequelize';
 
-// Define database configuration options
 const dbConfig = {
   development: {
     username: process.env.MYSQLUSER || 'root',
     password: process.env.MYSQL_ROOT_PASSWORD || 'lysia2002',
     database: process.env.MYSQL_DATABASE || 'forms_app',
     host: process.env.MYSQLHOST || 'localhost',
-    dialect: 'mysql',  // Can be 'postgres', 'sqlite', etc., depending on your database
-    logging: console.log,  // Set to false if you don't want to log SQL queries
+    dialect: 'mysql',
+    logging: console.log,
   },
   test: {
     username: process.env.MYSQLUSER || 'test_user',
@@ -16,7 +15,7 @@ const dbConfig = {
     database: process.env.MYSQL_DATABASE || 'test_database',
     host: process.env.MYSQLHOST || 'localhost',
     dialect: 'sqlite',
-    storage: ':memory:',  // In-memory database for testing
+    storage: ':memory:',
     logging: false,
   },
   production: {
@@ -29,13 +28,10 @@ const dbConfig = {
   },
 };
 
-// Environment detection (development, test, production)
 const env = process.env.NODE_ENV || 'development';
 
-// Select the right config based on environment
 const currentConfig = dbConfig[env as keyof typeof dbConfig];
 
-// Initialize Sequelize
 const sequelize = new Sequelize(
   currentConfig.database,
   currentConfig.username,
