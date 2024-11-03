@@ -81,7 +81,8 @@ export const createTicket = async (summary: string, priority: string, pageLink: 
 
         if (!response.ok) {
             const errorText = await response.text();
-            throw new Error(`Failed to create ticket: ${errorText}`);
+            console.error(`Failed to create ticket: ${errorText}`);
+            throw new Error(`Failed to create ticket: ${response.status} ${response.statusText} - ${errorText}`);
         }
 
         return await response.json();
