@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { createTicket, getUserTickets } from '../controllers/jira';
+import { createJiraTicketController, getUserTicketsController } from '../controllers/jira';
 
 const router = Router();
 
-router.post("/create-jira-ticket", createTicket);
-router.get("/user-tickets", getUserTickets);
+router.post("/create-jira-ticket", createJiraTicketController);
+router.get("/user-tickets", getUserTicketsController);
 
 export default router;

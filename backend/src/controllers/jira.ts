@@ -1,75 +1,34 @@
 import { Request, Response } from 'express';
-import fetch from 'node-fetch';
-import * as dotenv from 'dotenv';
+import { findOrCreateJiraUser, createTicket, getUserTickets } from '../services/jiraService';
 
-dotenv.config();
-
-const authHeader = `Basic ${Buffer.from(`${process.env.JIRA_EMAIL}:${process.env.JIRA_API_TOKEN}`).toString("base64")}`;
-const jiraAuthHeaders = {
-    Authorization: authHeader,
-    'Content-Type': 'application/json'
-  };
-
-export const createTicket = async (req: Request, res: Response) => {
+// Controller to create a new Jira ticket
+export const createJiraTicketController = async (req: Request, res: Response) => {
     const { summary, priority, pageLink, template, userEmail } = req.body;
 
-    const issueData = {
-        fields: {
-            project: {
-                key: process.env.JIRA_PROJECT_KEY
-            },
-            summary: summary,
-            description: `Reported by: ${userEmail}\nPage link: ${pageLink}`,
-            issuetype: {
-                name: "Task"
-            },
-            priority: {
-                name: priority
-            },
-            customfield_template: template || "General",
-            customfield_link: pageLink
-        }
-    };
-
     try {
-        const response = await fetch(`${process.env.JIRA_BASE_URL}/rest/api/3/issue`, {
-            method: "POST",
-            headers: jiraAuthHeaders,
-            body: JSON.stringify(issueData)
-        });
+        // Ensure reporter user exists in Jira
+        await findOrCreateJiraUser(userEmail, req.body.displayName);
 
-        if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(`Failed to create ticket: ${errorText}`);
-        }
+        // Create the Jira ticket
+        const ticketData: any = await createTicket(summary, priority, pageLink, template, userEmail);
+        const ticketUrl = `${process.env.JIRA_BASE_URL}/browse/${ticketData.key}`;
 
-        const data: any = await response.json();
-        res.status(200).json({ ticketId: data.key, ticketUrl: `${process.env.JIRA_BASE_URL}/browse/${data.key}` });
+        res.status(200).json({ ticketId: ticketData.key, ticketUrl });
     } catch (error) {
         console.error("Error creating Jira ticket:", error);
         res.status(500).json({ error: "Failed to create Jira ticket" });
     }
-}
+};
 
-export const getUserTickets = async (req: Request, res: Response) => {
-    const userEmail = req.query.email;
-    const jqlQuery = `reporter = "${userEmail}" ORDER BY created DESC`;
+// Controller to get tickets for a specific user
+export const getUserTicketsController = async (req: Request, res: Response) => {
+    const userEmail = req.query.email as string;
 
     try {
-        const response = await fetch(
-            `${process.env.JIRA_BASE_URL}/rest/api/3/search?jql=${encodeURIComponent(jqlQuery)}`, {
-            headers: jiraAuthHeaders
-        });
-
-        if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(`Failed to fetch tickets: ${errorText}`);
-        }
-
-        const data: any = await response.json();
-        res.status(200).json(data.issues);
+        const tickets = await getUserTickets(userEmail);
+        res.status(200).json(tickets);
     } catch (error) {
-        console.error("Error fetching tickets:", error);
-        res.status(500).json({ error: "Failed to fetch tickets" });
+        console.error("Error fetching Jira tickets:", error);
+        res.status(500).json({ error: "Failed to fetch Jira tickets" });
     }
-}
+};
