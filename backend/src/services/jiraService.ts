@@ -14,14 +14,35 @@ const jiraAuthHeaders = {
     'Content-Type': 'application/json'
 };
 
+const findUserByEmail = async (email: string) => {
+    const response = await fetch(
+        `${JIRA_BASE_URL}/rest/api/3/user/search?query=${email}`,
+        {
+            method: 'GET',
+            headers: {
+                Authorization: authHeader,
+                'Accept': 'application/json',
+            },
+        }
+    );
+
+     return response;
+    // if (response.ok) {
+    //     const users: any = await response.json();
+    //     if (users.length > 0) {
+    //         return users[0]; // User exists
+    //     } else {
+    //         return null; // User not found
+    //     }
+    // } else {
+    //     throw new Error(`Failed to search for Jira user: ${response.statusText}`);
+    // }
+};
+
 // Helper to find or create a Jira user
 export const findOrCreateJiraUser = async (email: string, displayName: string) => {
     try {
-        const response = await fetch(
-            `${JIRA_ADMIN_BASE_URL}/admin/v1/orgs/${JIRA_CLOUD_ID}/users/email/${email}`,
-            { method: 'GET', headers: jiraAuthHeaders }
-        );
-
+        const response = await findUserByEmail(email);
         if (response.ok) {
             return await response.json();
         } else if (response.status === 404) {
