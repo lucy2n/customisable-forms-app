@@ -5,6 +5,7 @@ import questionRouter from './question';
 import templateRouter from './template';
 import formRouter from './form';
 import commentRouter from './comment';
+import saleforceRouter from './saleforce';
 // import jiraRouter from './jira';
 import likeRouter from './like';
 import { createUser, login } from "../controllers/user";
@@ -44,5 +45,6 @@ router.use('/questions', questionRouter);
 router.use('/answers', answerRouter);
 router.use('/comments', commentRouter);
 router.use('/likes', likeRouter);
+router.use('/saleforce', saleforceRouter);
 
 export default router;

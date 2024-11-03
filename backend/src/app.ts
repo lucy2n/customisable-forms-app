@@ -20,13 +20,21 @@ const conn = new jsforce.Connection({
   loginUrl: SF_LOGIN_URL
 })
 
-conn.login(SF_USERNAME!, SF_PASSWORD+SF_TOKEN!)
-  .then((userInfo) => {
-    console.log('User Id:' + userInfo.id);
-  })
-  .catch((err) => {
-    console.error(err);
-  });
+async function loginToSalesforce() {
+  try {
+    // Log in using the environment variables
+    await conn.login(
+      SF_USERNAME || '',
+      SF_PASSWORD+SF_TOKEN! || ''
+    );
+    console.log('Salesforce login successful');
+  } catch (error) {
+    console.error('Salesforce login failed:', error);
+    throw new Error('Salesforce login failed');
+  }
+}
+
+loginToSalesforce();
 
 app.use(cors({
   origin: 'https://customisable-forms-app.vercel.app',
