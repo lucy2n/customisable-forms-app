@@ -5,6 +5,7 @@ import questionRouter from './question';
 import templateRouter from './template';
 import formRouter from './form';
 import commentRouter from './comment';
+// import jiraRouter from './jira';
 import likeRouter from './like';
 import { createUser, login } from "../controllers/user";
 import auth from "../middlewares/auth";
@@ -36,6 +37,7 @@ router.use(auth);
 
 router.get('/users/:user_id/templates', getTemplatesByUser);
 router.use('/users', userRouter);
+// router.use('/jira', jiraRouter);
 router.use('/templates', templateRouter);
 router.use('/forms', formRouter);
 router.use('/questions', questionRouter);

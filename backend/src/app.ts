@@ -1,4 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express';
+import jsforce from 'jsforce'
 import routes from './routes/index';
 import sequelize from './config/database';
 import User from './models/user';
@@ -9,8 +10,23 @@ import Answer from './models/answer';
 import Like from './models/like';
 import cors from 'cors';
 import { SERVER_ERROR } from './utils/constants';
+import 'dotenv/config';
 
 const app = express();
+
+const {SF_LOGIN_URL, SF_USERNAME, SF_PASSWORD, SF_TOKEN} = process.env;
+
+const conn = new jsforce.Connection({
+  loginUrl: SF_LOGIN_URL
+})
+
+conn.login(SF_USERNAME!, SF_PASSWORD+SF_TOKEN!)
+  .then((userInfo) => {
+    console.log('User Id:' + userInfo.id);
+  })
+  .catch((err) => {
+    console.error(err);
+  });
 
 app.use(cors({
   origin: 'https://customisable-forms-app.vercel.app',
