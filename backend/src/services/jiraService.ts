@@ -59,13 +59,17 @@ const createJiraUser = async (email: string, displayName: string) => {
 };
 
 // Helper to create a Jira ticket
-export const createTicket = async (summary: string, priority: string, pageLink: string, template: string, userEmail: string) => {
+export const createTicket = async (summary: string, priority: string, pageLink: string, template: string, userEmail: string, accountId: string) => {
     const issueData = {
         fields: {
             project: { key: JIRA_PROJECT_KEY },
             summary,
             description: `Reported by: ${userEmail}\nPage link: ${pageLink}`,
-            issuetype: { name: "Task" }
+            issuetype: { name: "Task" },
+            priority: { name: priority },
+            customfield_template: template || "General",
+            customfield_link: pageLink,
+            reporter: { accountId: accountId }
         }
     };
 
