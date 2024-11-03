@@ -65,10 +65,7 @@ export const createTicket = async (summary: string, priority: string, pageLink: 
             project: { key: JIRA_PROJECT_KEY },
             summary,
             description: `Reported by: ${userEmail}\nPage link: ${pageLink}`,
-            issuetype: { name: "Task" },
-            priority: { name: priority },
-            customfield_template: template || "General",
-            customfield_link: pageLink
+            issuetype: { name: "Task" }
         }
     };
 
