@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const JIRA_BASE_URL = process.env.JIRA_BASE_URL;
-const JIRA_ADMIN_BASE_URL = `https://lysianaumenko2002.atlassian.com`;
+const JIRA_ADMIN_BASE_URL = `https://lysianaumenko2002.atlassian.net`;
 const JIRA_CLOUD_ID = process.env.JIRA_CLOUD_ID;
 const JIRA_PROJECT_KEY = process.env.JIRA_PROJECT_KEY;
 
