@@ -61,7 +61,7 @@ const createJiraUser = async (email: string, displayName: string) => {
                 method: 'POST',
                 headers: jiraAuthHeaders,
                 body: JSON.stringify({
-                    email,
+                    emailAddress: email,
                     displayName,
                     name: displayName,
                     password: "password",
