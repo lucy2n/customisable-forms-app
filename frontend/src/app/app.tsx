@@ -24,13 +24,12 @@ useEffect(()=> {
     const token = localStorage.getItem('token');
     if (token) {
         getUserInformation()
-        .then(({id, email, name, is_admin, saleforce_id }: IUser)=>{
+        .then(({id, email, name, is_admin, salesforce_id}: IUser)=>{
+            console.log(id, email, name, is_admin, salesforce_id)
             if(id) {
                 dispatch(setId(id + ''));
             }
-            if(saleforce_id) {
-              dispatch(setSalesforceId(saleforce_id));;
-            }
+            dispatch(setSalesforceId(salesforce_id!));
             dispatch(loggedIn());
             dispatch(setEmail(email));
             dispatch(setName(name??''));

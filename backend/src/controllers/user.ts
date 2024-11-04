@@ -92,6 +92,7 @@ export const getMe = async (req: IUserRequest, res: Response): Promise<void> => 
       name: user?.name,
       email: user?.email,
       is_admin: user?.is_admin,
+      salesforce_id: user?.salesforce_id
     });
   } catch (err: any) {
     throw new InternalServerError(err.message)

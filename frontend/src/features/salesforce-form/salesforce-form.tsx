@@ -9,6 +9,7 @@ import salesforce from '../../assets/image.png';
 
 const SalesforceForm = () => {
     const dispatch = useAppDispatch();
+
     const user = useAppSelector((store: RootState) => store.user);
     const [email, setEmail] = useState<string>(user.email);
     const [phone, setPhone] = useState<string>('');
@@ -20,9 +21,9 @@ const SalesforceForm = () => {
         e.preventDefault(); 
         await createSalesforce({firstName, lastName, email, phone})
             .then((res) => {
-                console.log(res, 'res')
-                dispatch(setSalesforceId(res.accountId));
-                updateUser(+user.id, { salesforce_id: res.accountId })
+                const accountId = res.accountId
+                dispatch(setSalesforceId(accountId));
+                updateUser(+user.id, { salesforce_id: accountId })
                     .then((res) => {
                         console.log(res);
                     })
@@ -33,7 +34,7 @@ const SalesforceForm = () => {
             .catch(err => setError(err))
       };
 
-    if(user.salesfoce_id) {
+    if(user.salesforce_id) {
         return (
             <main className="flex flex-col items-center w-11/12 mr-auto ml-auto pt-12 max-w-screen-xl">
                 <img src={salesforce} alt='salesforce'/>
