@@ -27,16 +27,6 @@ const findUserByEmail = async (email: string) => {
     );
 
      return response;
-    // if (response.ok) {
-    //     const users: any = await response.json();
-    //     if (users.length > 0) {
-    //         return users[0]; // User exists
-    //     } else {
-    //         return null; // User not found
-    //     }
-    // } else {
-    //     throw new Error(`Failed to search for Jira user: ${response.statusText}`);
-    // }
 };
 
 // Helper to find or create a Jira user
