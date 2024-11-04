@@ -96,7 +96,7 @@ export const createTicket = async (summary: string, priority: string, pageLink: 
             priority: { name: priority },
             customfield_10037: template || "General",
             customfield_10038: pageLink,
-            reporter: { id: accountId }
+            reporter: accountId
         }
     };
 
