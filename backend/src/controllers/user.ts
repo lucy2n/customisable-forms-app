@@ -114,8 +114,9 @@ export const updateUser = async (req: IUserRequest, res: Response, next: NextFun
 
     const { id } = req.params;
     const user = await User.findByPk(id);
+    console.log(user, currentUser);
 
-    if (!currentUser || (!currentUser.is_admin && user != currentUser)) {
+    if (!currentUser || (!currentUser.is_admin && user !== currentUser)) {
       throw new ForbiddenError('Only admins can update user information.');
     }
 
