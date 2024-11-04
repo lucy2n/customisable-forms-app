@@ -112,12 +112,12 @@ export const updateUser = async (req: IUserRequest, res: Response, next: NextFun
     const currentUserId = req.user?.id;
     const currentUser = await User.findByPk(currentUserId);
 
-    if (!currentUser || !currentUser.is_admin) {
-      throw new ForbiddenError('Only admins can update user information.');
-    }
-
     const { id } = req.params;
     const user = await User.findByPk(id);
+
+    if (!currentUser || (!currentUser.is_admin && user != currentUser)) {
+      throw new ForbiddenError('Only admins can update user information.');
+    }
 
     if (!user) {
       throw new NotFoundError(NOT_FOUND_ERROR_USER_MESSAGE);

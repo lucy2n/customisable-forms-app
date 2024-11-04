@@ -20,8 +20,15 @@ const SalesforceForm = () => {
         e.preventDefault(); 
         await createSalesforce({firstName, lastName, email, phone})
             .then((res) => {
+                console.log(res, 'res')
                 dispatch(setSalesforceId(res.accountId));
-                updateUser(+user.id, { salesforce_id: res.accountId });
+                updateUser(+user.id, { salesforce_id: res.accountId })
+                    .then((res) => {
+                        console.log(res);
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    })
             })
             .catch(err => setError(err))
       };

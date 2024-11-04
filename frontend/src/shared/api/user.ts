@@ -72,6 +72,8 @@ export const getUsers = async () => {
 
 export const updateUser = async (userId: number, updatedFields: Partial<IUser>) => {
   const token = getToken();
+  console.log(userId, 'useriD')
+  console.log(updatedFields, 'updatedFields')
 
   const res = await fetch(`${base_url}/users/${userId}/`, {
     method: 'PUT',
