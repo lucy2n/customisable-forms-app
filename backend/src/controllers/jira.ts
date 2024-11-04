@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { findOrCreateJiraUser, createTicket, getUserTickets } from '../services/jiraService';
+import { CREATED } from '../utils/constants';
 
 // Controller to create a new Jira ticket
 export const createJiraTicketController = async (req: Request, res: Response) => {
@@ -14,7 +15,7 @@ export const createJiraTicketController = async (req: Request, res: Response) =>
         const ticketData: any = await createTicket(summary, priority, pageLink, template, userEmail, accountId);
         const ticketUrl = `${process.env.JIRA_BASE_URL}/browse/${ticketData.key}`;
 
-        res.status(200).json({ ticketId: ticketData.key, ticketUrl });
+        res.status(CREATED).json({ ticketId: ticketData.key, ticketUrl });
     } catch (error) {
         console.error("Error creating Jira ticket:", error);
         res.status(500).json({ error: "Failed to create Jira ticket" });
