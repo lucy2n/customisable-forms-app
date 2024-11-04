@@ -44,7 +44,7 @@ router.use('/questions', questionRouter);
 router.use('/answers', answerRouter);
 router.use('/comments', commentRouter);
 router.use('/likes', likeRouter);
-router.use('/saleforce', saleforceRouter);
+router.use('/salesforce', saleforceRouter);
 router.use('/jira', jiraRouter);
 
 export default router;

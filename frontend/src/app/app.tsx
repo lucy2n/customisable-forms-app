@@ -8,7 +8,7 @@ import { useAppDispatch } from './routes/lib/hook';
 import { useEffect } from 'react';
 import { OnlyAuth, OnlyUnAuth } from './routes/protected-route';
 import { getUserInformation } from '../shared/api/user';
-import { loggedIn, loggedOut, setEmail, setId, setIsAdmin, setName } from '../entities/user/model/userSlice';
+import { loggedIn, loggedOut, setEmail, setId, setIsAdmin, setName, setSalesforceId } from '../entities/user/model/userSlice';
 import CreateTemplatePage from '../pages/create-template-page/create-template-page';
 import CreateFormPage from '../pages/create-form-page/create-form-page';
 import AdminPage from '../pages/admin-page/admin-page';
@@ -24,9 +24,12 @@ useEffect(()=> {
     const token = localStorage.getItem('token');
     if (token) {
         getUserInformation()
-        .then(({id, email, name, is_admin }: IUser)=>{
+        .then(({id, email, name, is_admin, saleforce_id }: IUser)=>{
             if(id) {
                 dispatch(setId(id + ''));
+            }
+            if(saleforce_id) {
+              dispatch(setSalesforceId(saleforce_id));;
             }
             dispatch(loggedIn());
             dispatch(setEmail(email));
