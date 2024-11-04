@@ -6,6 +6,7 @@ import { useAppSelector } from "../../app/routes/lib/hook";
 import ProfileTabs from "./profile-tabs/profile-tabs";
 import AdminPage from "../admin-page/admin-page";
 import { RootState } from "../../app/appStore";
+import SalesforceForm from "../../features/salesforce-form/salesforce-form";
 
 const ProfilePage = () => {
     const user = useAppSelector((store: RootState) => store.user);
@@ -41,6 +42,10 @@ const ProfilePage = () => {
 
             {selectedTab === 'Admin' && user.is_admin && (
                 <AdminPage />
+            )}
+
+            {selectedTab === 'Salesforce' && user && (
+                <SalesforceForm />
             )}
         </main>
     );

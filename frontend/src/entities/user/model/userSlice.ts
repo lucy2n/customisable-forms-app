@@ -6,6 +6,7 @@ export type UserState = {
   is_admin: boolean;
   name: string;
   email: string;
+  salesfoce_id?: string;
 };
 
 const initialState: UserState = {
@@ -14,6 +15,7 @@ const initialState: UserState = {
   is_admin: false,
   name: '',
   email: '',
+  salesfoce_id: '',
 };
 
 const userSlice = createSlice({
@@ -41,6 +43,9 @@ const userSlice = createSlice({
     resetUser: (state: UserState) => {
       Object.assign(state, initialState);
     },
+    setSalesforceId: (state: UserState, action: PayloadAction<string>) => {
+      state.salesfoce_id = action.payload;
+    },
   },
 });
 
@@ -51,7 +56,8 @@ export const {
   loggedIn,
   loggedOut,
   resetUser,
-  setIsAdmin
+  setIsAdmin,
+  setSalesforceId
 } = userSlice.actions;
 
 export default userSlice.reducer;

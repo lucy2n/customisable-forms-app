@@ -8,6 +8,7 @@ class User extends Model {
   public password!: string;
   public is_admin!: boolean;
   public status!: string;
+  public salesforce_id?: string;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -53,6 +54,10 @@ User.init(
     status: {
       type: DataTypes.STRING,
       defaultValue: 'active',
+    },
+    salesforce_id: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
   },
   {

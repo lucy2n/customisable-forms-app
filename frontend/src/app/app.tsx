@@ -15,6 +15,7 @@ import AdminPage from '../pages/admin-page/admin-page';
 import ProfilePage from '../pages/profile-page/profile-page';
 import EditTemplatePage from '../pages/edit-template-page/edit-template-page';
 import { IUser } from '../entities/user/model/user';
+import Footer from '../widgets/footer/footer';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -53,6 +54,7 @@ useEffect(()=> {
         <Route path={RoutePathname.editTemplate} element={<OnlyAuth component={<EditTemplatePage />} />} />
         <Route path={RoutePathname.adminPage} element={<AdminPage />} />
       </Routes>
+      <Footer />
     </div>
   );
 }

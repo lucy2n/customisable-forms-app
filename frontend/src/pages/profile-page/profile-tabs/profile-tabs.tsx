@@ -32,6 +32,10 @@ const ProfileTabs: FC<ProfileTabsProps> = ({ updateTab, isAdmin }) => {
                         title={<div className="flex items-center space-x-2"><span>Admin</span></div>}
                     />
                 }
+                <Tab
+                    key="Salesforce"
+                    title={<div className="flex items-center space-x-2"><span>Salesforce</span></div>}
+                />
             </Tabs>
         </div>
     );
