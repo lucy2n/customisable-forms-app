@@ -56,7 +56,7 @@ export const findOrCreateJiraUser = async (email: string, displayName: string) =
 const createJiraUser = async (email: string, displayName: string) => {
     try {
         const response = await fetch(
-            `${JIRA_BASE_URL}/admin/v1/orgs/${JIRA_CLOUD_ID}/users`,
+            `https://api.atlassian.com/admin/v1/orgs/${JIRA_CLOUD_ID}/users`,
             {
                 method: 'POST',
                 headers: {
