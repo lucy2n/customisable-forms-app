@@ -5,7 +5,7 @@ import questionRouter from './question';
 import templateRouter from './template';
 import formRouter from './form';
 import commentRouter from './comment';
-import saleforceRouter from './saleforce';
+import saleforceRouter from './salesforce';
 import jiraRouter from './jira';
 import likeRouter from './like';
 import { createUser, login } from "../controllers/user";
