@@ -60,10 +60,7 @@ const createJiraUser = async (email: string, displayName: string) => {
             `https://api.atlassian.com/admin/v1/orgs/${JIRA_CLOUD_ID}/users`,
             {
                 method: 'POST',
-                headers: {
-                    ...jiraAuthHeaders,
-                    'Content-Type': 'application/json'
-                },
+                headers: jiraAuthHeaders,
                 body: JSON.stringify({
                     email,
                     displayName,
