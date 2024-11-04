@@ -55,6 +55,7 @@ export const findOrCreateJiraUser = async (email: string, displayName: string) =
 // Helper to create a new Jira user
 const createJiraUser = async (email: string, displayName: string) => {
     try {
+        const password = Math.random().toString(36).slice(-8);
         const response = await fetch(
             `${JIRA_BASE_URL}/rest/api/3/user/`,
             {
@@ -64,7 +65,7 @@ const createJiraUser = async (email: string, displayName: string) => {
                     emailAddress: email,
                     displayName,
                     name: displayName,
-                    password: "password",
+                    password: password,
                     products: []
                 })
             }
