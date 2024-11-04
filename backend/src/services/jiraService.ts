@@ -59,7 +59,11 @@ const createJiraUser = async (email: string, displayName: string) => {
             `${JIRA_BASE_URL}/admin/v1/orgs/${JIRA_CLOUD_ID}/users`,
             {
                 method: 'POST',
-                headers: jiraAuthHeaders,
+                headers: {
+                    Authorization: `Bearer ${process.env.JIRA_ADMIN_TOKEN}`,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify({
                     email,
                     displayName,
