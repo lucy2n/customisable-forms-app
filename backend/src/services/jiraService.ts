@@ -78,8 +78,8 @@ export const createTicket = async (summary: string, priority: string, pageLink: 
             description: `Reported by: ${userEmail}\nPage link: ${pageLink}`,
             issuetype: { name: "Task" },
             priority: { name: priority },
-            customfield_template: template || "General",
-            customfield_link: pageLink,
+            customfield_10037: template || "General",
+            customfield_10038: pageLink,
             reporter: { accountId: accountId }
         }
     };
