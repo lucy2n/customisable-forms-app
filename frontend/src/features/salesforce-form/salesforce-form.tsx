@@ -5,6 +5,7 @@ import { RootState } from "../../app/appStore";
 import { createSalesforce } from "../../shared/api/salesforce";
 import { updateUser } from "../../shared/api/user";
 import { setSalesforceId } from "../../entities/user/model/userSlice";
+import salesforce from '../../assets/image.png';
 
 const SalesforceForm = () => {
     const dispatch = useAppDispatch();
@@ -17,23 +18,19 @@ const SalesforceForm = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault(); 
-        const saleforceUser = {
-            firstName,
-            lastName,
-            email,
-            phone
-        }
-        await createSalesforce(saleforceUser)
+        await createSalesforce({firstName, lastName, email, phone})
             .then((res) => {
                 dispatch(setSalesforceId(res.accountId));
-                updateUser(+user.id, { saleforce_id: res.accountId });
+                updateUser(+user.id, { salesforce_id: res.accountId });
             })
             .catch(err => setError(err))
       };
 
     if(user.salesfoce_id) {
         return (
-            <p>User alredy exists</p>
+            <main className="flex flex-col items-center w-11/12 mr-auto ml-auto pt-12 max-w-screen-xl">
+                <img src={salesforce} alt='salesforce'/>
+            </main>
         )
     }
 

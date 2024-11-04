@@ -107,7 +107,7 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export const updateUser = async (req: IUserRequest, res: Response): Promise<void> => {
+export const updateUser = async (req: IUserRequest, res: Response, next: NextFunction): Promise<void> => {
   try {
     const currentUserId = req.user?.id;
     const currentUser = await User.findByPk(currentUserId);
@@ -126,8 +126,7 @@ export const updateUser = async (req: IUserRequest, res: Response): Promise<void
     await user.update(req.body);
     res.json(user);
   } catch (err: any) {
-    console.error(err);
-    throw new BadRequestError(err.message);
+    next(err)
   }
 };
 
