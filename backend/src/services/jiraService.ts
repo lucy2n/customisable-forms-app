@@ -33,6 +33,7 @@ const findUserByEmail = async (email: string) => {
 export const findOrCreateJiraUser = async (email: string, displayName: string) => {
     try {
         const response = await findUserByEmail(email);
+        console.log(response);
         if (response.ok) {
             return await response.json();
         } else if (response.status === 404) {
@@ -57,6 +58,7 @@ const createJiraUser = async (email: string, displayName: string) => {
                 body: JSON.stringify({ email, displayName, notification: true })
             }
         );
+        console.log(response);
 
         if (!response.ok) {
             throw new Error(`Failed to create Jira user: ${response.statusText}`);
