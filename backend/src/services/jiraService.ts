@@ -42,10 +42,8 @@ export const findOrCreateJiraUser = async (email: string, displayName: string) =
         const user = await findUserByEmail(email);
 
         if (user) {
-            // Return the accountId of the found user
             return user.accountId;
         } else {
-            // If user is not found, create a new user
             const newUser: any = await createJiraUser(email, displayName);
             return newUser.accountId;
         }
@@ -59,11 +57,11 @@ export const findOrCreateJiraUser = async (email: string, displayName: string) =
 const createJiraUser = async (email: string, displayName: string) => {
     try {
         const response = await fetch(
-            `${JIRA_ADMIN_BASE_URL}/admin/v1/orgs/${JIRA_CLOUD_ID}/users`,
+            `${JIRA_BASE_URL}/rest/api/3/user`,
             {
                 method: 'POST',
                 headers: jiraAuthHeaders,
-                body: JSON.stringify({ email, displayName, notification: true })
+                body: JSON.stringify({ "emailAddress": email })
             }
         );
         console.log(response);
