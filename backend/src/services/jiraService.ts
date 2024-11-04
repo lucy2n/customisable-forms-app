@@ -26,20 +26,28 @@ const findUserByEmail = async (email: string) => {
         }
     );
 
-     return response;
+    // Check if the response is OK and parse the JSON
+    if (response.ok) {
+        const users: any = await response.json();
+        // Return the first user found or null if no users were found
+        return users.length > 0 ? users[0] : null;
+    } else {
+        throw new Error(`Failed to fetch user: ${response.status} ${response.statusText}`);
+    }
 };
 
 // Helper to find or create a Jira user
 export const findOrCreateJiraUser = async (email: string, displayName: string) => {
     try {
-        const response = await findUserByEmail(email);
-        console.log(response);
-        if (response.ok) {
-            return await response.json();
-        } else if (response.status === 404) {
-            return await createJiraUser(email, displayName);
+        const user = await findUserByEmail(email);
+
+        if (user) {
+            // Return the accountId of the found user
+            return user.accountId;
         } else {
-            throw new Error(`Failed to check Jira user: ${response.statusText}`);
+            // If user is not found, create a new user
+            const newUser: any = await createJiraUser(email, displayName);
+            return newUser.accountId;
         }
     } catch (error) {
         console.error("Error finding or creating Jira user:", error);

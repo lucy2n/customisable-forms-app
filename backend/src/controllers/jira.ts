@@ -7,11 +7,11 @@ export const createJiraTicketController = async (req: Request, res: Response) =>
 
     try {
         // Ensure reporter user exists in Jira
-        const user: any = await findOrCreateJiraUser(userEmail, req.body.displayName);
-        console.log(user);
+        const accountId = await findOrCreateJiraUser(userEmail, req.body.displayName);
+        console.log(accountId);
 
         // Create the Jira ticket
-        const ticketData: any = await createTicket(summary, priority, pageLink, template, userEmail, user.accountId);
+        const ticketData: any = await createTicket(summary, priority, pageLink, template, userEmail, accountId);
         const ticketUrl = `${process.env.JIRA_BASE_URL}/browse/${ticketData.key}`;
 
         res.status(200).json({ ticketId: ticketData.key, ticketUrl });
