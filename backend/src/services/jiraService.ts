@@ -56,18 +56,16 @@ export const findOrCreateJiraUser = async (email: string, displayName: string) =
 const createJiraUser = async (email: string, displayName: string) => {
     try {
         const response = await fetch(
-            `https://api.atlassian.com/admin/v1/orgs/${JIRA_CLOUD_ID}/users`,
+            `${JIRA_BASE_URL}/rest/api/3/user/`,
             {
                 method: 'POST',
-                headers: {
-                    Authorization: `Bearer ${process.env.JIRA_ADMIN_TOKEN}`,
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
+                headers: jiraAuthHeaders,
                 body: JSON.stringify({
                     email,
                     displayName,
-                    notification: true
+                    name: displayName,
+                    password: "password",
+                    products: []
                 })
             }
         );
