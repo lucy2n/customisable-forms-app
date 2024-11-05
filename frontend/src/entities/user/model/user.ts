@@ -5,7 +5,7 @@ export interface IUser {
     password: string;
     status: string;
     is_admin?: boolean;
-    saleforce_id?: string;
+    salesforce_id?: string;
 }
 
 export interface IUserSalesforce {

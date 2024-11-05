@@ -2,16 +2,14 @@ import { Request, Response } from 'express';
 import { findOrCreateJiraUser, createTicket, getUserTickets } from '../services/jiraService';
 import { CREATED } from '../utils/constants';
 
-// Controller to create a new Jira ticket
 export const createJiraTicketController = async (req: Request, res: Response) => {
-    const { summary, priority, pageLink, template, userEmail } = req.body;
+    const { summary, priority, pageLink, template, userEmail, displayName } = req.body;
 
+    console.log(displayName);
     try {
-        // Ensure reporter user exists in Jira
-        const accountId = await findOrCreateJiraUser(userEmail, req.body.displayName);
+        const accountId = await findOrCreateJiraUser(userEmail, displayName);
         console.log(accountId);
 
-        // Create the Jira ticket
         const ticketData: any = await createTicket(summary, priority, pageLink, template, userEmail, accountId);
         const ticketUrl = `${process.env.JIRA_BASE_URL}/browse/${ticketData.key}`;
 
@@ -22,7 +20,6 @@ export const createJiraTicketController = async (req: Request, res: Response) =>
     }
 };
 
-// Controller to get tickets for a specific user
 export const getUserTicketsController = async (req: Request, res: Response) => {
     const userEmail = req.query.email as string;
 

@@ -1,6 +1,7 @@
 import { Button } from "@nextui-org/react";
 import { RoutePathname } from "../../app/routes/constants";
 import { useNavigate } from "react-router-dom";
+import HelpModal from "../../features/help-modal/help-modal";
 
 const Footer = () => {
   const navigate = useNavigate();
@@ -13,14 +14,7 @@ const Footer = () => {
         </p>
       </div>
       <div className="flex gap-5">
-        <Button
-            color="danger"
-            variant="bordered"
-            className="font-mono"
-            size="md"
-        >
-            Help
-        </Button>
+        <HelpModal />
         <Button
             color="secondary"
             variant="light"
