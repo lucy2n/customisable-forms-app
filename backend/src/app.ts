@@ -37,8 +37,7 @@ async function loginToSalesforce() {
 loginToSalesforce();
 
 app.use(cors({
-  origin: 'http://localhost:5173',
-  // origin: 'https://customisable-forms-app.vercel.app',
+  origin: 'https://customisable-forms-app.vercel.app',
   credentials: true,
 }));
 
