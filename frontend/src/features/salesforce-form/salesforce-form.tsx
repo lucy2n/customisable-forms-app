@@ -5,7 +5,6 @@ import { RootState } from "../../app/appStore";
 import { createSalesforce } from "../../shared/api/salesforce";
 import { updateUser } from "../../shared/api/user";
 import { setSalesforceId } from "../../entities/user/model/userSlice";
-import salesforce from '../../assets/image.png';
 
 const SalesforceForm = () => {
     const dispatch = useAppDispatch();
@@ -24,30 +23,36 @@ const SalesforceForm = () => {
                 const accountId = res.accountId
                 dispatch(setSalesforceId(accountId));
                 updateUser(+user.id, { salesforce_id: accountId })
-                    .then((res) => {
-                        console.log(res);
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    })
             })
             .catch(err => setError(err))
       };
 
-    if(user.salesforce_id) {
+    if(!user) {
         return (
             <main className="flex flex-col items-center w-11/12 mr-auto ml-auto pt-12 max-w-screen-xl">
-                <img src={salesforce} alt='salesforce'/>
+                loading
+            </main>
+        )
+    }
+
+    if(user.salesforce_id) {
+        return (
+            <main className="flex flex-col items-center w-11/12 mr-auto ml-auto pt-24 max-w-screen-xl mb-[10%]">
+                <Card className="sm:w-2/3 md:w-1/2 lg:w-1/2 lg:p-10 md:p-10 sm:p-0 border-1 border-green-500 border-dotted">
+                    <CardBody className="w-full flex flex-col items-center">
+                        <p className="font-mono text-center">You have already successfully registered with <span className="text-cyan-600 font-bold">Salesforce.</span> Thank you!</p>
+                    </CardBody>
+                </Card>
             </main>
         )
     }
 
     return (
-        <main className="flex flex-col items-center w-11/12 mr-auto ml-auto pt-12 max-w-screen-xl">
+        <main className="flex flex-col items-center w-11/12 mr-auto ml-auto pt-14 max-w-screen-xl">
         <Card className="sm:w-2/3 md:w-1/2 lg:w-1/2 lg:p-10 md:p-10 sm:p-0 border-1 border-green-500 border-dotted">
             <CardBody className="w-full flex flex-col items-center">  
                 <h2 className="font-mono text-center font-bold text-2xl uppercase mb-12">
-                    Create salesforce account and contact
+                    Create salesforce account
                 </h2>
                 <form className="flex flex-col items-center gap-5 w-full" onSubmit={handleSubmit}>
                 <Input

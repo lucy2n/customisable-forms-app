@@ -7,46 +7,57 @@ import ProfileTabs from "./profile-tabs/profile-tabs";
 import AdminPage from "../admin-page/admin-page";
 import { RootState } from "../../app/appStore";
 import SalesforceForm from "../../features/salesforce-form/salesforce-form";
+import { getTickets } from "../../shared/api/jira";
+import { IJiraTicket } from "../../entities/jira-ticket/jira-ticket";
+import TicketsList from "../../features/tickets-list/tickets-list";
 
 const ProfilePage = () => {
     const user = useAppSelector((store: RootState) => store.user);
-    const [templates, setTemplates] = useState<ITemplate[]>();
+    const [templates, setTemplates] = useState<ITemplate[]>([]);
+    const [tickets, setTickets] = useState<IJiraTicket[]>([]);
     const [selectedTab, setSelectedTab] = useState<string>('My templates');
-    const [loading, setLoading] = useState<boolean>(true);
+    const [loadingTemplates, setLoadingTemplates] = useState<boolean>(true);
 
     const updateTab = (tab: string) => {
         setSelectedTab(tab);
     };
 
+    useEffect(() => {
+        getTickets(user.email)
+            .then(res => setTickets(res))
+            .catch(err => console.error(err));
+    }, [user.email]);
 
     useEffect(() => {
-        refresh();
+        refreshTemplates();
     }, [user.id]);
 
-    const refresh = () => {
-        setLoading(true)
-
+    const refreshTemplates = () => {
+        setLoadingTemplates(true);
         getTemplatesByUser(user.id)
-        .then(res => setTemplates(res))
-        .catch(err => console.log(err))
-        .finally(() => setLoading(false))
+            .then(res => setTemplates(res))
+            .catch(err => console.error(err))
+            .finally(() => setLoadingTemplates(false));
     };
 
     return (
-        <main className="flex flex-wrap items-center w-11/12 mr-auto ml-auto pt-24">
-            <ProfileTabs updateTab={updateTab} isAdmin={user.is_admin}/>
+        <main className="flex flex-wrap items-center w-11/12 mr-auto ml-auto pt-20">
+            <ProfileTabs updateTab={updateTab} isAdmin={user.is_admin} tickets={!!tickets.length} />
 
-            {selectedTab === 'My templates' && templates && (
-                <FormTemplateList refresh={refresh} templates={templates} title="My templates" loading={loading} />
+            {selectedTab === 'My templates' && (
+                <FormTemplateList
+                    refresh={refreshTemplates}
+                    templates={templates}
+                    title="My templates"
+                    loading={loadingTemplates}
+                />
             )}
 
-            {selectedTab === 'Admin' && user.is_admin && (
-                <AdminPage />
-            )}
+            {selectedTab === 'Admin' && user.is_admin && <AdminPage />}
 
-            {selectedTab === 'Salesforce' && user && (
-                <SalesforceForm />
-            )}
+            {selectedTab === 'Salesforce' && user && <SalesforceForm />}
+
+            {selectedTab === 'Tickets' && tickets && <TicketsList user={user} />}
         </main>
     );
 };

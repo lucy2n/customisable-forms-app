@@ -8,7 +8,7 @@ const HelpModal = () => {
     return (
       <>
         <Button className="font-mono" color="secondary" variant="light" size="md" onClick={onOpen}>
-            Help
+            Create support ticket
         </Button>
         <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
           <ModalContent>

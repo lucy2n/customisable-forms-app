@@ -1,12 +1,14 @@
 import { Tabs, Tab } from "@nextui-org/react";
 import { FC } from "react";
+import salesforce from '../../../assets/image.png';
 
 interface ProfileTabsProps {
     updateTab: (tab: string) => void;
-    isAdmin: boolean
+    isAdmin: boolean,
+    tickets: boolean
 }
 
-const ProfileTabs: FC<ProfileTabsProps> = ({ updateTab, isAdmin }) => {
+const ProfileTabs: FC<ProfileTabsProps> = ({ updateTab, isAdmin, tickets }) => {
     return (
         <div className="flex w-full justify-center items-center flex-col">
             <Tabs
@@ -33,9 +35,20 @@ const ProfileTabs: FC<ProfileTabsProps> = ({ updateTab, isAdmin }) => {
                     />
                 }
                 <Tab
+                    title={
+                        <div className="flex space-x-2">
+                          <img className="w-8 h-6" src={salesforce} alt='salesforce'/>
+                          <span>Salesforce</span>
+                        </div>
+                      }
                     key="Salesforce"
-                    title={<div className="flex items-center space-x-2"><span>Salesforce</span></div>}
                 />
+                {   tickets &&
+                    <Tab
+                        title={<div className="flex items-center space-x-2"><span>Tickets</span></div>}
+                        key="Tickets"
+                    />
+                }
             </Tabs>
         </div>
     );

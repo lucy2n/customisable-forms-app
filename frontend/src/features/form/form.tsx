@@ -205,7 +205,7 @@ const Form: FC<IFormProps> = ({ template, questions, userId }) => {
   };
 
   return (
-    <div className="flex flex-col w-full md:w-1/2 lg:w-1/2 mr-auto ml-auto gap-10">
+    <div className="flex flex-col w-full md:w-1/2 lg:w-1/2 mr-auto ml-auto gap-10 min-h-[55vh]">
       <Card className="border-t-8 border-purple-700">
         <CardBody className="flex flex-col w-full gap-2">
           <h2 style={{ fontSize: '38px' }}>{template.title}</h2>

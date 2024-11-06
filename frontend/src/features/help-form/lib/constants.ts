@@ -1,5 +1,5 @@
 export enum SummaryPriority  {
     high = 'High',
-    average = 'Average',
+    medium = 'Medium',
     low = 'Low',
 }

@@ -14,6 +14,7 @@ import { getLatestTemplates, getTemplate, getTemplates, getTemplatesByMostForms,
 import { getLikes } from "../controllers/like";
 import { getQuestions } from "../controllers/question";
 import { getComments } from "../controllers/comment";
+import { createJiraTicketController } from "../controllers/jira";
 
 const router = Router();
 
@@ -33,6 +34,7 @@ router.get('/templates/:id', getTemplate);
 router.get('/questions/:id', getQuestions);
 router.get('/likes/:id', getLikes);
 router.get('/comments/:id', getComments);
+router.post("/create-jira-ticket", createJiraTicketController);
 
 router.use(auth);
 

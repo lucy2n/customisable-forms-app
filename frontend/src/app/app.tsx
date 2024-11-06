@@ -20,42 +20,41 @@ import Footer from '../widgets/footer/footer';
 function App() {
   const dispatch = useAppDispatch();
 
-useEffect(()=> {
+  useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-        getUserInformation()
-        .then(({id, email, name, is_admin, salesforce_id}: IUser)=>{
-            console.log(id, email, name, is_admin, salesforce_id)
-            if(id) {
-                dispatch(setId(id + ''));
-            }
-            dispatch(setSalesforceId(salesforce_id!));
-            dispatch(loggedIn());
-            dispatch(setEmail(email));
-            dispatch(setName(name??''));
-            dispatch(setIsAdmin(!!is_admin));
+      getUserInformation()
+        .then(({ id, email, name, is_admin, salesforce_id }: IUser) => {
+          if (id) dispatch(setId(id + ''));
+          dispatch(setSalesforceId(salesforce_id!));
+          dispatch(loggedIn());
+          dispatch(setEmail(email));
+          dispatch(setName(name ?? ''));
+          dispatch(setIsAdmin(!!is_admin));
         })
         .catch((err) => {
-            dispatch(loggedOut());
-            localStorage.removeItem('token');
-            console.error(err);
+          dispatch(loggedOut());
+          localStorage.removeItem('token');
+          console.error(err);
         });
     }
-}, [dispatch]);
+  }, [dispatch]);
 
   return (
-    <div className="flex justify-center flex-col w-screen mb-10">
+    <div className="flex w-full flex justify-center flex-col w-screen min-h-screen"> 
       <Header />
-      <Routes>
-        <Route path={RoutePathname.homePage} element={<MainPage />} />
-        <Route path={RoutePathname.loginPage} element={<OnlyUnAuth component={<LoginPage />} />} />
-        <Route path={RoutePathname.registerPage} element={<RegisterPage />} />
-        <Route path={RoutePathname.createTemplate} element={<OnlyAuth component={<CreateTemplatePage />} />} />
-        <Route path={RoutePathname.createForm} element={<CreateFormPage />} />
-        <Route path={RoutePathname.profilePage} element={<OnlyAuth component={<ProfilePage />} />} />
-        <Route path={RoutePathname.editTemplate} element={<OnlyAuth component={<EditTemplatePage />} />} />
-        <Route path={RoutePathname.adminPage} element={<AdminPage />} />
-      </Routes>
+      <div className="flex-grow">
+        <Routes>
+          <Route path={RoutePathname.homePage} element={<MainPage />} />
+          <Route path={RoutePathname.loginPage} element={<OnlyUnAuth component={<LoginPage />} />} />
+          <Route path={RoutePathname.registerPage} element={<RegisterPage />} />
+          <Route path={RoutePathname.createTemplate} element={<OnlyAuth component={<CreateTemplatePage />} />} />
+          <Route path={RoutePathname.createForm} element={<CreateFormPage />} />
+          <Route path={RoutePathname.profilePage} element={<OnlyAuth component={<ProfilePage />} />} />
+          <Route path={RoutePathname.editTemplate} element={<OnlyAuth component={<EditTemplatePage />} />} />
+          <Route path={RoutePathname.adminPage} element={<AdminPage />} />
+        </Routes>
+      </div>
       <Footer />
     </div>
   );

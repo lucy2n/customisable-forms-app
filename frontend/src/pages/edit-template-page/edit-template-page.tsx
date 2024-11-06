@@ -34,7 +34,7 @@ const EditTemplatePage = () => {
     }
 
     return (
-        <main className="flex flex-col justify-between w-full md:w-11/12 lg:w-11/12 mr-auto ml-auto pt-24 max-w-screen-xl h-screen">
+        <main className="flex flex-col justify-between w-full md:w-11/12 lg:w-11/12 mr-auto ml-auto pt-24 max-w-screen-xl">
             <TemplateEditor template={template} questions={questions} />
         </main>
     );
