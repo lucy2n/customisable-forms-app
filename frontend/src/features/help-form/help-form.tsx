@@ -46,7 +46,7 @@ const HelpForm: FC<HelpFormProps> = ({ onClose }) => {
             summary: summary, 
             priority: priority, 
             template: formTitle || '',
-            pageLink: `https://customisable-forms-app.vercel.app${location.pathname}`, 
+            pageLink: `https://customisable-forms-app.vercel.app/#${location.pathname}`, 
             displayName: userDisplayName,
             userEmail: userEmail
         };
