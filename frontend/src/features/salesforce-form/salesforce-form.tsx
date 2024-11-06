@@ -100,7 +100,8 @@ const SalesforceForm = () => {
                     isInvalid={!!error}
                     isRequired
                 />
-                <Button size="lg" color="secondary" type="submit" className="w-1/4 font-mono">
+                {error && <p className="text-red-500">{error}</p>}
+                <Button size="lg" color="secondary" type="submit" className="w-1/4 font-mono" isDisabled={!firstName || !lastName || !phone}>
                     Submit
                 </Button>
             </form>

@@ -17,15 +17,19 @@ const ProfilePage = () => {
     const [tickets, setTickets] = useState<IJiraTicket[]>([]);
     const [selectedTab, setSelectedTab] = useState<string>('My templates');
     const [loadingTemplates, setLoadingTemplates] = useState<boolean>(true);
+    const [loadingTickets, setLoadingTickets] = useState(true);
 
     const updateTab = (tab: string) => {
         setSelectedTab(tab);
     };
 
     useEffect(() => {
-        getTickets(user.email)
-            .then(res => setTickets(res))
-            .catch(err => console.error(err));
+        if (user.email) {
+            getTickets(user.email)
+                .then(res => setTickets(res))
+                .catch(err => console.error(err))
+                .finally(() => setLoadingTickets(false));
+        }
     }, [user.email]);
 
     useEffect(() => {
@@ -42,7 +46,7 @@ const ProfilePage = () => {
 
     return (
         <main className="flex flex-wrap items-center w-11/12 mr-auto ml-auto pt-20">
-            <ProfileTabs updateTab={updateTab} isAdmin={user.is_admin} tickets={!!tickets.length} />
+            <ProfileTabs updateTab={updateTab} isAdmin={user.is_admin}/>
 
             {selectedTab === 'My templates' && (
                 <FormTemplateList
@@ -57,7 +61,9 @@ const ProfilePage = () => {
 
             {selectedTab === 'Salesforce' && user && <SalesforceForm />}
 
-            {selectedTab === 'Tickets' && tickets && <TicketsList user={user} />}
+            {selectedTab === 'Tickets' && (
+                <TicketsList loading={loadingTickets} tickets={tickets} />
+            )}
         </main>
     );
 };

@@ -6,7 +6,7 @@ const Footer = () => {
   const navigate = useNavigate();
 
   return (
-    <footer className="justify-center flex-col gap-5 flex lg:justify-between lg:flex-row w-11/12 mr-auto ml-auto pt-20 pb-10 items-center flex-wrap sm:justify-center sm:flex-col sm:gap-5 max-w-screen-xl">
+    <footer className="justify-center gap-5 flex lg:justify-between flex-row w-11/12 mr-auto ml-auto pt-20 pb-10 items-center flex-wrap sm:gap-5 max-w-screen-xl">
       <div className="flex cursor-pointer" onClick={() => navigate(RoutePathname.homePage)}>
         <p className="text-base font-medium text-sm uppercase text-purple-700 font-mono">
             Lucy Naumenko - 2024

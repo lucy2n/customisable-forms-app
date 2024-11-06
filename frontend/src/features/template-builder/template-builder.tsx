@@ -55,7 +55,6 @@ const TemplateBuilder = () => {
           user_id: Number(user.id),
           questions: questions.map(question => question.id),
       };
-      console.log(questions);
       try {
           const res = await createTemplate(templateData);
           console.log("Template created:", res);

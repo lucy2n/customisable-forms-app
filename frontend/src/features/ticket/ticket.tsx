@@ -1,6 +1,7 @@
 import { Card, CardBody, CardHeader, Chip } from "@nextui-org/react";
 import { NavLink } from "react-router-dom";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const Ticket = ({ ticket }: { ticket: any }) => {
     return (
         <Card className="w-full h-[100px] sm:w-[48%] lg:w-[26%] max-w-1440px col-span-12 sm:col-span-6 lg:col-span-4 group border-1 border-green-500 border-dotted">

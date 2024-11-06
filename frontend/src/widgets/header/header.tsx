@@ -33,7 +33,7 @@ const Header = () => {
   const isLightTheme = theme === 'light';
 
   return (
-    <header className="justify-center flex-col gap-5 flex lg:justify-between lg:flex-row w-11/12 mr-auto ml-auto pt-10 items-center flex-wrap sm:justify-center sm:flex-col sm:gap-5 max-w-screen-xl">
+    <header className="justify-center flex-col gap-5 flex lg:justify-between lg:flex-row w-11/12 mr-auto ml-auto pt-10 items-center flex-wrap sm:justify-center sm:items-center sm:flex-col sm:gap-5 max-w-screen-xl">
       <div className="flex cursor-pointer" onClick={() => navigate(RoutePathname.homePage)}>
         <p className="text-base font-medium text-xl uppercase text-purple-700 font-mono">
           Form
@@ -42,7 +42,7 @@ const Header = () => {
           Lab
         </p>
       </div>
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex flex-wrap items-center justify-center gap-2">
         {user.isLoggedIn ? (
           <>
             <Button

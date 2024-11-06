@@ -5,10 +5,9 @@ import salesforce from '../../../assets/image.png';
 interface ProfileTabsProps {
     updateTab: (tab: string) => void;
     isAdmin: boolean,
-    tickets: boolean
 }
 
-const ProfileTabs: FC<ProfileTabsProps> = ({ updateTab, isAdmin, tickets }) => {
+const ProfileTabs: FC<ProfileTabsProps> = ({ updateTab, isAdmin }) => {
     return (
         <div className="flex w-full justify-center items-center flex-col">
             <Tabs
@@ -43,12 +42,10 @@ const ProfileTabs: FC<ProfileTabsProps> = ({ updateTab, isAdmin, tickets }) => {
                       }
                     key="Salesforce"
                 />
-                {   tickets &&
-                    <Tab
-                        title={<div className="flex items-center space-x-2"><span>Tickets</span></div>}
-                        key="Tickets"
-                    />
-                }
+                <Tab
+                    title={<div className="flex items-center space-x-2"><span>Tickets</span></div>}
+                    key="Tickets"
+                />
             </Tabs>
         </div>
     );

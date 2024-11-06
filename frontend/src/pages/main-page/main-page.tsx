@@ -62,7 +62,7 @@ const MainPage = () => {
         <main className="flex flex-col justify-between w-11/12 mr-auto ml-auto pt-24 bg-gradient max-w-screen-xl">
             <section className="flex flex-col text-center items-center gap-5">
                 <motion.h1 
-                    className="m-0 p-0 font-mono text-4xl"
+                    className="m-0 p-0 font-mono text-2xl lg:text-4xl md:text-3xl"
                     initial={{ opacity: 0, y: -50 }} 
                     animate={{ opacity: 1, y: 0 }} 
                     transition={{ duration: 1 }}
@@ -73,7 +73,7 @@ const MainPage = () => {
                     initial={{ opacity: 0, y: -50 }} 
                     animate={{ opacity: 1, y: 0 }} 
                     transition={{ duration: 1 }}
-                    className="font-mono w-9/12 mb-10"
+                    className="font-mono lg:w-9/12 md:w-11/12 mb-10 w-full"
                 >
                     Create quizzes, surveys, polls, and more with ease! Whether you’re collecting feedback, conducting tests, or gathering data through questionnaires, FormLab empowers you to build fully customizable forms tailored to your needs.
                 </motion.p>

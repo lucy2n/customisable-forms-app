@@ -5,10 +5,8 @@ import { CREATED } from '../utils/constants';
 export const createJiraTicketController = async (req: Request, res: Response) => {
     const { summary, priority, pageLink, template, userEmail, displayName } = req.body;
 
-    console.log(displayName);
     try {
         const accountId = await findOrCreateJiraUser(userEmail, displayName);
-        console.log(accountId);
 
         const ticketData: any = await createTicket(summary, priority, pageLink, template, userEmail, accountId);
         const ticketUrl = `${process.env.JIRA_BASE_URL}/browse/${ticketData.key}`;

@@ -10,7 +10,7 @@ const HelpModal = () => {
         <Button className="font-mono" color="secondary" variant="light" size="md" onClick={onOpen}>
             Create support ticket
         </Button>
-        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange} className="min-h-[300px]">
           <ModalContent>
                 <ModalHeader className="flex">Please describe your problem or suggestion</ModalHeader>
                 <ModalBody>
