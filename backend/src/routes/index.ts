@@ -34,7 +34,7 @@ router.get('/templates/:id', getTemplate);
 router.get('/questions/:id', getQuestions);
 router.get('/likes/:id', getLikes);
 router.get('/comments/:id', getComments);
-router.post("/create-jira-ticket", createJiraTicketController);
+router.post("/jira/create-jira-ticket", createJiraTicketController);
 
 router.use(auth);
 

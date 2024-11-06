@@ -1,4 +1,3 @@
-
 import { IJiraTicket } from "../../entities/jira-ticket/jira-ticket";
 import { getToken } from "./api";
 import { base_url } from "./constants";
